@@ -7,12 +7,14 @@ import { AppComponent } from './app.component';
 import { AuthInterceptor } from './services/auth.interceptor';
 import { HeaderComponent } from './components/header/header.component';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
+import { PillButtonComponent } from './components/pill-button/pill-button.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    LandingPageComponent
+    LandingPageComponent,
+    PillButtonComponent
   ],
   imports: [
     BrowserModule,

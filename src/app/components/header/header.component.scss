@@ -8,3 +8,9 @@
     justify-content: space-between;
   }
 }
+
+.navbar {
+  @media (min-width: 992px) {
+    justify-content: center;
+  }
+}
