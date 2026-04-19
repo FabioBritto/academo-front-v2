@@ -4,6 +4,10 @@ $link-color: $primary;
 $body-bg: rgb(244, 240, 228);
 $body-color: rgb(83, 125, 150);
 
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
   --background-color: rgb(244, 240, 228);
   --default-color: rgb(83, 125, 150);
