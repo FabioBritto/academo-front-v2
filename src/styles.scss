@@ -1,3 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
-@import "bootstrap/scss/bootstrap";
+$primary: rgb(83, 125, 150);
+$link-color: $primary;
+$body-bg: rgb(244, 240, 228);
+$body-color: rgb(83, 125, 150);
 
+:root {
+  --background-color: rgb(244, 240, 228);
+  --default-color: rgb(83, 125, 150);
+  --heading-color: rgb(83, 125, 150);
+  --accent-color: rgb(83, 125, 150);
+  --surface-color: #ffffff;
+  --contrast-color: #ffffff;
+
+  --nav-color: rgb(83, 125, 150);
+  --nav-hover-color: rgb(236, 143, 141);
+  --nav-mobile-background-color: #ffffff;
+  --nav-dropdown-background-color: #ffffff;
+  --nav-dropdown-color: rgb(83, 125, 150);
+  --nav-dropdown-hover-color: rgb(236, 143, 141);
+}
+
+@import "bootstrap/scss/bootstrap";
