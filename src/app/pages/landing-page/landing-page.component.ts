@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
+import { RegisterModalComponent } from '../../components/register-modal/register-modal.component';
 
 @Component({
   selector: 'app-landing-page',
@@ -9,12 +12,22 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class LandingPageComponent {
   contactForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private readonly modalService: NgbModal
+  ) {
     this.contactForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       subject: ['', Validators.required],
       message: ['', Validators.required]
+    });
+  }
+
+  openRegisterModal(): void {
+    this.modalService.open(RegisterModalComponent, {
+      centered: true,
+      windowClass: 'register-modal'
     });
   }
 

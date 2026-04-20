@@ -35,6 +35,8 @@ export class InputGroupComponent implements ControlValueAccessor {
 
   @Input() name?: string;
 
+  @Input() invalid = false;
+
   value = '';
 
   isDisabled = false;

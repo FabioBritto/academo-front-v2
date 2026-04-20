@@ -1,7 +1,13 @@
-<app-header></app-header>
+<app-header (registerClick)="openRegisterModal()"></app-header>
 
 <main>
-  <section id="home" class="landing-section"></section>
+  <section id="home" class="landing-section">
+    <div class="container">
+      <div class="home-logo">
+        <img src="assets/images/academo/academo-logo.png" alt="Academo" class="img-fluid">
+      </div>
+    </div>
+  </section>
   <section id="sobre" class="landing-section">
     <div class="container">
       <div class="section-title">

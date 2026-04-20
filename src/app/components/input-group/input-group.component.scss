@@ -69,6 +69,17 @@
   resize: vertical;
 }
 
+.input-group-custom .input-wrapper.is-invalid input,
+.input-group-custom .input-wrapper.is-invalid textarea {
+  background: var(--surface-color);
+  border-color: #dc3545;
+  box-shadow: 0 0 0 4px color-mix(in srgb, #dc3545 12%, transparent);
+}
+
+.input-group-custom .input-wrapper.is-invalid i {
+  color: #dc3545;
+}
+
 @media (max-width: 768px) {
   .input-group-custom .input-wrapper input,
   .input-group-custom .input-wrapper textarea {

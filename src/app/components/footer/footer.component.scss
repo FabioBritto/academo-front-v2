@@ -1,0 +1,63 @@
+.app-footer {
+  background: color-mix(in srgb, var(--accent-color), transparent 92%);
+  color: color-mix(in srgb, var(--default-color), transparent 20%);
+  padding: 18px 0;
+  font-size: 12px;
+}
+
+.app-footer .app-footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px 14px;
+  text-align: center;
+}
+
+@media (min-width: 992px) {
+  .app-footer .app-footer-inner {
+    justify-content: space-between;
+    text-align: left;
+  }
+}
+
+.app-footer-left,
+.app-footer-right {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px 10px;
+}
+
+@media (min-width: 992px) {
+  .app-footer-left,
+  .app-footer-right {
+    justify-content: flex-start;
+  }
+}
+
+.footer-label {
+  font-weight: 600;
+  color: var(--default-color);
+}
+
+.footer-text {
+  color: color-mix(in srgb, var(--default-color), transparent 15%);
+}
+
+.footer-link {
+  color: color-mix(in srgb, var(--default-color), transparent 15%);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-link:hover,
+.footer-link:focus {
+  color: color-mix(in srgb, var(--nav-hover-color), transparent 0%);
+  text-decoration: underline;
+}
+
+.footer-separator {
+  opacity: 0.65;
+}

@@ -1,0 +1,105 @@
+<div class="modal-header">
+  <h5 class="modal-title">Criar conta</h5>
+
+  <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
+</div>
+
+<div class="modal-body">
+  <div *ngIf="successMessage" class="alert alert-success" role="alert">
+    {{ successMessage }}
+  </div>
+
+  <div *ngIf="validationMessage" class="alert alert-warning" role="alert">
+    {{ validationMessage }}
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+    {{ errorMessage }}
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="row g-4">
+      <div class="col-12">
+        <app-input-group
+          label="Seu nome"
+          icon="bi bi-person"
+          placeholder="Seu nome"
+          [invalid]="!!(form.get('name')?.touched && form.get('name')?.invalid)"
+          formControlName="name"
+        ></app-input-group>
+
+        <small
+          class="text-danger"
+          *ngIf="form.get('name')?.touched && form.get('name')?.hasError('required')"
+        >
+          O nome é obrigatório para a criação da conta
+        </small>
+      </div>
+
+      <div class="col-12">
+        <app-input-group
+          label="Seu email"
+          icon="bi bi-envelope"
+          placeholder="voce@exemplo.com"
+          type="email"
+          [invalid]="!!(form.get('email')?.touched && form.get('email')?.invalid)"
+          formControlName="email"
+        ></app-input-group>
+
+        <small
+          class="text-danger"
+          *ngIf="form.get('email')?.touched && form.get('email')?.hasError('required')"
+        >
+          O email é obrigatório para a criação da conta
+        </small>
+        <small
+          class="text-danger"
+          *ngIf="form.get('email')?.touched && form.get('email')?.hasError('email')"
+        >
+          O email informado é inválido
+        </small>
+      </div>
+
+      <div class="col-12">
+        <app-input-group
+          label="Senha"
+          icon="bi bi-shield-lock"
+          placeholder="Sua senha"
+          type="password"
+          [invalid]="!!(form.get('password')?.touched && form.get('password')?.invalid)"
+          formControlName="password"
+        ></app-input-group>
+
+        <small
+          class="text-danger"
+          *ngIf="form.get('password')?.touched && form.get('password')?.hasError('required')"
+        >
+          A senha é obrigatória para a criação da conta
+        </small>
+        <small
+          class="text-danger"
+          *ngIf="form.get('password')?.touched && form.get('password')?.hasError('minlength')"
+        >
+          A senha deve ter ao menos 8 caracteres
+        </small>
+      </div>
+
+      <div class="col-12 d-flex justify-content-end gap-2">
+        <app-submit-button
+          type="button"
+          label="Cancelar"
+          icon=""
+          [disabled]="isSubmitting"
+          (click)="close()"
+        ></app-submit-button>
+
+        <app-submit-button
+          type="submit"
+          label="Criar conta"
+          icon=""
+          [disabled]="isSubmitting"
+        ></app-submit-button>
+      </div>
+    </div>
+  </form>
+</div>

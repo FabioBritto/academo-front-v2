@@ -1,7 +1,7 @@
 <div class="input-group-custom">
   <label>{{ label }}</label>
 
-  <div class="input-wrapper" [class.textarea-wrapper]="textarea">
+  <div class="input-wrapper" [class.textarea-wrapper]="textarea" [class.is-invalid]="invalid">
     <i [class]="icon" aria-hidden="true"></i>
 
     <ng-container *ngIf="!textarea; else textareaTpl">
