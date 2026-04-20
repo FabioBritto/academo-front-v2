@@ -1,6 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { ToastContainerComponent } from './components/toast-container/toast-container.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -9,7 +11,9 @@ describe('AppComponent', () => {
         RouterTestingModule
       ],
       declarations: [
-        AppComponent
+        AppComponent,
+        FooterComponent,
+        ToastContainerComponent
       ],
     }).compileComponents();
   });
@@ -26,10 +30,10 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('academo-front');
   });
 
-  it('should render title', () => {
+  it('should render footer', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, academo-front');
+    expect(compiled.querySelector('app-footer')).toBeTruthy();
   });
 });

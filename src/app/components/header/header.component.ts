@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -6,6 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
+  @Output() registerClick = new EventEmitter<void>();
+
+  @Output() loginClick = new EventEmitter<void>();
+
   isMenuOpen = false;
 
   toggleMenu(): void {
@@ -14,5 +18,15 @@ export class HeaderComponent {
 
   closeMenu(): void {
     this.isMenuOpen = false;
+  }
+
+  onRegisterClick(): void {
+    this.closeMenu();
+    this.registerClick.emit();
+  }
+
+  onLoginClick(): void {
+    this.closeMenu();
+    this.loginClick.emit();
   }
 }

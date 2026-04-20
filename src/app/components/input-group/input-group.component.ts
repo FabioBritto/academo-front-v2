@@ -29,11 +29,25 @@ export class InputGroupComponent implements ControlValueAccessor {
 
   @Input() type = 'text';
 
+  @Input() showPasswordToggle = false;
+
   @Input() textarea = false;
 
   @Input() rows = 5;
 
   @Input() name?: string;
+
+  @Input() invalid = false;
+
+  isPasswordVisible = false;
+
+  get resolvedType(): string {
+    if (this.type !== 'password') {
+      return this.type;
+    }
+
+    return this.isPasswordVisible ? 'text' : 'password';
+  }
 
   value = '';
 
@@ -66,5 +80,13 @@ export class InputGroupComponent implements ControlValueAccessor {
 
   handleBlur(): void {
     this.onTouched();
+  }
+
+  togglePasswordVisibility(): void {
+    if (this.isDisabled) {
+      return;
+    }
+
+    this.isPasswordVisible = !this.isPasswordVisible;
   }
 }
