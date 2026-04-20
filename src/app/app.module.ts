@@ -20,6 +20,7 @@ import { LoginModalComponent } from './components/login-modal/login-modal.compon
 import { ToastContainerComponent } from './components/toast-container/toast-container.component';
 import { ForgotPasswordModalComponent } from './components/forgot-password-modal/forgot-password-modal.component';
 import { EqualizeModalButtonsDirective } from './directives/equalize-modal-buttons.directive';
+import { HomeComponent } from './pages/home/home.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { EqualizeModalButtonsDirective } from './directives/equalize-modal-butto
     HeaderComponent,
     FooterComponent,
     LandingPageComponent,
+    HomeComponent,
     PillButtonComponent,
     FormCardComponent,
     AppSubmitButtonComponent,

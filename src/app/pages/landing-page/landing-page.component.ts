@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 
 import { RegisterModalComponent } from '../../components/register-modal/register-modal.component';
 import { LoginModalComponent } from '../../components/login-modal/login-modal.component';
@@ -15,7 +16,8 @@ export class LandingPageComponent {
 
   constructor(
     private fb: FormBuilder,
-    private readonly modalService: NgbModal
+    private readonly modalService: NgbModal,
+    private readonly router: Router
   ) {
     this.contactForm = this.fb.group({
       name: ['', Validators.required],
@@ -33,9 +35,15 @@ export class LandingPageComponent {
   }
 
   openLoginModal(): void {
-    this.modalService.open(LoginModalComponent, {
+    const modalRef = this.modalService.open(LoginModalComponent, {
       centered: true,
       windowClass: 'login-modal'
+    });
+
+    modalRef.closed.subscribe((result) => {
+      if (result === 'logged') {
+        void this.router.navigate(['/app/home']);
+      }
     });
   }
 
