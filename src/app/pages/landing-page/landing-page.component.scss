@@ -1,0 +1,392 @@
+.landing-section {
+  min-height: 50vh;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 42px;
+}
+
+.section-title h2 {
+  margin: 0 0 10px;
+  font-size: 34px;
+  font-weight: 800;
+  color: var(--heading-color);
+  letter-spacing: -0.8px;
+}
+
+.section-title p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--default-color) 70%, transparent);
+}
+
+@media (max-width: 768px) {
+  .section-title {
+    margin-bottom: 32px;
+  }
+
+  .section-title h2 {
+    font-size: 28px;
+  }
+}
+
+#sobre {
+  min-height: auto;
+  padding-top: 20px;
+  padding-bottom: 60px;
+}
+
+#sobre .about-images-wrapper {
+  position: relative;
+  padding-bottom: 60px;
+  padding-right: 60px;
+  z-index: 1;
+}
+
+@media (max-width: 992px) {
+  #sobre .about-images-wrapper {
+    padding-right: 0;
+    padding-bottom: 0;
+    margin-bottom: 40px;
+  }
+}
+
+#sobre .image-main {
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 15px 40px -10px color-mix(in srgb, var(--default-color), transparent 90%);
+}
+
+#sobre .image-main img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+#sobre .image-main:hover img {
+  transform: scale(1.03);
+}
+
+#sobre .image-offset {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 55%;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 8px solid var(--background-color);
+  z-index: 3;
+  box-shadow: 0 15px 30px -5px color-mix(in srgb, var(--default-color), transparent 85%);
+}
+
+@media (max-width: 992px) {
+  #sobre .image-offset {
+    display: none;
+  }
+}
+
+#sobre .image-offset img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+#sobre .about-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#sobre .about-content .section-subtitle {
+  display: inline-block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-color);
+}
+
+#sobre .about-content h2 {
+  margin: 0;
+  color: var(--heading-color);
+  font-weight: 700;
+}
+
+#sobre .about-content .lead-text {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--default-color);
+}
+
+#sobre .about-content .description {
+  color: color-mix(in srgb, var(--default-color), transparent 10%);
+}
+
+#sobre .features-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+@media (max-width: 576px) {
+  #sobre .features-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+#sobre .feature-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 80%);
+  box-shadow: 0 12px 24px -12px color-mix(in srgb, var(--default-color), transparent 85%);
+  transition: 0.3s;
+}
+
+#sobre .feature-card:hover {
+  border-color: var(--accent-color);
+  transform: translateX(5px);
+}
+
+#sobre .feature-icon {
+  color: var(--accent-color);
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+#planos {
+  min-height: auto;
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
+#planos .row {
+  align-items: stretch;
+}
+
+#planos .pricing-card {
+  background: var(--surface-color);
+  border-radius: 18px;
+  padding: 28px 26px;
+  box-shadow: 0 16px 40px -24px color-mix(in srgb, var(--default-color), transparent 80%);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#planos .pricing-card__icon {
+  width: 70px;
+  height: 70px;
+  background: var(--surface-color);
+  border: 1px color-mix(in srgb, var(--default-color), transparent 85%);
+  padding: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+#planos .pricing-card__icon img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: contain;
+  display: block;
+}
+
+#planos .pricing-card__title {
+  text-align: center;
+  margin: 0;
+  color: var(--heading-color);
+  font-weight: 700;
+}
+
+#planos .pricing-card__price {
+  text-align: center;
+  margin-top: 10px;
+}
+
+#planos .pricing-card__price-label {
+  font-size: 0.85rem;
+  color: color-mix(in srgb, var(--default-color), transparent 25%);
+  line-height: 1.1;
+}
+
+#planos .pricing-card__price-value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--heading-color);
+  line-height: 1.1;
+}
+
+#planos .pricing-card__divider {
+  height: 1px;
+  background: color-mix(in srgb, var(--default-color), transparent 85%);
+  margin: 16px 0;
+}
+
+#planos .pricing-card__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+#planos .pricing-card__list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--default-color);
+}
+
+#planos .pricing-card__list i {
+  color: var(--accent-color);
+  font-size: 1rem;
+  line-height: 1;
+}
+
+#contato {
+  min-height: auto;
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
+#contato .info-panel {
+  background: var(--surface-color);
+  border-radius: 24px;
+  padding: 48px;
+  height: 100%;
+  box-shadow: 0 20px 60px color-mix(in srgb, var(--default-color) 10%, transparent);
+}
+
+#contato .info-panel .section-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-color);
+  background: color-mix(in srgb, var(--accent-color) 12%, transparent);
+  margin-bottom: 18px;
+}
+
+#contato .info-panel .panel-header h3 {
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--heading-color);
+  margin: 0 0 14px;
+  letter-spacing: -0.5px;
+}
+
+#contato .info-panel .panel-header p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--default-color) 70%, transparent);
+  margin: 0;
+}
+
+#contato .contact-methods {
+  margin-top: 34px;
+  display: grid;
+  gap: 18px;
+}
+
+#contato .contact-illustration {
+  margin-top: 28px;
+  display: flex;
+  justify-content: center;
+}
+
+#contato .contact-illustration img {
+  width: 75%;
+  max-width: 320px;
+  height: auto;
+  display: block;
+}
+
+#contato .method-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--default-color) 4%, transparent);
+  border: 1px solid color-mix(in srgb, var(--default-color) 10%, transparent);
+  transition: all 0.3s ease;
+}
+
+#contato .method-item:hover {
+  background: color-mix(in srgb, var(--accent-color) 12%, transparent);
+  transform: translateX(8px);
+}
+
+#contato .method-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--accent-color) 12%, transparent);
+  flex-shrink: 0;
+}
+
+#contato .method-icon i {
+  font-size: 20px;
+  color: var(--accent-color);
+}
+
+#contato .method-details {
+  display: grid;
+  gap: 4px;
+}
+
+#contato .method-details .method-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: color-mix(in srgb, var(--default-color) 60%, transparent);
+}
+
+#contato .method-details a {
+  color: var(--heading-color);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+#contato .method-details a:hover {
+  color: var(--nav-hover-color);
+}
+
+@media (max-width: 992px) {
+  #contato .info-panel {
+    padding: 40px;
+  }
+
+  #contato .info-panel .panel-header h3 {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  #contato .info-panel {
+    padding: 32px;
+  }
+}
+
+@media (max-width: 576px) {
+  #contato .info-panel {
+    padding: 24px 20px;
+  }
+}

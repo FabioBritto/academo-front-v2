@@ -1,0 +1,85 @@
+:host {
+  display: block;
+}
+
+.input-group-custom label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--heading-color);
+  margin-bottom: 10px;
+}
+
+.input-group-custom .input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-group-custom .input-wrapper i {
+  position: absolute;
+  left: 18px;
+  font-size: 18px;
+  color: color-mix(in srgb, var(--default-color) 50%, transparent);
+  transition: color 0.3s ease;
+  z-index: 1;
+}
+
+.input-group-custom .input-wrapper input,
+.input-group-custom .input-wrapper textarea {
+  width: 100%;
+  height: 56px;
+  padding: 16px 16px 16px 52px;
+  font-size: 15px;
+  color: #000;
+  background: color-mix(in srgb, var(--default-color) 4%, transparent);
+  border: 2px solid transparent;
+  border-radius: 14px;
+  transition: all 0.3s ease;
+}
+
+.input-group-custom .input-wrapper input::placeholder,
+.input-group-custom .input-wrapper textarea::placeholder {
+  color: color-mix(in srgb, var(--default-color) 40%, transparent);
+}
+
+.input-group-custom .input-wrapper input:focus,
+.input-group-custom .input-wrapper textarea:focus {
+  outline: none;
+  background: var(--surface-color);
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-color) 12%, transparent);
+}
+
+.input-group-custom .input-wrapper:focus-within i {
+  color: var(--accent-color);
+}
+
+.input-group-custom .input-wrapper.textarea-wrapper {
+  align-items: flex-start;
+}
+
+.input-group-custom .input-wrapper.textarea-wrapper i {
+  top: 18px;
+}
+
+.input-group-custom .input-wrapper.textarea-wrapper textarea {
+  height: auto;
+  min-height: 140px;
+  resize: vertical;
+}
+
+@media (max-width: 768px) {
+  .input-group-custom .input-wrapper input,
+  .input-group-custom .input-wrapper textarea {
+    height: 52px;
+    padding: 14px 14px 14px 48px;
+  }
+}
+
+@media (max-width: 576px) {
+  .input-group-custom .input-wrapper input,
+  .input-group-custom .input-wrapper textarea {
+    font-size: 16px;
+  }
+}

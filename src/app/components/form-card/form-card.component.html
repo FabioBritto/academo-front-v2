@@ -1,0 +1,25 @@
+<div class="form-card">
+  <div class="form-card-header">
+    <div class="header-icon">
+      <i [class]="icon" aria-hidden="true"></i>
+    </div>
+
+    <div class="header-text">
+      <h4>{{ title }}</h4>
+      <p>{{ subtitle }}</p>
+    </div>
+  </div>
+
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <ng-content></ng-content>
+
+    <div class="form-actions">
+      <app-submit-button [label]="submitLabel" [icon]="submitIcon"></app-submit-button>
+
+      <div class="secure-note" *ngIf="secureNote">
+        <i [class]="secureIcon" aria-hidden="true"></i>
+        <span>{{ secureNote }}</span>
+      </div>
+    </div>
+  </form>
+</div>

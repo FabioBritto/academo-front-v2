@@ -1,0 +1,27 @@
+.navbar-brand {
+  letter-spacing: 0.02em;
+}
+
+.navbar-nav-centered {
+  @media (min-width: 992px) {
+    width: 35%;
+    justify-content: space-between;
+  }
+}
+
+.nav-link {
+  color: var(--nav-color);
+  transition: color 0.3s;
+}
+
+.nav-link:hover,
+.nav-link:focus,
+.nav-link.active {
+  color: var(--nav-hover-color);
+}
+
+.navbar {
+  @media (min-width: 992px) {
+    justify-content: center;
+  }
+}

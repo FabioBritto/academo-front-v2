@@ -1,0 +1,31 @@
+<div class="input-group-custom">
+  <label>{{ label }}</label>
+
+  <div class="input-wrapper" [class.textarea-wrapper]="textarea">
+    <i [class]="icon" aria-hidden="true"></i>
+
+    <ng-container *ngIf="!textarea; else textareaTpl">
+      <input
+        [attr.type]="type"
+        [attr.name]="name"
+        [attr.placeholder]="placeholder"
+        [disabled]="isDisabled"
+        [value]="value"
+        (input)="handleInput(($any($event.target)).value)"
+        (blur)="handleBlur()"
+      />
+    </ng-container>
+
+    <ng-template #textareaTpl>
+      <textarea
+        [attr.name]="name"
+        [attr.rows]="rows"
+        [attr.placeholder]="placeholder"
+        [disabled]="isDisabled"
+        [value]="value"
+        (input)="handleInput(($any($event.target)).value)"
+        (blur)="handleBlur()"
+      ></textarea>
+    </ng-template>
+  </div>
+</div>

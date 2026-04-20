@@ -1,0 +1,37 @@
+<header class="sticky-top bg-body-tertiary border-bottom">
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <div class="d-flex align-items-center gap-2 ms-auto order-lg-3">
+        <app-pill-button label="Login" (buttonClick)="closeMenu()"></app-pill-button>
+        <app-pill-button label="Criar conta" (buttonClick)="closeMenu()"></app-pill-button>
+      </div>
+
+      <button
+        class="navbar-toggler"
+        type="button"
+        (click)="toggleMenu()"
+        [attr.aria-expanded]="isMenuOpen"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-center" [class.show]="isMenuOpen">
+        <ul class="navbar-nav navbar-nav-centered mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="#home" (click)="closeMenu()">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#sobre" (click)="closeMenu()">Sobre</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#planos" (click)="closeMenu()">Planos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#contato" (click)="closeMenu()">Contato</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
