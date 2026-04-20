@@ -132,3 +132,70 @@
   font-size: 1.1rem;
   line-height: 1;
 }
+
+#preco {
+  min-height: auto;
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
+#preco .pricing-card {
+  background: var(--surface-color);
+  border-radius: 18px;
+  padding: 28px 26px;
+  box-shadow: 0 16px 40px -24px color-mix(in srgb, var(--default-color), transparent 80%);
+}
+
+#preco .pricing-card__icon {
+  width: 70px;
+  height: 70px;
+  background: var(--surface-color);
+  border: 1px color-mix(in srgb, var(--default-color), transparent 85%);
+  padding: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+#preco .pricing-card__icon img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: contain;
+  display: block;
+}
+
+#preco .pricing-card__title {
+  text-align: center;
+  margin: 0;
+  color: var(--heading-color);
+  font-weight: 700;
+}
+
+#preco .pricing-card__divider {
+  height: 1px;
+  background: color-mix(in srgb, var(--default-color), transparent 85%);
+  margin: 18px 0;
+}
+
+#preco .pricing-card__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+#preco .pricing-card__list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--default-color);
+}
+
+#preco .pricing-card__list i {
+  color: var(--accent-color);
+  font-size: 1rem;
+  line-height: 1;
+}
