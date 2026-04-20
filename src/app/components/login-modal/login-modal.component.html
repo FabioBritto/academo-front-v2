@@ -1,14 +1,10 @@
 <div class="modal-header">
-  <h5 class="modal-title">Criar conta</h5>
+  <h5 class="modal-title">Login</h5>
 
   <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
 </div>
 
 <div class="modal-body">
-  <div *ngIf="successMessage" class="alert alert-success" role="alert">
-    {{ successMessage }}
-  </div>
-
   <div *ngIf="validationMessage" class="alert alert-warning" role="alert">
     {{ validationMessage }}
   </div>
@@ -19,23 +15,6 @@
 
   <form [formGroup]="form" (ngSubmit)="submit()">
     <div class="row g-4">
-      <div class="col-12">
-        <app-input-group
-          label="Seu nome"
-          icon="bi bi-person"
-          placeholder="Seu nome"
-          [invalid]="!!(form.get('name')?.touched && form.get('name')?.invalid)"
-          formControlName="name"
-        ></app-input-group>
-
-        <small
-          class="text-danger"
-          *ngIf="form.get('name')?.touched && form.get('name')?.hasError('required')"
-        >
-          O nome é obrigatório para a criação da conta
-        </small>
-      </div>
-
       <div class="col-12">
         <app-input-group
           label="Seu email"
@@ -50,7 +29,7 @@
           class="text-danger"
           *ngIf="form.get('email')?.touched && form.get('email')?.hasError('required')"
         >
-          O email é obrigatório para a criação da conta
+          O email é obrigatório
         </small>
         <small
           class="text-danger"
@@ -75,7 +54,7 @@
           class="text-danger"
           *ngIf="form.get('password')?.touched && form.get('password')?.hasError('required')"
         >
-          A senha é obrigatória para a criação da conta
+          A senha é obrigatória
         </small>
         <small
           class="text-danger"
@@ -85,21 +64,32 @@
         </small>
       </div>
 
-      <div class="col-12 modal-actions" appEqualizeModalButtons>
-        <app-submit-button
+      <div class="col-12 login-actions-row">
+        <button
           type="button"
-          label="Cancelar"
-          icon=""
+          class="btn btn-link p-0 forgot-password-link"
           [disabled]="isSubmitting"
-          (click)="close()"
-        ></app-submit-button>
+          (click)="openForgotPasswordModal()"
+        >
+          Esqueci minha senha
+        </button>
 
-        <app-submit-button
-          type="submit"
-          label="Criar conta"
-          icon=""
-          [disabled]="isSubmitting"
-        ></app-submit-button>
+        <div class="modal-actions" appEqualizeModalButtons>
+          <app-submit-button
+            type="button"
+            label="Cancelar"
+            icon=""
+            [disabled]="isSubmitting"
+            (click)="close()"
+          ></app-submit-button>
+
+          <app-submit-button
+            type="submit"
+            label="Entrar"
+            icon=""
+            [disabled]="isSubmitting"
+          ></app-submit-button>
+        </div>
       </div>
     </div>
   </form>

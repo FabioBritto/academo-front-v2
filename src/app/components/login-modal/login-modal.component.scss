@@ -1,0 +1,29 @@
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.modal-actions app-submit-button {
+  flex: 0 0 auto;
+}
+
+.login-actions-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.forgot-password-link {
+  color: var(--accent-color);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.forgot-password-link:hover:not(:disabled) {
+  text-decoration: underline;
+}
+
+

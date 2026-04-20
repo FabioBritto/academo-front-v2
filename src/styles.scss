@@ -28,5 +28,13 @@ html {
   max-width: 560px;
 }
 
+.login-modal .modal-dialog {
+  max-width: 560px;
+}
+
+.forgot-password-modal .modal-dialog {
+  max-width: 560px;
+}
+
 @import "bootstrap/scss/bootstrap";
 @import "bootstrap-icons/font/bootstrap-icons.css";

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { RegisterModalComponent } from '../../components/register-modal/register-modal.component';
+import { LoginModalComponent } from '../../components/login-modal/login-modal.component';
 
 @Component({
   selector: 'app-landing-page',
@@ -28,6 +29,13 @@ export class LandingPageComponent {
     this.modalService.open(RegisterModalComponent, {
       centered: true,
       windowClass: 'register-modal'
+    });
+  }
+
+  openLoginModal(): void {
+    this.modalService.open(LoginModalComponent, {
+      centered: true,
+      windowClass: 'login-modal'
     });
   }
 

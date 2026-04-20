@@ -16,6 +16,10 @@ import { FormCardComponent } from './components/form-card/form-card.component';
 import { AppSubmitButtonComponent } from './components/app-submit-button/app-submit-button.component';
 import { InputGroupComponent } from './components/input-group/input-group.component';
 import { RegisterModalComponent } from './components/register-modal/register-modal.component';
+import { LoginModalComponent } from './components/login-modal/login-modal.component';
+import { ToastContainerComponent } from './components/toast-container/toast-container.component';
+import { ForgotPasswordModalComponent } from './components/forgot-password-modal/forgot-password-modal.component';
+import { EqualizeModalButtonsDirective } from './directives/equalize-modal-buttons.directive';
 
 @NgModule({
   declarations: [
@@ -27,7 +31,11 @@ import { RegisterModalComponent } from './components/register-modal/register-mod
     FormCardComponent,
     AppSubmitButtonComponent,
     InputGroupComponent,
-    RegisterModalComponent
+    RegisterModalComponent,
+    LoginModalComponent,
+    ToastContainerComponent,
+    ForgotPasswordModalComponent,
+    EqualizeModalButtonsDirective
   ],
   imports: [
     BrowserModule,

@@ -8,6 +8,8 @@ import { Component, EventEmitter, Output } from '@angular/core';
 export class HeaderComponent {
   @Output() registerClick = new EventEmitter<void>();
 
+  @Output() loginClick = new EventEmitter<void>();
+
   isMenuOpen = false;
 
   toggleMenu(): void {
@@ -21,5 +23,10 @@ export class HeaderComponent {
   onRegisterClick(): void {
     this.closeMenu();
     this.registerClick.emit();
+  }
+
+  onLoginClick(): void {
+    this.closeMenu();
+    this.loginClick.emit();
   }
 }
