@@ -38,6 +38,30 @@
   transition: all 0.3s ease;
 }
 
+.input-group-custom .input-wrapper input {
+  padding-right: 52px;
+}
+
+.input-group-custom .input-wrapper .password-toggle {
+  position: absolute;
+  right: 32px;
+  top: 35%;
+  transform: translateY(-50%);
+  border: 0;
+  background: transparent;
+  padding: 8px;
+  line-height: 1;
+  color: color-mix(in srgb, var(--default-color) 60%, transparent);
+}
+
+.input-group-custom .input-wrapper .password-toggle:disabled {
+  opacity: 0.6;
+}
+
+.input-group-custom .input-wrapper .password-toggle i {
+  font-size: 18px;
+}
+
 .input-group-custom .input-wrapper input::placeholder,
 .input-group-custom .input-wrapper textarea::placeholder {
   color: color-mix(in srgb, var(--default-color) 40%, transparent);

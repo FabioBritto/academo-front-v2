@@ -6,7 +6,7 @@
 
     <ng-container *ngIf="!textarea; else textareaTpl">
       <input
-        [attr.type]="type"
+        [attr.type]="resolvedType"
         [attr.name]="name"
         [attr.placeholder]="placeholder"
         [disabled]="isDisabled"
@@ -14,6 +14,21 @@
         (input)="handleInput(($any($event.target)).value)"
         (blur)="handleBlur()"
       />
+
+      <button
+        *ngIf="type === 'password' && showPasswordToggle"
+        class="password-toggle"
+        type="button"
+        [disabled]="isDisabled"
+        [attr.aria-label]="isPasswordVisible ? 'Ocultar senha' : 'Mostrar senha'"
+        (click)="togglePasswordVisibility()"
+      >
+        <i
+          class="bi"
+          [ngClass]="isPasswordVisible ? 'bi-eye-slash' : 'bi-eye'"
+          aria-hidden="true"
+        ></i>
+      </button>
     </ng-container>
 
     <ng-template #textareaTpl>

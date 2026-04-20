@@ -66,6 +66,7 @@
           icon="bi bi-shield-lock"
           placeholder="Sua senha"
           type="password"
+          [showPasswordToggle]="true"
           [invalid]="!!(form.get('password')?.touched && form.get('password')?.invalid)"
           formControlName="password"
         ></app-input-group>
