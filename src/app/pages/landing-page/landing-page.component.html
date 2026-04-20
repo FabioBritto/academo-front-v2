@@ -4,6 +4,10 @@
   <section id="home" class="landing-section"></section>
   <section id="sobre" class="landing-section">
     <div class="container">
+      <div class="section-title">
+        <h2>Sobre</h2>
+        <p>Organize seus estudos com clareza e mantenha uma rotina mais leve.</p>
+      </div>
       <div class="row gy-5 align-items-center">
         <div class="col-xl-6">
           <div class="about-images-wrapper">
@@ -51,6 +55,10 @@
   </section>
   <section id="planos" class="landing-section">
     <div class="container">
+      <div class="section-title">
+        <h2>Planos</h2>
+        <p>Comece grátis e evolua para mais recursos quando precisar.</p>
+      </div>
       <div class="row gy-4 justify-content-center">
         <div class="col-12 col-md-6 col-xl-4">
           <div class="pricing-card">
@@ -97,5 +105,96 @@
       </div>
     </div>
   </section>
-  <section id="contato" class="landing-section"></section>
+  <section id="contato" class="landing-section">
+    <div class="container">
+      <div class="section-title">
+        <h2>Contato</h2>
+        <p>Mande uma mensagem e conte como podemos melhorar sua rotina de estudos.</p>
+      </div>
+      <div class="row gy-5 align-items-stretch">
+        <div class="col-lg-5">
+          <div class="info-panel">
+            <div class="panel-header">
+              <span class="section-badge">
+                <i class="bi bi-chat-dots-fill" aria-hidden="true"></i>
+                Vamos conversar
+              </span>
+              <h3>Entre em contato com o Academo</h3>
+              <p>Envie sua dúvida, sugestão ou feedback. A gente lê tudo e responde assim que possível.</p>
+            </div>
+
+            <div class="contact-methods">
+              <div class="method-item">
+                <div class="method-icon">
+                  <i class="bi bi-envelope-paper-fill" aria-hidden="true"></i>
+                </div>
+                <div class="method-details">
+                  <span class="method-label">Email</span>
+                  <a href="mailto:academo.contato@gmail.com">academo.contato&#64;gmail.com</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="contact-illustration">
+              <img src="assets/images/academo/academo-atendimento.png" alt="Atendimento do Academo" loading="lazy" />
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-7">
+          <app-form-card
+            [formGroup]="contactForm"
+            title="Enviar uma mensagem"
+            subtitle="Preencha o formulário e clique em enviar. Vamos responder assim que possível."
+            icon="bi bi-send-fill"
+            submitLabel="Enviar mensagem"
+            submitIcon="bi bi-arrow-right-circle-fill"
+            secureNote="Seus dados são usados apenas para contato"
+            (formSubmit)="onContactSubmit($event)"
+          >
+            <div class="row g-4">
+              <div class="col-md-6">
+                <app-input-group
+                  label="Seu nome"
+                  icon="bi bi-person"
+                  placeholder="Seu nome"
+                  formControlName="name"
+                ></app-input-group>
+              </div>
+
+              <div class="col-md-6">
+                <app-input-group
+                  label="Seu email"
+                  icon="bi bi-envelope"
+                  placeholder="voce@exemplo.com"
+                  type="email"
+                  formControlName="email"
+                ></app-input-group>
+              </div>
+
+              <div class="col-12">
+                <app-input-group
+                  label="Assunto"
+                  icon="bi bi-chat-square-text"
+                  placeholder="Como podemos ajudar?"
+                  formControlName="subject"
+                ></app-input-group>
+              </div>
+
+              <div class="col-12">
+                <app-input-group
+                  label="Mensagem"
+                  icon="bi bi-pencil-square"
+                  placeholder="Escreva sua mensagem..."
+                  [textarea]="true"
+                  [rows]="5"
+                  formControlName="message"
+                ></app-input-group>
+              </div>
+            </div>
+          </app-form-card>
+        </div>
+      </div>
+    </div>
+  </section>
 </main>

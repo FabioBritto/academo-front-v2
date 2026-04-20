@@ -1,0 +1,116 @@
+:host {
+  display: block;
+}
+
+.form-card {
+  background: var(--surface-color);
+  border-radius: 24px;
+  padding: 48px;
+  box-shadow: 0 20px 60px color-mix(in srgb, var(--default-color) 10%, transparent);
+  height: 100%;
+}
+
+.form-card .form-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 40px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid color-mix(in srgb, var(--default-color) 10%, transparent);
+}
+
+.form-card .form-card-header .header-icon {
+  width: 64px;
+  height: 64px;
+  background: color-mix(in srgb, var(--accent-color) 12%, transparent);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.form-card .form-card-header .header-icon i {
+  font-size: 28px;
+  color: var(--accent-color);
+}
+
+.form-card .form-card-header .header-text h4 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--heading-color);
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+
+.form-card .form-card-header .header-text p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--default-color) 70%, transparent);
+  margin: 0;
+}
+
+.form-actions {
+  margin-top: 32px;
+}
+
+.secure-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.secure-note i {
+  font-size: 14px;
+  color: color-mix(in srgb, var(--accent-color) 70%, transparent);
+}
+
+.secure-note span {
+  font-size: 13px;
+  color: color-mix(in srgb, var(--default-color) 50%, transparent);
+}
+
+@media (max-width: 992px) {
+  .form-card {
+    padding: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .form-card {
+    padding: 32px 24px;
+  }
+
+  .form-card .form-card-header {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .form-card .form-card-header .header-icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .form-card .form-card-header .header-icon i {
+    font-size: 24px;
+  }
+
+  .form-card .form-card-header .header-text h4 {
+    font-size: 22px;
+  }
+
+}
+
+@media (max-width: 576px) {
+  .form-card {
+    padding: 24px 20px;
+  }
+
+  .form-card .form-card-header {
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+  }
+
+}

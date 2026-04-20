@@ -2,6 +2,36 @@
   min-height: 50vh;
 }
 
+.section-title {
+  text-align: center;
+  margin-bottom: 42px;
+}
+
+.section-title h2 {
+  margin: 0 0 10px;
+  font-size: 34px;
+  font-weight: 800;
+  color: var(--heading-color);
+  letter-spacing: -0.8px;
+}
+
+.section-title p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--default-color) 70%, transparent);
+}
+
+@media (max-width: 768px) {
+  .section-title {
+    margin-bottom: 32px;
+  }
+
+  .section-title h2 {
+    font-size: 28px;
+  }
+}
+
 #sobre {
   min-height: auto;
   padding-top: 20px;
@@ -223,4 +253,140 @@
   color: var(--accent-color);
   font-size: 1rem;
   line-height: 1;
+}
+
+#contato {
+  min-height: auto;
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
+#contato .info-panel {
+  background: var(--surface-color);
+  border-radius: 24px;
+  padding: 48px;
+  height: 100%;
+  box-shadow: 0 20px 60px color-mix(in srgb, var(--default-color) 10%, transparent);
+}
+
+#contato .info-panel .section-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-color);
+  background: color-mix(in srgb, var(--accent-color) 12%, transparent);
+  margin-bottom: 18px;
+}
+
+#contato .info-panel .panel-header h3 {
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--heading-color);
+  margin: 0 0 14px;
+  letter-spacing: -0.5px;
+}
+
+#contato .info-panel .panel-header p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--default-color) 70%, transparent);
+  margin: 0;
+}
+
+#contato .contact-methods {
+  margin-top: 34px;
+  display: grid;
+  gap: 18px;
+}
+
+#contato .contact-illustration {
+  margin-top: 28px;
+  display: flex;
+  justify-content: center;
+}
+
+#contato .contact-illustration img {
+  width: 75%;
+  max-width: 320px;
+  height: auto;
+  display: block;
+}
+
+#contato .method-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--default-color) 4%, transparent);
+  border: 1px solid color-mix(in srgb, var(--default-color) 10%, transparent);
+  transition: all 0.3s ease;
+}
+
+#contato .method-item:hover {
+  background: color-mix(in srgb, var(--accent-color) 12%, transparent);
+  transform: translateX(8px);
+}
+
+#contato .method-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--accent-color) 12%, transparent);
+  flex-shrink: 0;
+}
+
+#contato .method-icon i {
+  font-size: 20px;
+  color: var(--accent-color);
+}
+
+#contato .method-details {
+  display: grid;
+  gap: 4px;
+}
+
+#contato .method-details .method-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: color-mix(in srgb, var(--default-color) 60%, transparent);
+}
+
+#contato .method-details a {
+  color: var(--heading-color);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+#contato .method-details a:hover {
+  color: var(--nav-hover-color);
+}
+
+@media (max-width: 992px) {
+  #contato .info-panel {
+    padding: 40px;
+  }
+
+  #contato .info-panel .panel-header h3 {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  #contato .info-panel {
+    padding: 32px;
+  }
+}
+
+@media (max-width: 576px) {
+  #contato .info-panel {
+    padding: 24px 20px;
+  }
 }
