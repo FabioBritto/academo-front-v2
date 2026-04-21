@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h5 class="modal-title">Detalhes do grupo</h5>
+  <h3 class="group-details-modal__name">{{ group?.name || 'Grupo' }}</h3>
 
   <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
 </div>
@@ -13,7 +13,6 @@
     <ng-container *ngIf="group; else errorState">
       <div class="group-details-modal__header">
         <div class="group-details-modal__info">
-          <h3 class="group-details-modal__name">{{ group.name }}</h3>
           <p class="group-details-modal__description">{{ group.description }}</p>
           <div class="group-details-modal__status">
             <span class="badge" [ngClass]="group.isActive ? 'text-bg-success' : 'text-bg-secondary'">
