@@ -1,0 +1,14 @@
+.app-auth-layout {
+  min-height: 100vh;
+}
+
+.app-auth-layout__content {
+  min-width: 0;
+  margin-left: 260px;
+}
+
+@media (max-width: 992px) {
+  .app-auth-layout__content {
+    margin-left: 0;
+  }
+}
