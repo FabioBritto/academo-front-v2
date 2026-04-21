@@ -11,9 +11,25 @@
 }
 
 .group-view-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
   margin-bottom: 24px;
   padding-bottom: 20px;
   border-bottom: 1px solid color-mix(in srgb, var(--default-color) 10%, transparent);
+}
+
+.group-view-card__header-action {
+  flex-shrink: 0;
+}
+
+.group-view-card__header-action ::ng-deep .btn-submit {
+  width: auto;
+  height: 44px;
+  padding: 0 16px;
+  font-size: 14px;
+  border-radius: 12px;
 }
 
 .group-view-card__header h4 {
