@@ -2,11 +2,7 @@
 <div class="app-home">
   <div class="app-home__grid">
     <div class="app-home__groups">
-      <app-group-view-card [hasItems]="groups.length > 0">
-        <div class="app-home__groups-list">
-          <app-view-group-card *ngFor="let group of groups" [group]="group"></app-view-group-card>
-        </div>
-      </app-group-view-card>
+      <app-group-view-card></app-group-view-card>
     </div>
 
     <div class="app-home__upcoming">

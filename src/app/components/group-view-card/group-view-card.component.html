@@ -14,7 +14,16 @@
 
   <div class="group-view-card__body">
     <ng-container *ngIf="hasItems; else emptyState">
-      <ng-content></ng-content>
+      <div class="group-view-card__list">
+        <app-view-group-card *ngFor="let group of groups" [group]="group"></app-view-group-card>
+      </div>
+
+      <app-pagination-controls
+        *ngIf="totalPages > 1"
+        [page]="page"
+        [totalPages]="totalPages"
+        (pageChange)="onPageChange($event)"
+      ></app-pagination-controls>
     </ng-container>
 
     <ng-template #emptyState>

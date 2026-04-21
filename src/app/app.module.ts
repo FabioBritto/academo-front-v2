@@ -36,6 +36,7 @@ import { EntityUpsertModalComponent } from './components/entity-upsert-modal/ent
 import { GroupFormComponent } from './components/group-form/group-form.component';
 import { GroupUpsertModalComponent } from './components/group-upsert-modal/group-upsert-modal.component';
 import { ViewGroupCardComponent } from './components/view-group-card/view-group-card.component';
+import { PaginationControlsComponent } from './components/pagination-controls/pagination-controls.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { ViewGroupCardComponent } from './components/view-group-card/view-group-
     EntityUpsertModalComponent,
     GroupFormComponent,
     GroupUpsertModalComponent,
-    ViewGroupCardComponent
+    ViewGroupCardComponent,
+    PaginationControlsComponent
   ],
   imports: [
     BrowserModule,

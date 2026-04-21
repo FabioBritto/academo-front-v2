@@ -1,0 +1,32 @@
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 16px;
+  margin-top: 16px;
+  border-top: 1px solid color-mix(in srgb, var(--default-color) 10%, transparent);
+}
+
+.pagination-controls__btn {
+  border: 1px solid color-mix(in srgb, var(--default-color) 20%, transparent);
+  background: transparent;
+  color: var(--heading-color);
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.pagination-controls__btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.pagination-controls__status {
+  color: color-mix(in srgb, var(--default-color) 75%, transparent);
+  font-weight: 600;
+  font-size: 14px;
+  text-align: center;
+  flex: 1;
+}
