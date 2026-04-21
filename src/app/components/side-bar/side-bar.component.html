@@ -1,5 +1,39 @@
-<aside class="app-side-bar bg-body-tertiary border-end">
-  <div class="app-side-bar__content">
-    <ng-content></ng-content>
-  </div>
+<aside class="app-side-bar">
+  <nav class="sidebar-nav bg-body-tertiary">
+    <div class="nav-header">
+      <img src="assets/images/academo/banner.png" alt="Academo" />
+    </div>
+
+    <ul class="nav-links">
+      <li>
+        <a routerLink="/app/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      </li>
+      <li>
+        <a routerLink="/app/materias" routerLinkActive="active">Matérias</a>
+      </li>
+      <li>
+        <a routerLink="/app/atividades" routerLinkActive="active">Atividades</a>
+      </li>
+      <li>
+        <a routerLink="/app/arquivos" routerLinkActive="active">Arquivos</a>
+      </li>
+      <li>
+        <a routerLink="/app/flashcards" routerLinkActive="active">Flashcards</a>
+      </li>
+      <li>
+        <a routerLink="/app/assinatura" routerLinkActive="active">Gerenciamento da Assinatura</a>
+      </li>
+      <li>
+        <a routerLink="/app/perfil" routerLinkActive="active">Perfil</a>
+      </li>
+      <li>
+        <a href="#" (click)="$event.preventDefault(); logout()">Encerrar Sessão</a>
+      </li>
+    </ul>
+
+    <div class="effective-date">
+      <i class="bi bi-shield-lock" aria-hidden="true"></i>
+      <span>Sessão ativa</span>
+    </div>
+  </nav>
 </aside>

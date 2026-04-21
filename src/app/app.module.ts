@@ -22,6 +22,13 @@ import { ForgotPasswordModalComponent } from './components/forgot-password-modal
 import { EqualizeModalButtonsDirective } from './directives/equalize-modal-buttons.directive';
 import { HomeComponent } from './pages/home/home.component';
 import { SideBarComponent } from './components/side-bar/side-bar.component';
+import { AuthenticatedLayoutComponent } from './pages/authenticated/authenticated-layout/authenticated-layout.component';
+import { SubjectsComponent } from './pages/authenticated/subjects/subjects.component';
+import { ActivitiesComponent } from './pages/authenticated/activities/activities.component';
+import { FilesComponent } from './pages/authenticated/files/files.component';
+import { FlashcardsComponent } from './pages/authenticated/flashcards/flashcards.component';
+import { SubscriptionManagementComponent } from './pages/authenticated/subscription-management/subscription-management.component';
+import { ProfileComponent } from './pages/authenticated/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +38,13 @@ import { SideBarComponent } from './components/side-bar/side-bar.component';
     LandingPageComponent,
     HomeComponent,
     SideBarComponent,
+    AuthenticatedLayoutComponent,
+    SubjectsComponent,
+    ActivitiesComponent,
+    FilesComponent,
+    FlashcardsComponent,
+    SubscriptionManagementComponent,
+    ProfileComponent,
     PillButtonComponent,
     FormCardComponent,
     AppSubmitButtonComponent,
