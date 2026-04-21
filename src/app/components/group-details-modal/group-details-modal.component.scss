@@ -1,0 +1,72 @@
+.group-details-modal__loading {
+  color: color-mix(in srgb, var(--default-color) 75%, transparent);
+}
+
+.group-details-modal__header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: start;
+  margin-bottom: 20px;
+}
+
+.group-details-modal__name {
+  margin: 0 0 8px;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--heading-color);
+}
+
+.group-details-modal__description {
+  margin: 0 0 12px;
+  color: color-mix(in srgb, var(--default-color) 75%, transparent);
+  white-space: pre-line;
+}
+
+.group-details-modal__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.group-details-modal__actions ::ng-deep .btn-submit {
+  width: 100%;
+  height: 44px;
+  padding: 0 16px;
+  font-size: 14px;
+  border-radius: 12px;
+}
+
+.group-details-modal__subjects-title {
+  margin: 0 0 12px;
+  font-weight: 700;
+  color: var(--heading-color);
+}
+
+.group-details-modal__subjects-placeholder {
+  background: #fff;
+  border: 1px solid color-mix(in srgb, var(--default-color) 10%, transparent);
+  border-radius: 16px;
+  padding: 16px;
+  height: 340px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .group-details-modal__header {
+    grid-template-columns: 1fr;
+  }
+
+  .group-details-modal__actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .group-details-modal__actions ::ng-deep .btn-submit {
+    width: auto;
+  }
+}

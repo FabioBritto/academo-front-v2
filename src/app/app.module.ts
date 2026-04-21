@@ -37,6 +37,7 @@ import { GroupFormComponent } from './components/group-form/group-form.component
 import { GroupUpsertModalComponent } from './components/group-upsert-modal/group-upsert-modal.component';
 import { ViewGroupCardComponent } from './components/view-group-card/view-group-card.component';
 import { PaginationControlsComponent } from './components/pagination-controls/pagination-controls.component';
+import { GroupDetailsModalComponent } from './components/group-details-modal/group-details-modal.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { PaginationControlsComponent } from './components/pagination-controls/pa
     GroupFormComponent,
     GroupUpsertModalComponent,
     ViewGroupCardComponent,
-    PaginationControlsComponent
+    PaginationControlsComponent,
+    GroupDetailsModalComponent
   ],
   imports: [
     BrowserModule,

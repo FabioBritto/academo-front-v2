@@ -1,0 +1,57 @@
+<div class="modal-header">
+  <h5 class="modal-title">Detalhes do grupo</h5>
+
+  <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
+</div>
+
+<div class="modal-body">
+  <div *ngIf="isLoading" class="group-details-modal__loading">
+    Carregando...
+  </div>
+
+  <ng-container *ngIf="!isLoading">
+    <ng-container *ngIf="group; else errorState">
+      <div class="group-details-modal__header">
+        <div class="group-details-modal__info">
+          <h3 class="group-details-modal__name">{{ group.name }}</h3>
+          <p class="group-details-modal__description">{{ group.description }}</p>
+          <div class="group-details-modal__status">
+            <span class="badge" [ngClass]="group.isActive ? 'text-bg-success' : 'text-bg-secondary'">
+              {{ statusLabel }}
+            </span>
+          </div>
+        </div>
+
+        <div class="group-details-modal__actions">
+          <app-submit-button
+            type="button"
+            label="Editar"
+            icon="bi bi-pencil-fill"
+            (click)="onEdit()"
+          ></app-submit-button>
+
+          <app-submit-button
+            type="button"
+            label="Adicionar Matéria(s)"
+            icon="bi bi-plus-circle-fill"
+            (click)="onAddSubjects()"
+          ></app-submit-button>
+        </div>
+      </div>
+
+      <div class="group-details-modal__subjects">
+        <h5 class="group-details-modal__subjects-title">Lista de matérias</h5>
+
+        <div class="group-details-modal__subjects-placeholder">
+          <div class="text-muted">Tabela de matérias (placeholder)</div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-template #errorState>
+      <div class="alert alert-danger" role="alert">
+        Não foi possível carregar os detalhes do grupo.
+      </div>
+    </ng-template>
+  </ng-container>
+</div>
