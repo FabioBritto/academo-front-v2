@@ -35,6 +35,7 @@ import { UpcomingActivitiesCardComponent } from './components/upcoming-activitie
 import { EntityUpsertModalComponent } from './components/entity-upsert-modal/entity-upsert-modal.component';
 import { GroupFormComponent } from './components/group-form/group-form.component';
 import { GroupUpsertModalComponent } from './components/group-upsert-modal/group-upsert-modal.component';
+import { ViewGroupCardComponent } from './components/view-group-card/view-group-card.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { GroupUpsertModalComponent } from './components/group-upsert-modal/group
     UpcomingActivitiesCardComponent,
     EntityUpsertModalComponent,
     GroupFormComponent,
-    GroupUpsertModalComponent
+    GroupUpsertModalComponent,
+    ViewGroupCardComponent
   ],
   imports: [
     BrowserModule,

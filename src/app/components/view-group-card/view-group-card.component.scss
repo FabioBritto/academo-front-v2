@@ -1,0 +1,42 @@
+.view-group-card {
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  padding: 18px 18px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.view-group-card__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(13, 110, 253, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+
+  i {
+    font-size: 20px;
+    color: #0d6efd;
+  }
+}
+
+.view-group-card__title {
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.view-group-card__description {
+  margin: 0;
+  color: #5b6169;
+  line-height: 1.35;
+  white-space: pre-line;
+  overflow: hidden;
+}

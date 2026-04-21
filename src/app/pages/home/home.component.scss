@@ -9,6 +9,18 @@
   align-items: stretch;
 }
 
+.app-home__groups-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  align-items: stretch;
+
+  grid-auto-rows: 170px;
+
+  max-height: calc((170px * 4) + (16px * 3));
+  overflow-y: auto;
+}
+
 @media (max-width: 768px) {
   .app-home {
     padding: 20px;
