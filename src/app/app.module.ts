@@ -30,6 +30,8 @@ import { FlashcardsComponent } from './pages/authenticated/flashcards/flashcards
 import { SubscriptionManagementComponent } from './pages/authenticated/subscription-management/subscription-management.component';
 import { ProfileComponent } from './pages/authenticated/profile/profile.component';
 import { ConfirmActionModalComponent } from './components/confirm-action-modal/confirm-action-modal.component';
+import { GroupViewCardComponent } from './components/group-view-card/group-view-card.component';
+import { UpcomingActivitiesCardComponent } from './components/upcoming-activities-card/upcoming-activities-card.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +57,9 @@ import { ConfirmActionModalComponent } from './components/confirm-action-modal/c
     LoginModalComponent,
     ToastContainerComponent,
     ForgotPasswordModalComponent,
-    EqualizeModalButtonsDirective
+    EqualizeModalButtonsDirective,
+    GroupViewCardComponent,
+    UpcomingActivitiesCardComponent
   ],
   imports: [
     BrowserModule,
