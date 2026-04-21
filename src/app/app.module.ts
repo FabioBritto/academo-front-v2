@@ -33,6 +33,8 @@ import { ConfirmActionModalComponent } from './components/confirm-action-modal/c
 import { GroupViewCardComponent } from './components/group-view-card/group-view-card.component';
 import { UpcomingActivitiesCardComponent } from './components/upcoming-activities-card/upcoming-activities-card.component';
 import { EntityUpsertModalComponent } from './components/entity-upsert-modal/entity-upsert-modal.component';
+import { GroupFormComponent } from './components/group-form/group-form.component';
+import { GroupUpsertModalComponent } from './components/group-upsert-modal/group-upsert-modal.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +63,9 @@ import { EntityUpsertModalComponent } from './components/entity-upsert-modal/ent
     EqualizeModalButtonsDirective,
     GroupViewCardComponent,
     UpcomingActivitiesCardComponent,
-    EntityUpsertModalComponent
+    EntityUpsertModalComponent,
+    GroupFormComponent,
+    GroupUpsertModalComponent
   ],
   imports: [
     BrowserModule,

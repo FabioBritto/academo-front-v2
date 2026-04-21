@@ -1,0 +1,44 @@
+<div *ngIf="validationMessage" class="alert alert-warning" role="alert">
+  {{ validationMessage }}
+</div>
+
+<div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+  {{ errorMessage }}
+</div>
+
+<form [formGroup]="form" (ngSubmit)="$event.preventDefault(); submit()">
+  <div class="row g-4">
+    <div class="col-12">
+      <app-input-group
+        label="Nome"
+        icon="bi bi-collection"
+        placeholder="Nome do grupo"
+        [invalid]="!!(form.get('name')?.touched && form.get('name')?.invalid)"
+        formControlName="name"
+      ></app-input-group>
+
+      <small class="text-danger" *ngIf="form.get('name')?.touched && form.get('name')?.hasError('required')">
+        O nome é obrigatório
+      </small>
+    </div>
+
+    <div class="col-12">
+      <app-input-group
+        label="Descrição"
+        icon="bi bi-card-text"
+        placeholder="Descrição do grupo (opcional)"
+        [textarea]="true"
+        [rows]="6"
+        [invalid]="!!(form.get('description')?.touched && form.get('description')?.invalid)"
+        formControlName="description"
+      ></app-input-group>
+    </div>
+
+    <div class="col-12" *ngIf="group">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="groupIsActive" formControlName="isActive" />
+        <label class="form-check-label" for="groupIsActive">Ativo</label>
+      </div>
+    </div>
+  </div>
+</form>

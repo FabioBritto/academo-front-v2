@@ -30,8 +30,15 @@ export class AuthInterceptor implements HttpInterceptor {
 
     const token = this.tokenService.getToken();
     if (!token) {
+      console.debug('[AuthInterceptor] no token found; sending request without Authorization header', {
+        url: req.url
+      });
       return next.handle(req);
     }
+
+    console.debug('[AuthInterceptor] attaching Authorization header', {
+      url: req.url
+    });
 
     return next.handle(
       req.clone({

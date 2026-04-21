@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { EntityUpsertModalComponent } from '../entity-upsert-modal/entity-upsert-modal.component';
+import { GroupUpsertModalComponent } from '../group-upsert-modal/group-upsert-modal.component';
 
 @Component({
   selector: 'app-group-view-card',
@@ -16,11 +16,9 @@ export class GroupViewCardComponent {
   constructor(private readonly modalService: NgbModal) {}
 
   openNewGroupModal(): void {
-    const modalRef = this.modalService.open(EntityUpsertModalComponent, {
-      centered: true
+    this.modalService.open(GroupUpsertModalComponent, {
+      centered: true,
+      size: 'xl'
     });
-
-    modalRef.componentInstance.title = 'Novo Grupo';
-    modalRef.componentInstance.isEdit = false;
   }
 }

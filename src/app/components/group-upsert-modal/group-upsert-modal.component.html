@@ -1,0 +1,35 @@
+<div class="modal-header">
+  <h5 class="modal-title">{{ title }}</h5>
+
+  <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
+</div>
+
+<div class="modal-body">
+  <div class="entity-upsert-modal">
+    <div class="entity-upsert-modal__image" aria-hidden="true">
+      <img [src]="imageSrc" [alt]="imageAlt" />
+    </div>
+
+    <div class="entity-upsert-modal__content">
+      <app-group-form [group]="group" (saved)="onSaved($event)"></app-group-form>
+
+      <div class="modal-actions mt-4" appEqualizeModalButtons>
+        <app-submit-button
+          type="button"
+          label="Cancelar"
+          icon=""
+          [disabled]="isSubmitting"
+          (click)="close()"
+        ></app-submit-button>
+
+        <app-submit-button
+          type="button"
+          [label]="group ? 'Salvar' : 'Criar'"
+          icon=""
+          [disabled]="isSubmitting"
+          (click)="onSaveClick()"
+        ></app-submit-button>
+      </div>
+    </div>
+  </div>
+</div>

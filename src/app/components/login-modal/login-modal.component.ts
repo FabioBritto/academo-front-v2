@@ -5,6 +5,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import type { UserAuthDTO } from '../../model/auth.model';
 import { AuthService } from '../../services/auth.service';
+import { getHttpErrorMessage } from '../../utils/http-error.util';
 import { ForgotPasswordModalComponent } from '../forgot-password-modal/forgot-password-modal.component';
 
 @Component({
@@ -57,17 +58,9 @@ export class LoginModalComponent {
       error: (err: unknown) => {
         this.isSubmitting = false;
 
-        if (err instanceof HttpErrorResponse && err.status === 0) {
-          this.errorMessage = 'Falha com servidor. Tente novamente mais tarde.';
-          return;
-        }
-
-        const message =
-          typeof err === 'object' && err && 'message' in err
-            ? String((err as { message?: unknown }).message ?? '')
-            : '';
-
-        this.errorMessage = message || 'Não foi possível fazer login. Verifique seus dados.';
+        this.errorMessage = getHttpErrorMessage(err, {
+          fallback: 'Não foi possível fazer login. Verifique seus dados.'
+        });
       }
     });
   }
