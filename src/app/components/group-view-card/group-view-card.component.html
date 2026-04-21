@@ -3,5 +3,13 @@
     <h4>Grupos</h4>
   </header>
 
-  <div class="group-view-card__body"></div>
+  <div class="group-view-card__body">
+    <ng-container *ngIf="hasItems; else emptyState">
+      <ng-content></ng-content>
+    </ng-container>
+
+    <ng-template #emptyState>
+      <p class="group-view-card__empty">{{ emptyMessage }}</p>
+    </ng-template>
+  </div>
 </section>

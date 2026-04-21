@@ -3,5 +3,13 @@
     <h4>Próximas atividades</h4>
   </header>
 
-  <div class="upcoming-activities-card__body"></div>
+  <div class="upcoming-activities-card__body">
+    <ng-container *ngIf="hasItems; else emptyState">
+      <ng-content></ng-content>
+    </ng-container>
+
+    <ng-template #emptyState>
+      <p class="upcoming-activities-card__empty">{{ emptyMessage }}</p>
+    </ng-template>
+  </div>
 </section>
