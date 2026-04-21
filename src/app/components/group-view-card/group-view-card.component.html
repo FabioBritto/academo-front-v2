@@ -3,7 +3,12 @@
     <h4>Grupos</h4>
 
     <div class="group-view-card__header-action">
-      <app-submit-button label="Novo Grupo" icon="bi bi-plus-circle-fill" type="button"></app-submit-button>
+      <app-submit-button
+        label="Novo Grupo"
+        icon="bi bi-plus-circle-fill"
+        type="button"
+        (click)="openNewGroupModal()"
+      ></app-submit-button>
     </div>
   </header>
 

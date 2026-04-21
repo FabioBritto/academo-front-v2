@@ -32,6 +32,7 @@ import { ProfileComponent } from './pages/authenticated/profile/profile.componen
 import { ConfirmActionModalComponent } from './components/confirm-action-modal/confirm-action-modal.component';
 import { GroupViewCardComponent } from './components/group-view-card/group-view-card.component';
 import { UpcomingActivitiesCardComponent } from './components/upcoming-activities-card/upcoming-activities-card.component';
+import { EntityUpsertModalComponent } from './components/entity-upsert-modal/entity-upsert-modal.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { UpcomingActivitiesCardComponent } from './components/upcoming-activitie
     ForgotPasswordModalComponent,
     EqualizeModalButtonsDirective,
     GroupViewCardComponent,
-    UpcomingActivitiesCardComponent
+    UpcomingActivitiesCardComponent,
+    EntityUpsertModalComponent
   ],
   imports: [
     BrowserModule,
