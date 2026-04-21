@@ -29,6 +29,7 @@ import { FilesComponent } from './pages/authenticated/files/files.component';
 import { FlashcardsComponent } from './pages/authenticated/flashcards/flashcards.component';
 import { SubscriptionManagementComponent } from './pages/authenticated/subscription-management/subscription-management.component';
 import { ProfileComponent } from './pages/authenticated/profile/profile.component';
+import { ConfirmActionModalComponent } from './components/confirm-action-modal/confirm-action-modal.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { ProfileComponent } from './pages/authenticated/profile/profile.componen
     LandingPageComponent,
     HomeComponent,
     SideBarComponent,
+    ConfirmActionModalComponent,
     AuthenticatedLayoutComponent,
     SubjectsComponent,
     ActivitiesComponent,

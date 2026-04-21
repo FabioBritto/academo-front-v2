@@ -10,6 +10,7 @@ import { FilesComponent } from './pages/authenticated/files/files.component';
 import { FlashcardsComponent } from './pages/authenticated/flashcards/flashcards.component';
 import { SubscriptionManagementComponent } from './pages/authenticated/subscription-management/subscription-management.component';
 import { ProfileComponent } from './pages/authenticated/profile/profile.component';
+import { AuthGuard } from './services/auth.guard';
 
 const routes: Routes = [
   {
@@ -19,6 +20,7 @@ const routes: Routes = [
   {
     path: 'app',
     component: AuthenticatedLayoutComponent,
+    canActivateChild: [AuthGuard],
     children: [
       {
         path: 'home',

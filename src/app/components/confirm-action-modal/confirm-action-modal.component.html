@@ -1,0 +1,27 @@
+<div class="modal-header">
+  <h5 class="modal-title">{{ title }}</h5>
+
+  <button type="button" class="btn-close" aria-label="Close" (click)="cancel()"></button>
+</div>
+
+<div class="modal-body">
+  <p class="m-0">{{ message }}</p>
+
+  <div class="modal-actions mt-4" appEqualizeModalButtons>
+    <app-submit-button
+      type="button"
+      [label]="cancelLabel"
+      icon=""
+      [disabled]="isSubmitting"
+      (click)="cancel()"
+    ></app-submit-button>
+
+    <app-submit-button
+      type="button"
+      [label]="confirmLabel"
+      icon=""
+      [disabled]="isSubmitting"
+      (click)="confirm()"
+    ></app-submit-button>
+  </div>
+</div>
