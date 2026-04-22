@@ -27,8 +27,7 @@ import { SubjectsComponent } from './pages/authenticated/subjects/subjects.compo
 import { ActivitiesComponent } from './pages/authenticated/activities/activities.component';
 import { FilesComponent } from './pages/authenticated/files/files.component';
 import { FlashcardsComponent } from './pages/authenticated/flashcards/flashcards.component';
-import { SubscriptionManagementComponent } from './pages/authenticated/subscription-management/subscription-management.component';
-import { ProfileComponent } from './pages/authenticated/profile/profile.component';
+import { ProfileSubscriptionComponent } from './pages/authenticated/profile-subscription/profile-subscription.component';
 import { ConfirmActionModalComponent } from './components/confirm-action-modal/confirm-action-modal.component';
 import { GroupViewCardComponent } from './components/group-view-card/group-view-card.component';
 import { UpcomingActivitiesCardComponent } from './components/upcoming-activities-card/upcoming-activities-card.component';
@@ -54,8 +53,7 @@ import { SortFiltersComponent } from './components/sort-filters/sort-filters.com
     ActivitiesComponent,
     FilesComponent,
     FlashcardsComponent,
-    SubscriptionManagementComponent,
-    ProfileComponent,
+    ProfileSubscriptionComponent,
     PillButtonComponent,
     FormCardComponent,
     AppSubmitButtonComponent,
