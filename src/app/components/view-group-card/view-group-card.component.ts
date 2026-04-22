@@ -1,4 +1,4 @@
-import { Component, HostListener, Input } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import type { GroupDTO } from '../../model/groups.model';
@@ -14,6 +14,8 @@ export class ViewGroupCardComponent {
 
   @Input() iconClass = 'bi bi-people-fill';
 
+  @Output() changed = new EventEmitter<void>();
+
   constructor(private readonly modalService: NgbModal) {}
 
   @HostListener('click')
@@ -22,13 +24,17 @@ export class ViewGroupCardComponent {
   }
 
   openDetails(): void {
-    console.debug('[ViewGroupCard] openDetails', { groupId: this.group?.id });
-
     const modalRef = this.modalService.open(GroupDetailsModalComponent, {
       centered: true,
       size: 'xl'
     });
 
     modalRef.componentInstance.groupId = this.group.id;
+
+    modalRef.closed.subscribe((result) => {
+      if (result) {
+        this.changed.emit();
+      }
+    });
   }
 }

@@ -61,7 +61,7 @@ export class GroupDetailsModalComponent implements OnInit {
 
     modalRef.closed.subscribe((result) => {
       if (result) {
-        this.load();
+        this.activeModal.close(result);
       }
     });
   }

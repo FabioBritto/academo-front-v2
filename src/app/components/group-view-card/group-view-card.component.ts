@@ -4,6 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import type { GroupDTO } from '../../model/groups.model';
 import { GroupsService } from '../../services/groups.service';
 import { GroupUpsertModalComponent } from '../group-upsert-modal/group-upsert-modal.component';
+import type { SortFilterOption } from '../sort-filters/sort-filters.component';
 
 @Component({
   selector: 'app-group-view-card',
@@ -12,6 +13,15 @@ import { GroupUpsertModalComponent } from '../group-upsert-modal/group-upsert-mo
 })
 export class GroupViewCardComponent {
   @Input() emptyMessage = 'Nenhum grupo por aqui ainda.';
+
+  sort = 'updatedAt,desc';
+
+  readonly sortOptions: SortFilterOption[] = [
+    { label: 'Nome (A→Z)', value: 'name,asc' },
+    { label: 'Nome (Z→A)', value: 'name,desc' },
+    { label: 'Atualização (mais recente)', value: 'updatedAt,desc' },
+    { label: 'Atualização (mais antiga)', value: 'updatedAt,asc' }
+  ];
 
   groups: GroupDTO[] = [];
 
@@ -33,7 +43,11 @@ export class GroupViewCardComponent {
   }
 
   loadGroups(): void {
-    this.groupsService.listPaged({ page: this.page, size: this.pageSize }).subscribe({
+    this.groupsService.listPaged({
+      page: this.page,
+      size: this.pageSize,
+      sort: [this.sort]
+    }).subscribe({
       next: (page) => {
         this.groups = page.content;
         this.totalPages = page.totalPages;
@@ -43,6 +57,16 @@ export class GroupViewCardComponent {
         this.totalPages = 0;
       }
     });
+  }
+
+  onSortChange(nextSort: string): void {
+    if (nextSort === this.sort) {
+      return;
+    }
+
+    this.sort = nextSort;
+    this.page = 0;
+    this.loadGroups();
   }
 
   onPageChange(nextPage: number): void {

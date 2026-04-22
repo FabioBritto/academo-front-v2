@@ -38,6 +38,7 @@ import { GroupUpsertModalComponent } from './components/group-upsert-modal/group
 import { ViewGroupCardComponent } from './components/view-group-card/view-group-card.component';
 import { PaginationControlsComponent } from './components/pagination-controls/pagination-controls.component';
 import { GroupDetailsModalComponent } from './components/group-details-modal/group-details-modal.component';
+import { SortFiltersComponent } from './components/sort-filters/sort-filters.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +72,8 @@ import { GroupDetailsModalComponent } from './components/group-details-modal/gro
     GroupUpsertModalComponent,
     ViewGroupCardComponent,
     PaginationControlsComponent,
-    GroupDetailsModalComponent
+    GroupDetailsModalComponent,
+    SortFiltersComponent
   ],
   imports: [
     BrowserModule,

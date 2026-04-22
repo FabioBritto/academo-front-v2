@@ -3,6 +3,13 @@
     <h4>Grupos</h4>
 
     <div class="group-view-card__header-action">
+      <app-sort-filters
+        class="group-view-card__sort"
+        [value]="sort"
+        [options]="sortOptions"
+        (valueChange)="onSortChange($event)"
+      ></app-sort-filters>
+
       <app-submit-button
         label="Novo Grupo"
         icon="bi bi-plus-circle-fill"
@@ -15,7 +22,7 @@
   <div class="group-view-card__body">
     <ng-container *ngIf="hasItems; else emptyState">
       <div class="group-view-card__list">
-        <app-view-group-card *ngFor="let group of groups" [group]="group"></app-view-group-card>
+        <app-view-group-card *ngFor="let group of groups" [group]="group" (changed)="loadGroups()"></app-view-group-card>
       </div>
 
       <app-pagination-controls
