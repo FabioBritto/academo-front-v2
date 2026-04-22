@@ -8,8 +8,7 @@ import { SubjectsComponent } from './pages/authenticated/subjects/subjects.compo
 import { ActivitiesComponent } from './pages/authenticated/activities/activities.component';
 import { FilesComponent } from './pages/authenticated/files/files.component';
 import { FlashcardsComponent } from './pages/authenticated/flashcards/flashcards.component';
-import { SubscriptionManagementComponent } from './pages/authenticated/subscription-management/subscription-management.component';
-import { ProfileComponent } from './pages/authenticated/profile/profile.component';
+import { ProfileSubscriptionComponent } from './pages/authenticated/profile-subscription/profile-subscription.component';
 import { AuthGuard } from './services/auth.guard';
 
 const routes: Routes = [
@@ -44,11 +43,16 @@ const routes: Routes = [
       },
       {
         path: 'assinatura',
-        component: SubscriptionManagementComponent
+        redirectTo: 'profile-subscription',
+        pathMatch: 'full'
       },
       {
         path: 'perfil',
-        component: ProfileComponent
+        component: ProfileSubscriptionComponent
+      },
+      {
+        path: 'profile-subscription',
+        component: ProfileSubscriptionComponent
       },
       {
         path: '',

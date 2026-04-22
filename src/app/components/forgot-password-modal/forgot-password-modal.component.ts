@@ -6,6 +6,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import type { ForgotPasswordDTO } from '../../model/auth.model';
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
+import { getHttpErrorMessage } from '../../utils/http-error.util';
 
 @Component({
   selector: 'app-forgot-password-modal',
@@ -63,17 +64,9 @@ export class ForgotPasswordModalComponent {
       error: (err: unknown) => {
         this.isSubmitting = false;
 
-        if (err instanceof HttpErrorResponse && err.status === 0) {
-          this.errorMessage = 'Falha com servidor. Tente novamente mais tarde.';
-          return;
-        }
-
-        const message =
-          typeof err === 'object' && err && 'message' in err
-            ? String((err as { message?: unknown }).message ?? '')
-            : '';
-
-        this.errorMessage = message || 'Não foi possível enviar o email de recuperação.';
+        this.errorMessage = getHttpErrorMessage(err, {
+          fallback: 'Não foi possível enviar o email de recuperação.'
+        });
       }
     });
   }

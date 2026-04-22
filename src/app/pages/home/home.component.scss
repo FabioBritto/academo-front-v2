@@ -1,2 +1,20 @@
+.app-home {
+  padding: 32px;
+}
 
+.app-home__grid {
+  display: grid;
+  grid-template-columns: 65fr 35fr;
+  gap: 24px;
+  align-items: stretch;
+}
 
+@media (max-width: 768px) {
+  .app-home {
+    padding: 20px;
+  }
+
+  .app-home__grid {
+    grid-template-columns: 1fr;
+  }
+}

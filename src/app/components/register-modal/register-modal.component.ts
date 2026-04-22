@@ -5,6 +5,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { AuthService } from '../../services/auth.service';
 import type { RegisterDTO } from '../../model/auth.model';
+import { getHttpErrorMessage } from '../../utils/http-error.util';
 
 @Component({
   selector: 'app-register-modal',
@@ -60,17 +61,9 @@ export class RegisterModalComponent {
       error: (err: unknown) => {
         this.isSubmitting = false;
 
-        if (err instanceof HttpErrorResponse && err.status === 0) {
-          this.errorMessage = 'Falha com servidor. Tente novamente mais tarde.';
-          return;
-        }
-
-        const message =
-          typeof err === 'object' && err && 'message' in err
-            ? String((err as { message?: unknown }).message ?? '')
-            : '';
-
-        this.errorMessage = message || 'Não foi possível criar sua conta. Tente novamente.';
+        this.errorMessage = getHttpErrorMessage(err, {
+          fallback: 'Não foi possível criar sua conta. Tente novamente.'
+        });
       }
     });
   }

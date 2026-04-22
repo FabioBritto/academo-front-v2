@@ -1,0 +1,16 @@
+<div class="sort-filters" aria-label="Filtros">
+  <ul class="sort-filters__list" role="tablist">
+    <li
+      *ngFor="let option of options"
+      class="sort-filters__item"
+      [class.sort-filters__item--active]="isActive(option)"
+      (click)="select(option.value)"
+      role="tab"
+      [attr.aria-selected]="isActive(option)"
+      tabindex="0"
+      (keydown.enter)="select(option.value)"
+    >
+      {{ option.label }}
+    </li>
+  </ul>
+</div>

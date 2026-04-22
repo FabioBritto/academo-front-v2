@@ -27,9 +27,17 @@ import { SubjectsComponent } from './pages/authenticated/subjects/subjects.compo
 import { ActivitiesComponent } from './pages/authenticated/activities/activities.component';
 import { FilesComponent } from './pages/authenticated/files/files.component';
 import { FlashcardsComponent } from './pages/authenticated/flashcards/flashcards.component';
-import { SubscriptionManagementComponent } from './pages/authenticated/subscription-management/subscription-management.component';
-import { ProfileComponent } from './pages/authenticated/profile/profile.component';
+import { ProfileSubscriptionComponent } from './pages/authenticated/profile-subscription/profile-subscription.component';
 import { ConfirmActionModalComponent } from './components/confirm-action-modal/confirm-action-modal.component';
+import { GroupViewCardComponent } from './components/group-view-card/group-view-card.component';
+import { UpcomingActivitiesCardComponent } from './components/upcoming-activities-card/upcoming-activities-card.component';
+import { EntityUpsertModalComponent } from './components/entity-upsert-modal/entity-upsert-modal.component';
+import { GroupFormComponent } from './components/group-form/group-form.component';
+import { GroupUpsertModalComponent } from './components/group-upsert-modal/group-upsert-modal.component';
+import { GroupCardComponent } from './components/group-card/group-card.component';
+import { PaginationControlsComponent } from './components/pagination-controls/pagination-controls.component';
+import { GroupDetailsModalComponent } from './components/group-details-modal/group-details-modal.component';
+import { SortFiltersComponent } from './components/sort-filters/sort-filters.component';
 
 @NgModule({
   declarations: [
@@ -45,8 +53,7 @@ import { ConfirmActionModalComponent } from './components/confirm-action-modal/c
     ActivitiesComponent,
     FilesComponent,
     FlashcardsComponent,
-    SubscriptionManagementComponent,
-    ProfileComponent,
+    ProfileSubscriptionComponent,
     PillButtonComponent,
     FormCardComponent,
     AppSubmitButtonComponent,
@@ -55,7 +62,16 @@ import { ConfirmActionModalComponent } from './components/confirm-action-modal/c
     LoginModalComponent,
     ToastContainerComponent,
     ForgotPasswordModalComponent,
-    EqualizeModalButtonsDirective
+    EqualizeModalButtonsDirective,
+    GroupViewCardComponent,
+    UpcomingActivitiesCardComponent,
+    EntityUpsertModalComponent,
+    GroupFormComponent,
+    GroupUpsertModalComponent,
+    GroupCardComponent,
+    PaginationControlsComponent,
+    GroupDetailsModalComponent,
+    SortFiltersComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,23 @@
+<nav class="pagination-controls" aria-label="Paginação">
+  <button
+    type="button"
+    class="pagination-controls__btn"
+    (click)="prev()"
+    [disabled]="!canGoPrev"
+  >
+    &lt; Anterior
+  </button>
+
+  <div class="pagination-controls__status">
+    Página {{ displayPage }} de {{ totalPages }}
+  </div>
+
+  <button
+    type="button"
+    class="pagination-controls__btn"
+    (click)="next()"
+    [disabled]="!canGoNext"
+  >
+    Próximo &gt;
+  </button>
+</nav>
