@@ -35,7 +35,7 @@ import { UpcomingActivitiesCardComponent } from './components/upcoming-activitie
 import { EntityUpsertModalComponent } from './components/entity-upsert-modal/entity-upsert-modal.component';
 import { GroupFormComponent } from './components/group-form/group-form.component';
 import { GroupUpsertModalComponent } from './components/group-upsert-modal/group-upsert-modal.component';
-import { ViewGroupCardComponent } from './components/view-group-card/view-group-card.component';
+import { GroupCardComponent } from './components/group-card/group-card.component';
 import { PaginationControlsComponent } from './components/pagination-controls/pagination-controls.component';
 import { GroupDetailsModalComponent } from './components/group-details-modal/group-details-modal.component';
 import { SortFiltersComponent } from './components/sort-filters/sort-filters.component';
@@ -70,7 +70,7 @@ import { SortFiltersComponent } from './components/sort-filters/sort-filters.com
     EntityUpsertModalComponent,
     GroupFormComponent,
     GroupUpsertModalComponent,
-    ViewGroupCardComponent,
+    GroupCardComponent,
     PaginationControlsComponent,
     GroupDetailsModalComponent,
     SortFiltersComponent
