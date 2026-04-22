@@ -38,6 +38,7 @@ import { GroupCardComponent } from './components/group-card/group-card.component
 import { PaginationControlsComponent } from './components/pagination-controls/pagination-controls.component';
 import { GroupDetailsModalComponent } from './components/group-details-modal/group-details-modal.component';
 import { SortFiltersComponent } from './components/sort-filters/sort-filters.component';
+import { PricingPlansComponent } from './components/pricing-plans/pricing-plans.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +72,8 @@ import { SortFiltersComponent } from './components/sort-filters/sort-filters.com
     GroupCardComponent,
     PaginationControlsComponent,
     GroupDetailsModalComponent,
-    SortFiltersComponent
+    SortFiltersComponent,
+    PricingPlansComponent
   ],
   imports: [
     BrowserModule,
