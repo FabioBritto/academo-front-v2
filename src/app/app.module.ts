@@ -39,6 +39,7 @@ import { PaginationControlsComponent } from './components/pagination-controls/pa
 import { GroupDetailsModalComponent } from './components/group-details-modal/group-details-modal.component';
 import { SortFiltersComponent } from './components/sort-filters/sort-filters.component';
 import { ActivateAccountPageComponent } from './pages/activate-account-page/activate-account-page.component';
+import { ResetPasswordPageComponent } from './pages/reset-password/reset-password-page.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import { ActivateAccountPageComponent } from './pages/activate-account-page/acti
     PaginationControlsComponent,
     GroupDetailsModalComponent,
     SortFiltersComponent,
-    ActivateAccountPageComponent
+    ActivateAccountPageComponent,
+    ResetPasswordPageComponent
   ],
   imports: [
     BrowserModule,
