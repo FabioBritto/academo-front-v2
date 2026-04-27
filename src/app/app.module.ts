@@ -41,6 +41,7 @@ import { SortFiltersComponent } from './components/sort-filters/sort-filters.com
 import { PricingPlansComponent } from './components/pricing-plans/pricing-plans.component';
 import { ProfileFormComponent } from './components/profile-form/profile-form.component';
 import { ProfileUpsertModalComponent } from './components/profile-upsert-modal/profile-upsert-modal.component';
+import { PaymentHistoryCardComponent } from './components/payment-history-card/payment-history-card.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import { ProfileUpsertModalComponent } from './components/profile-upsert-modal/p
     SortFiltersComponent,
     PricingPlansComponent,
     ProfileFormComponent,
-    ProfileUpsertModalComponent
+    ProfileUpsertModalComponent,
+    PaymentHistoryCardComponent
   ],
   imports: [
     BrowserModule,

@@ -11,11 +11,57 @@
   font-weight: 700;
 }
 
-.profile-subscription__profile-header {
+.profile-subscription__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+  overflow-x: hidden;
+}
+
+.profile-subscription__left {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-x: hidden;
+}
+
+.profile-subscription__right {
+  min-width: 0;
+}
+
+.profile-subscription-card {
+  background: var(--surface-color);
+  border-radius: 24px;
+  padding: 48px;
+  box-shadow: 0 20px 60px color-mix(in srgb, var(--default-color) 10%, transparent);
+}
+
+.profile-subscription-card + .profile-subscription-card {
+  margin-top: 16px;
+}
+
+.profile-subscription-card__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid color-mix(in srgb, var(--default-color) 10%, transparent);
+}
+
+.profile-subscription-card__header h4 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--heading-color);
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.profile-subscription-card__body {
+  min-width: 0;
 }
 
 .profile-subscription__profile-actions {
@@ -33,19 +79,45 @@
   border-radius: 14px;
 }
 
-.profile-subscription__plans h5 {
-  font-weight: 700;
-  color: var(--heading-color);
-}
-
-.profile-subscription__profile-header ::ng-deep .pill-button {
+.profile-subscription-card__header ::ng-deep .pill-button {
   pointer-events: none;
   cursor: default;
   padding: 8px 18px;
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 600;
   border-radius: 14px;
 }
 
-.profile-subscription__profile-header ::ng-deep .pill-button:hover {
+.profile-subscription-card__header ::ng-deep .pill-button:hover {
   background: var(--accent-color);
+}
+
+@media (max-width: 992px) {
+  .profile-subscription-card {
+    padding: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-subscription__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-subscription-card {
+    padding: 32px 24px;
+  }
+
+  .profile-subscription-card__header h4 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 576px) {
+  .profile-subscription-card {
+    padding: 24px 20px;
+  }
+
+  .profile-subscription-card__header {
+    padding-bottom: 16px;
+  }
 }
