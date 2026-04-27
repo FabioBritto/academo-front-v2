@@ -1,0 +1,13 @@
+<main>
+  <section id="activate" class="activate-section">
+    <div class="container">
+      <div class="activate-logo">
+        <img src="assets/images/academo/academo-logo.png" alt="Academo" class="img-fluid">
+      </div>
+
+      <div class="activate-message" [class.activate-message--error]="status === 'error'">
+        {{ message }}
+      </div>
+    </div>
+  </section>
+</main>
