@@ -5,7 +5,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import type { ForgotPasswordDTO } from '../../model/auth.model';
 import { AuthService } from '../../services/auth.service';
-import { ToastService } from '../../services/toast.service';
 import { getHttpErrorMessage } from '../../utils/http-error.util';
 
 @Component({
@@ -17,13 +16,13 @@ export class ForgotPasswordModalComponent {
   form: FormGroup;
 
   isSubmitting = false;
+  successMessage = '';
   validationMessage = '';
   errorMessage = '';
 
   constructor(
     private readonly fb: FormBuilder,
     private readonly authService: AuthService,
-    private readonly toastService: ToastService,
     public readonly activeModal: NgbActiveModal
   ) {
     this.form = this.fb.group({
@@ -43,6 +42,7 @@ export class ForgotPasswordModalComponent {
     }
 
     this.isSubmitting = true;
+    this.successMessage = '';
     this.validationMessage = '';
     this.errorMessage = '';
 
@@ -52,10 +52,7 @@ export class ForgotPasswordModalComponent {
       next: () => {
         this.isSubmitting = false;
 
-        this.toastService.show('Email de recuperação de senha foi enviado.', {
-          classname: 'bg-success text-light',
-          delay: 3000
-        });
+        this.successMessage = 'Email de recuperação de senha foi enviado.';
 
         window.setTimeout(() => {
           this.activeModal.close('sent');
