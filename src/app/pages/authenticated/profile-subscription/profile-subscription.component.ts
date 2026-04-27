@@ -4,6 +4,7 @@ import type { PlanType } from '../../../model/auth.model';
 import type { ProfileDTO } from '../../../model/profile.model';
 import { PaymentService } from '../../../services/payment.service';
 import { ProfileService } from '../../../services/profile.service';
+import { formatLocalDate, formatLocalDateTime, parseLocalDate, parseLocalDateTime } from '../../../utils/date.util';
 import { getHttpErrorMessage } from '../../../utils/http-error.util';
 
 @Component({
@@ -64,6 +65,30 @@ export class ProfileSubscriptionComponent implements OnInit {
     }
 
     return this.selectedPlan === 'MONTHLY_RECURRENT' ? 'Mensal' : 'Anual';
+  }
+
+  formatBirthDate(value: string | null | undefined): string {
+    if (!value) {
+      return '-';
+    }
+
+    try {
+      return formatLocalDate(parseLocalDate(value));
+    } catch {
+      return value;
+    }
+  }
+
+  formatDateTime(value: string | null | undefined): string {
+    if (!value) {
+      return '-';
+    }
+
+    try {
+      return formatLocalDateTime(parseLocalDateTime(value));
+    } catch {
+      return value;
+    }
   }
 
   createPaymentLink(): void {

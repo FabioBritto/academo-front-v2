@@ -15,9 +15,10 @@
         <div class="card-body">
           <div class="profile-subscription__profile-header">
             <h5 class="card-title m-0">Dados do perfil</h5>
-            <span class="badge text-bg-primary" *ngIf="profile.planType">
-              Plano atual: {{ currentPlanLabel }}
-            </span>
+            <app-pill-button
+              *ngIf="profile.planType"
+              [label]="'Plano atual: ' + currentPlanLabel"
+            ></app-pill-button>
           </div>
 
           <div class="row gy-2 mt-3">
@@ -28,7 +29,7 @@
 
             <div class="col-12 col-md-6">
               <div class="text-muted small">Nascimento</div>
-              <div>{{ profile.birthDate || '-' }}</div>
+              <div>{{ formatBirthDate(profile.birthDate) }}</div>
             </div>
 
             <div class="col-12 col-md-6">
@@ -43,12 +44,12 @@
 
             <div class="col-12 col-md-6">
               <div class="text-muted small">Criado em</div>
-              <div>{{ profile.createdAt }}</div>
+              <div>{{ formatDateTime(profile.createdAt) }}</div>
             </div>
 
             <div class="col-12 col-md-6">
               <div class="text-muted small">Atualizado em</div>
-              <div>{{ profile.updatedAt }}</div>
+              <div>{{ formatDateTime(profile.updatedAt) }}</div>
             </div>
           </div>
         </div>

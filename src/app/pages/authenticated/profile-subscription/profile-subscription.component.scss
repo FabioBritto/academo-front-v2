@@ -22,3 +22,14 @@
   font-weight: 700;
   color: var(--heading-color);
 }
+
+.profile-subscription__profile-header ::ng-deep .pill-button {
+  pointer-events: none;
+  cursor: default;
+  padding: 8px 18px;
+  font-size: 13px;
+}
+
+.profile-subscription__profile-header ::ng-deep .pill-button:hover {
+  background: var(--accent-color);
+}
