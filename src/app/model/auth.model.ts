@@ -1,3 +1,5 @@
+export type PlanType = 'MONTHLY_RECURRENT' | 'YEARLY_RECURRENT';
+
 export interface UserAuthDTO {
   email: string;
   password: string;
@@ -29,5 +31,6 @@ export interface UserDTO {
   email: string;
   createdAt: string;
   updatedAt: string;
+  planType: PlanType;
   storageUsage: number;
 }

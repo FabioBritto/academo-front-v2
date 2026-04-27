@@ -4,6 +4,107 @@
   </header>
 
   <div class="profile-subscription__body">
-    <app-pricing-plans></app-pricing-plans>
+    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="isLoading" class="text-muted">Carregando...</div>
+
+    <ng-container *ngIf="!isLoading && profile">
+      <div class="profile-subscription__profile card mb-4">
+        <div class="card-body">
+          <div class="profile-subscription__profile-header">
+            <h5 class="card-title m-0">Dados do perfil</h5>
+            <span class="badge text-bg-primary" *ngIf="profile.planType">
+              Plano atual: {{ currentPlanLabel }}
+            </span>
+          </div>
+
+          <div class="row gy-2 mt-3">
+            <div class="col-12 col-md-6">
+              <div class="text-muted small">Nome completo</div>
+              <div>{{ profile.fullName || '-' }}</div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <div class="text-muted small">Nascimento</div>
+              <div>{{ profile.birthDate || '-' }}</div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <div class="text-muted small">Gênero</div>
+              <div>{{ profile.gender || '-' }}</div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <div class="text-muted small">Uso de armazenamento</div>
+              <div>{{ profile.userUseStorage }}</div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <div class="text-muted small">Criado em</div>
+              <div>{{ profile.createdAt }}</div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <div class="text-muted small">Atualizado em</div>
+              <div>{{ profile.updatedAt }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-subscription__subscribe card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Assinar</h5>
+          <p class="text-muted mb-3">Escolha um plano para gerar o link de pagamento.</p>
+
+          <div *ngIf="createPaymentErrorMessage" class="alert alert-danger" role="alert">
+            {{ createPaymentErrorMessage }}
+          </div>
+
+          <div class="d-flex flex-column gap-2">
+            <label class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="plan"
+                [value]="'MONTHLY_RECURRENT'"
+                [(ngModel)]="selectedPlan"
+              />
+              <span class="form-check-label">Mensal (R$ 17,90)</span>
+            </label>
+
+            <label class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="plan"
+                [value]="'YEARLY_RECURRENT'"
+                [(ngModel)]="selectedPlan"
+              />
+              <span class="form-check-label">Anual (R$ 149,90)</span>
+            </label>
+          </div>
+
+          <div class="mt-3 d-flex align-items-center gap-2">
+            <button
+              type="button"
+              class="btn btn-primary"
+              [disabled]="!selectedPlan || isCreatingPaymentLink"
+              (click)="createPaymentLink()"
+            >
+              {{ isCreatingPaymentLink ? 'Gerando link...' : 'Assinar' }}
+            </button>
+            <span class="text-muted" *ngIf="selectedPlan">Selecionado: {{ selectedPlanLabel }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-subscription__plans">
+        <h5 class="mb-3">Planos</h5>
+        <app-pricing-plans></app-pricing-plans>
+      </div>
+    </ng-container>
   </div>
 </section>

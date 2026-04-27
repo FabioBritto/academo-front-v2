@@ -10,3 +10,15 @@
   margin: 0;
   font-weight: 700;
 }
+
+.profile-subscription__profile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.profile-subscription__plans h5 {
+  font-weight: 700;
+  color: var(--heading-color);
+}
