@@ -18,6 +18,21 @@
   gap: 12px;
 }
 
+.profile-subscription__profile-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.profile-subscription__profile-actions ::ng-deep .btn-submit {
+  width: auto;
+  height: 40px;
+  padding: 0 16px;
+  font-size: 14px;
+  border-radius: 14px;
+}
+
 .profile-subscription__plans h5 {
   font-weight: 700;
   color: var(--heading-color);
@@ -28,6 +43,7 @@
   cursor: default;
   padding: 8px 18px;
   font-size: 13px;
+  border-radius: 14px;
 }
 
 .profile-subscription__profile-header ::ng-deep .pill-button:hover {

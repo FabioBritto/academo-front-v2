@@ -23,3 +23,18 @@ export function formatLocalDateTime(date: Date): string {
 export function parseLocalDateTime(value: string): Date {
   return new Date(value);
 }
+
+export function parseIsoDate(value: string): Date {
+  const [year, month, day] = value.split('-').map(Number);
+  return new Date(year, month - 1, day);
+}
+
+export function toIsoDateFromPtBr(value: string): string {
+  const [day, month, year] = value.split('/');
+  return `${year}-${month}-${day}`;
+}
+
+export function toPtBrFromIsoDate(value: string): string {
+  const [year, month, day] = value.split('-');
+  return `${day}/${month}/${year}`;
+}

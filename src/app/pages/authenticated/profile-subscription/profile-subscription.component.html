@@ -15,10 +15,19 @@
         <div class="card-body">
           <div class="profile-subscription__profile-header">
             <h5 class="card-title m-0">Dados do perfil</h5>
-            <app-pill-button
-              *ngIf="profile.planType"
-              [label]="'Plano atual: ' + currentPlanLabel"
-            ></app-pill-button>
+            <div class="profile-subscription__profile-actions">
+              <app-pill-button
+                *ngIf="profile.planType"
+                [label]="'Plano atual: ' + currentPlanLabel"
+              ></app-pill-button>
+
+              <app-submit-button
+                type="button"
+                label="Editar Perfil"
+                icon="bi bi-pencil-fill"
+                (click)="onEditProfile()"
+              ></app-submit-button>
+            </div>
           </div>
 
           <div class="row gy-2 mt-3">

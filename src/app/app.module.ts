@@ -39,6 +39,8 @@ import { PaginationControlsComponent } from './components/pagination-controls/pa
 import { GroupDetailsModalComponent } from './components/group-details-modal/group-details-modal.component';
 import { SortFiltersComponent } from './components/sort-filters/sort-filters.component';
 import { PricingPlansComponent } from './components/pricing-plans/pricing-plans.component';
+import { ProfileFormComponent } from './components/profile-form/profile-form.component';
+import { ProfileUpsertModalComponent } from './components/profile-upsert-modal/profile-upsert-modal.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +75,9 @@ import { PricingPlansComponent } from './components/pricing-plans/pricing-plans.
     PaginationControlsComponent,
     GroupDetailsModalComponent,
     SortFiltersComponent,
-    PricingPlansComponent
+    PricingPlansComponent,
+    ProfileFormComponent,
+    ProfileUpsertModalComponent
   ],
   imports: [
     BrowserModule,

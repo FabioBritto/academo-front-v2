@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 
 import type { PlanType } from '../../../model/auth.model';
 import type { ProfileDTO } from '../../../model/profile.model';
+import { ProfileUpsertModalComponent } from '../../../components/profile-upsert-modal/profile-upsert-modal.component';
 import { PaymentService } from '../../../services/payment.service';
 import { ProfileService } from '../../../services/profile.service';
-import { formatLocalDate, formatLocalDateTime, parseLocalDate, parseLocalDateTime } from '../../../utils/date.util';
+import { formatLocalDate, formatLocalDateTime, parseIsoDate, parseLocalDateTime } from '../../../utils/date.util';
 import { getHttpErrorMessage } from '../../../utils/http-error.util';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-profile-subscription',
@@ -23,7 +25,8 @@ export class ProfileSubscriptionComponent implements OnInit {
 
   constructor(
     private readonly profileService: ProfileService,
-    private readonly paymentService: PaymentService
+    private readonly paymentService: PaymentService,
+    private readonly modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -56,7 +59,11 @@ export class ProfileSubscriptionComponent implements OnInit {
       return '';
     }
 
-    return plan === 'MONTHLY_RECURRENT' ? 'Mensal' : 'Anual';
+    if (plan === 'FREE') return 'Gratuito';
+    if (plan === 'MONTHLY_RECURRENT') return 'Mensal';
+    if (plan === 'YEARLY_RECURRENT') return 'Anual';
+
+    return plan;
   }
 
   get selectedPlanLabel(): string {
@@ -64,7 +71,8 @@ export class ProfileSubscriptionComponent implements OnInit {
       return '';
     }
 
-    return this.selectedPlan === 'MONTHLY_RECURRENT' ? 'Mensal' : 'Anual';
+    if (this.selectedPlan === 'YEARLY_RECURRENT') return 'Anual';
+    return 'Mensal';
   }
 
   formatBirthDate(value: string | null | undefined): string {
@@ -73,10 +81,25 @@ export class ProfileSubscriptionComponent implements OnInit {
     }
 
     try {
-      return formatLocalDate(parseLocalDate(value));
+      return formatLocalDate(parseIsoDate(value));
     } catch {
       return value;
     }
+  }
+
+  onEditProfile(): void {
+    const modalRef = this.modalService.open(ProfileUpsertModalComponent, {
+      centered: true,
+      size: 'xl'
+    });
+
+    modalRef.componentInstance.profile = this.profile;
+
+    modalRef.closed.subscribe((result) => {
+      if (result) {
+        this.profile = result as ProfileDTO;
+      }
+    });
   }
 
   formatDateTime(value: string | null | undefined): string {

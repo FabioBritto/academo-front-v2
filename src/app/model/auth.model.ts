@@ -1,4 +1,4 @@
-export type PlanType = 'MONTHLY_RECURRENT' | 'YEARLY_RECURRENT';
+export type PlanType = 'MONTHLY_RECURRENT' | 'YEARLY_RECURRENT' | 'FREE';
 
 export interface UserAuthDTO {
   email: string;
