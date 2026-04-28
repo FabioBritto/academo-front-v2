@@ -25,8 +25,6 @@ export class GroupViewCardComponent {
     { label: 'Atualização (mais antiga)', value: 'updatedAt,asc' }
   ];
 
-  allGroups: GroupDTO[] = [];
-
   groups: GroupDTO[] = [];
 
   page = 0;
@@ -50,33 +48,24 @@ export class GroupViewCardComponent {
     this.groupsService.listPaged({
       page: this.page,
       size: this.pageSize,
-      sort: [this.sort]
+      sort: [this.sort],
+      isActive: this.showInactive ? undefined : true
     }).subscribe({
       next: (page) => {
-        this.allGroups = page.content;
-        this.applyActiveFilter();
+        this.groups = page.content;
         this.totalPages = page.totalPages;
       },
       error: () => {
-        this.allGroups = [];
         this.groups = [];
         this.totalPages = 0;
       }
     });
   }
 
-  applyActiveFilter(): void {
-    if (this.showInactive) {
-      this.groups = this.allGroups;
-      return;
-    }
-
-    this.groups = this.allGroups.filter((g) => g.isActive);
-  }
-
   toggleShowInactive(): void {
     this.showInactive = !this.showInactive;
-    this.applyActiveFilter();
+    this.page = 0;
+    this.loadGroups();
   }
 
   onSortChange(nextSort: string): void {
