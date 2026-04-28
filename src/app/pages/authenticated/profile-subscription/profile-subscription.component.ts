@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import type { PlanType } from '../../../model/auth.model';
 import type { ProfileDTO } from '../../../model/profile.model';
+import { ConfirmActionModalComponent } from '../../../components/confirm-action-modal/confirm-action-modal.component';
 import { ProfileUpsertModalComponent } from '../../../components/profile-upsert-modal/profile-upsert-modal.component';
 import { PaymentService } from '../../../services/payment.service';
 import { ProfileService } from '../../../services/profile.service';
@@ -23,6 +24,16 @@ export class ProfileSubscriptionComponent implements OnInit {
   isCreatingPaymentLink = false;
   createPaymentErrorMessage = '';
 
+  private readonly monthlyPrice = 17.9;
+  private readonly yearlyPrice = 149.9;
+
+  formatBrl(value: number): string {
+    return value.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    });
+  }
+
   constructor(
     private readonly profileService: ProfileService,
     private readonly paymentService: PaymentService,
@@ -31,6 +42,12 @@ export class ProfileSubscriptionComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadProfile();
+  }
+
+  get yearlyDiscountPercent(): number {
+    const original = this.monthlyPrice * 12;
+    const discount = 1 - this.yearlyPrice / original;
+    return Math.round(discount * 100);
   }
 
   loadProfile(): void {
@@ -145,5 +162,37 @@ export class ProfileSubscriptionComponent implements OnInit {
           });
         }
       });
+  }
+
+  onSubscribeMonthly(): void {
+    this.openSubscribeConfirm('MONTHLY_RECURRENT');
+  }
+
+  onSubscribeYearly(): void {
+    this.openSubscribeConfirm('YEARLY_RECURRENT');
+  }
+
+  private openSubscribeConfirm(plan: PlanType): void {
+    if (this.isCreatingPaymentLink) {
+      return;
+    }
+
+    const modalRef = this.modalService.open(ConfirmActionModalComponent, {
+      centered: true
+    });
+
+    const planLabel = plan === 'YEARLY_RECURRENT' ? 'Anual' : 'Mensal';
+
+    modalRef.componentInstance.title = 'Confirmar assinatura';
+    modalRef.componentInstance.message = `Você confirma a assinatura do plano ${planLabel}?`;
+    modalRef.componentInstance.confirmLabel = 'Confirmar';
+    modalRef.componentInstance.cancelLabel = 'Cancelar';
+
+    modalRef.closed.subscribe((confirmed) => {
+      if (confirmed === true) {
+        this.selectedPlan = plan;
+        this.createPaymentLink();
+      }
+    });
   }
 }

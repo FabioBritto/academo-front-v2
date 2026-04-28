@@ -33,6 +33,10 @@
   color: color-mix(in srgb, var(--default-color) 70%, transparent);
 }
 
+.payment-history-card__table {
+  overflow-x: auto;
+}
+
 @media (max-width: 992px) {
   .payment-history-card {
     padding: 40px;

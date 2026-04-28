@@ -4,6 +4,50 @@
   </header>
 
   <div class="payment-history-card__body">
-    <p class="payment-history-card__empty">{{ emptyMessage }}</p>
+    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="isLoading" class="text-muted">Carregando...</div>
+
+    <p *ngIf="!isLoading && !errorMessage && !items.length" class="payment-history-card__empty">
+      {{ emptyMessage }}
+    </p>
+
+    <div *ngIf="!isLoading && !errorMessage && items.length" class="payment-history-card__table">
+      <div class="table-responsive">
+        <table class="table table-sm align-middle">
+          <thead>
+            <tr>
+              <th>Plano</th>
+              <th>Valor</th>
+              <th>Status</th>
+              <th>Link gerado em</th>
+              <th>Vencimento</th>
+              <th class="text-end">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of items">
+              <td>{{ planLabel(item.planType) }}</td>
+              <td>{{ formatBrl(item.value) }}</td>
+              <td>{{ statusLabel(item.paymentStatus) }}</td>
+              <td>{{ formatDateTime(item.createdAt) }}</td>
+              <td>{{ formatDate(item.planDueDate) }}</td> 
+              <td class="text-end">
+                <a
+                  class="btn btn-outline-primary btn-sm"
+                  [href]="item.url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Abrir
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </section>
