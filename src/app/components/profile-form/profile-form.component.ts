@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import type { ProfileDTO, UpdateProfileDTO } from '../../model/profile.model';
+import { ProfileDTO, UpdateProfileDTO } from '../../model/profile.model';
 import { ProfileService } from '../../services/profile.service';
 import { toIsoDateFromPtBr, toPtBrFromIsoDate } from '../../utils/date.util';
 import { getHttpErrorMessage } from '../../utils/http-error.util';

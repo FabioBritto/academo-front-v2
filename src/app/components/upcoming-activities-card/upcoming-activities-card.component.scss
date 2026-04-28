@@ -29,6 +29,19 @@
   color: color-mix(in srgb, var(--default-color) 70%, transparent);
 }
 
+.upcoming-activities-card__loading {
+  color: color-mix(in srgb, var(--default-color) 70%, transparent);
+}
+
+.upcoming-activities-card__list {
+  display: grid;
+  gap: 18px;
+}
+
+.upcoming-activities-card__pagination {
+  margin-top: 18px;
+}
+
 @media (max-width: 992px) {
   .upcoming-activities-card {
     padding: 40px;

@@ -1,0 +1,75 @@
+:host {
+  display: block;
+}
+
+.activity-notification {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+  gap: 24px;
+  padding: 20px 24px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--surface-color) 90%, white);
+  border: 1px solid color-mix(in srgb, var(--default-color) 10%, transparent);
+}
+
+.activity-notification__date {
+  background: #7c3440;
+  color: white;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 10px;
+}
+
+.activity-notification__day {
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.activity-notification__month {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+}
+
+.activity-notification__content {
+  min-width: 0;
+}
+
+.activity-notification__title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--heading-color);
+}
+
+.activity-notification__meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  font-size: 14px;
+  color: color-mix(in srgb, var(--default-color) 75%, transparent);
+}
+
+.activity-notification__description {
+  margin: 10px 0 0;
+  color: color-mix(in srgb, var(--default-color) 85%, transparent);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+@media (max-width: 576px) {
+  .activity-notification {
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .activity-notification__day {
+    font-size: 24px;
+  }
+}
