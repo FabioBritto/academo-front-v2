@@ -14,6 +14,10 @@ import { getHttpErrorMessage } from '../../utils/http-error.util';
 export class PaymentHistoryCardComponent implements OnInit {
   @Input() emptyMessage = 'Em breve você verá seu histórico de pagamentos aqui.';
 
+  readonly pageSize = 6;
+  pageIndex = 0;
+  totalPages = 0;
+
   isLoading = false;
   errorMessage = '';
 
@@ -26,27 +30,35 @@ export class PaymentHistoryCardComponent implements OnInit {
     this.loadHistory();
   }
 
-  loadHistory(): void {
+  loadHistory(pageIndex: number = 0): void {
     this.isLoading = true;
     this.errorMessage = '';
 
+    this.pageIndex = pageIndex;
+
     this.paymentService
-      .listHistoryPaged({ page: 0, size: 6 })
+      .listHistoryPaged({ page: pageIndex, size: this.pageSize })
       .subscribe({
         next: (page) => {
           this.page = page;
           this.items = page.content ?? [];
+          this.totalPages = page.totalPages ?? 0;
           this.isLoading = false;
         },
         error: (err: unknown) => {
           this.page = null;
           this.items = [];
+          this.totalPages = 0;
           this.isLoading = false;
           this.errorMessage = getHttpErrorMessage(err, {
             fallback: 'Não foi possível carregar o histórico de pagamentos.'
           });
         }
       });
+  }
+
+  onPageChange(page: number): void {
+    this.loadHistory(page);
   }
 
   formatBrl(value: number): string {
@@ -91,5 +103,13 @@ export class PaymentHistoryCardComponent implements OnInit {
     } catch {
       return value;
     }
+  }
+
+  openUrl(url: string): void {
+    if (!url) {
+      return;
+    }
+
+    window.open(url, '_blank', 'noopener');
   }
 }

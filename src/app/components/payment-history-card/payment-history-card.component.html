@@ -39,17 +39,24 @@
           </div>
 
           <div class="payment-history-card__meta payment-history-card__meta--action">
-            <a
-              class="btn btn-outline-primary btn-sm"
-              [href]="item.url"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Abrir
-            </a>
+            <app-submit-button
+              *ngIf="item.paymentStatus !== 'PAID' && item.url"
+              type="button"
+              label="Abrir"
+              icon=""
+              (click)="openUrl(item.url)"
+            ></app-submit-button>
           </div>
         </div>
       </article>
     </div>
+
+    <app-pagination-controls
+      *ngIf="!isLoading && !errorMessage && totalPages > 1"
+      [page]="pageIndex"
+      [totalPages]="totalPages"
+      [disabled]="isLoading"
+      (pageChange)="onPageChange($event)"
+    ></app-pagination-controls>
   </div>
 </section>
