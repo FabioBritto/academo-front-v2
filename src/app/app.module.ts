@@ -42,6 +42,8 @@ import { PricingPlansComponent } from './components/pricing-plans/pricing-plans.
 import { ProfileFormComponent } from './components/profile-form/profile-form.component';
 import { ProfileUpsertModalComponent } from './components/profile-upsert-modal/profile-upsert-modal.component';
 import { PaymentHistoryCardComponent } from './components/payment-history-card/payment-history-card.component';
+import { ActivateAccountPageComponent } from './pages/activate-account-page/activate-account-page.component';
+import { ResetPasswordPageComponent } from './pages/reset-password/reset-password-page.component';
 
 @NgModule({
   declarations: [
@@ -80,6 +82,8 @@ import { PaymentHistoryCardComponent } from './components/payment-history-card/p
     ProfileFormComponent,
     ProfileUpsertModalComponent,
     PaymentHistoryCardComponent
+    ActivateAccountPageComponent,
+    ResetPasswordPageComponent
   ],
   imports: [
     BrowserModule,
