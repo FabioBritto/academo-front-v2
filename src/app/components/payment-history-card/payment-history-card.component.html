@@ -14,40 +14,42 @@
       {{ emptyMessage }}
     </p>
 
-    <div *ngIf="!isLoading && !errorMessage && items.length" class="payment-history-card__table">
-      <div class="table-responsive">
-        <table class="table table-sm align-middle">
-          <thead>
-            <tr>
-              <th>Plano</th>
-              <th>Valor</th>
-              <th>Status</th>
-              <th>Link gerado em</th>
-              <th>Vencimento</th>
-              <th class="text-end">Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of items">
-              <td>{{ planLabel(item.planType) }}</td>
-              <td>{{ formatBrl(item.value) }}</td>
-              <td>{{ statusLabel(item.paymentStatus) }}</td>
-              <td>{{ formatDateTime(item.createdAt) }}</td>
-              <td>{{ formatDate(item.planDueDate) }}</td> 
-              <td class="text-end">
-                <a
-                  class="btn btn-outline-primary btn-sm"
-                  [href]="item.url"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Abrir
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div *ngIf="!isLoading && !errorMessage && items.length" class="payment-history-card__list">
+      <article class="payment-history-card__item" *ngFor="let item of items">
+        <div class="payment-history-card__item-top">
+          <div class="payment-history-card__item-title">
+            <div class="payment-history-card__plan">{{ planLabel(item.planType) }}</div>
+            <div class="payment-history-card__value">{{ formatBrl(item.value) }}</div>
+          </div>
+
+          <div class="payment-history-card__status" [attr.data-status]="item.paymentStatus">
+            {{ statusLabel(item.paymentStatus) }}
+          </div>
+        </div>
+
+        <div class="payment-history-card__item-meta">
+          <div class="payment-history-card__meta">
+            <div class="payment-history-card__meta-label">Link gerado em</div>
+            <div class="payment-history-card__meta-value">{{ formatDateTime(item.createdAt) }}</div>
+          </div>
+
+          <div class="payment-history-card__meta">
+            <div class="payment-history-card__meta-label">Vencimento</div>
+            <div class="payment-history-card__meta-value">{{ formatDate(item.planDueDate) }}</div>
+          </div>
+
+          <div class="payment-history-card__meta payment-history-card__meta--action">
+            <a
+              class="btn btn-outline-primary btn-sm"
+              [href]="item.url"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Abrir
+            </a>
+          </div>
+        </div>
+      </article>
     </div>
   </div>
 </section>

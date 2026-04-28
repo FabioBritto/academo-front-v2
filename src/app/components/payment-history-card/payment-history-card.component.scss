@@ -33,8 +33,95 @@
   color: color-mix(in srgb, var(--default-color) 70%, transparent);
 }
 
-.payment-history-card__table {
-  overflow-x: auto;
+.payment-history-card__list {
+  display: flex;
+  flex-direction: column;
+}
+
+.payment-history-card__item {
+  padding: 14px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--default-color) 10%, transparent);
+}
+
+.payment-history-card__item:first-child {
+  padding-top: 0;
+}
+
+.payment-history-card__item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.payment-history-card__item-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.payment-history-card__item-title {
+  min-width: 0;
+}
+
+.payment-history-card__plan {
+  font-weight: 700;
+  color: var(--heading-color);
+  line-height: 1.2;
+}
+
+.payment-history-card__value {
+  color: color-mix(in srgb, var(--default-color) 75%, transparent);
+  font-size: 0.95rem;
+  margin-top: 2px;
+}
+
+.payment-history-card__status {
+  flex-shrink: 0;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: color-mix(in srgb, var(--default-color) 8%, transparent);
+  color: color-mix(in srgb, var(--default-color) 70%, transparent);
+}
+
+.payment-history-card__status[data-status='PAID'] {
+  background: color-mix(in srgb, #198754 12%, transparent);
+  color: #198754;
+}
+
+.payment-history-card__status[data-status='WAITING_PAYMENT'] {
+  background: color-mix(in srgb, #0d6efd 10%, transparent);
+  color: #0d6efd;
+}
+
+.payment-history-card__status[data-status='CANCELED'],
+.payment-history-card__status[data-status='EXPIRED'] {
+  background: color-mix(in srgb, #dc3545 10%, transparent);
+  color: #dc3545;
+}
+
+.payment-history-card__item-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 12px;
+  margin-top: 12px;
+  align-items: end;
+}
+
+.payment-history-card__meta-label {
+  font-size: 0.75rem;
+  color: color-mix(in srgb, var(--default-color) 55%, transparent);
+}
+
+.payment-history-card__meta-value {
+  font-size: 0.9rem;
+  color: var(--default-color);
+}
+
+.payment-history-card__meta--action {
+  display: flex;
+  justify-content: flex-end;
 }
 
 @media (max-width: 992px) {
@@ -50,6 +137,14 @@
 
   .payment-history-card__header h4 {
     font-size: 22px;
+  }
+
+  .payment-history-card__item-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .payment-history-card__meta--action {
+    justify-content: flex-start;
   }
 }
 
