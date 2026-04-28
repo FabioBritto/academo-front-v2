@@ -10,6 +10,10 @@
 }
 
 .subject-flashcard-list__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   padding-bottom: 12px;
   margin-bottom: 12px;
   border-bottom: 1px solid color-mix(in srgb, var(--default-color) 12%, transparent);
@@ -27,4 +31,12 @@
   border-radius: 14px;
   padding: 24px;
   color: color-mix(in srgb, var(--default-color) 75%, transparent);
+}
+
+.subject-flashcard-list__header ::ng-deep .btn-submit {
+  width: auto;
+  height: 40px;
+  padding: 0 14px;
+  font-size: 13px;
+  border-radius: 12px;
 }
