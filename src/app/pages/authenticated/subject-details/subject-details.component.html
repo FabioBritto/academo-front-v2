@@ -13,6 +13,16 @@
         </div>
 
         <div class="subject-details__meta-item subject-details__meta-item--right">
+          <span class="subject-details__meta-label">Nota mínima:</span>
+          <span class="subject-details__meta-value">{{ passingGradeDisplay }}</span>
+        </div>
+
+        <div class="subject-details__meta-item">
+          <span class="subject-details__meta-label">Status:</span>
+          <span class="badge" [ngClass]="isActiveBadgeClass">{{ isActiveLabel }}</span>
+        </div>
+
+        <div class="subject-details__meta-item subject-details__meta-item--right">
           <span class="subject-details__meta-label">Média Final:</span>
           <span class="subject-details__meta-value">{{ finalGradeDisplay }}</span>
         </div>
@@ -66,8 +76,10 @@
         ></app-subject-flashcard-list>
         <app-subject-files-list
           *ngSwitchDefault
+          [subjectId]="subject?.id || 0"
           [hasItems]="false"
           emptyMessage="Nenhum arquivo por enquanto."
+          (changed)="onFilesChanged()"
         ></app-subject-files-list>
       </ng-container>
     </div>

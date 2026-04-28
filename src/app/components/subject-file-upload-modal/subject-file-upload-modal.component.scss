@@ -1,0 +1,16 @@
+.subject-file-upload-modal__hint {
+  margin: 0 0 8px;
+  color: color-mix(in srgb, var(--default-color) 80%, transparent);
+}
+
+.subject-file-upload-modal__picker {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.subject-file-upload-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}

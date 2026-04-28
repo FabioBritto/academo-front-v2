@@ -1,0 +1,42 @@
+<div class="modal-header">
+  <h5 class="modal-title">Upload de arquivo</h5>
+
+  <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
+</div>
+
+<div class="modal-body">
+  <p class="subject-file-upload-modal__hint">Limite: {{ maxSizeLabel }}</p>
+  <p class="subject-file-upload-modal__hint">Tipos suportados: {{ supportedTypesLabel }}</p>
+
+  <div *ngIf="validationMessage" class="alert alert-warning" role="alert">
+    {{ validationMessage }}
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+    {{ errorMessage }}
+  </div>
+
+  <div class="subject-file-upload-modal__picker">
+    <input class="form-control" type="file" [accept]="accept" (change)="onFileChange($event)" />
+
+    <small class="text-muted" *ngIf="selectedFile">Selecionado: {{ selectedFile.name }}</small>
+  </div>
+
+  <div class="subject-file-upload-modal__actions mt-4" appEqualizeModalButtons>
+    <app-submit-button
+      type="button"
+      label="Cancelar"
+      icon=""
+      [disabled]="isSubmitting"
+      (click)="close()"
+    ></app-submit-button>
+
+    <app-submit-button
+      type="button"
+      label="Enviar"
+      icon=""
+      [disabled]="isSubmitting"
+      (click)="upload()"
+    ></app-submit-button>
+  </div>
+</div>

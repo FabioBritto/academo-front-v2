@@ -64,6 +64,10 @@
   font-size: inherit;
 }
 
+.subject-details__meta .badge {
+  font-weight: 700;
+}
+
 .subject-details__header-actions ::ng-deep .btn-submit {
   width: auto;
   height: 44px;

@@ -84,6 +84,10 @@ export class SubjectDetailsComponent implements OnInit {
     this.contentTab = nextValue;
   }
 
+  onFilesChanged(): void {
+    // Placeholder: when files list is implemented, trigger refresh here.
+  }
+
   get breadcrumbLabel(): string {
     return this.subject?.name ?? 'Carregando...';
   }
@@ -105,5 +109,18 @@ export class SubjectDetailsComponent implements OnInit {
   get finalGradeDisplay(): string {
     const g = this.subject?.finalGrade;
     return g === null || g === undefined ? '-' : String(g);
+  }
+
+  get passingGradeDisplay(): string {
+    const g = this.subject?.passingGrade;
+    return g === null || g === undefined ? '-' : String(g);
+  }
+
+  get isActiveLabel(): string {
+    return this.subject?.isActive ? 'Ativa' : 'Inativa';
+  }
+
+  get isActiveBadgeClass(): string {
+    return this.subject?.isActive ? 'text-bg-success' : 'text-bg-secondary';
   }
 }
