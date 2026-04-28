@@ -4,12 +4,37 @@
   </header>
 
   <div class="upcoming-activities-card__body">
-    <ng-container *ngIf="hasItems; else emptyState">
-      <ng-content></ng-content>
+    <div *ngIf="isLoading" class="upcoming-activities-card__loading">
+      Carregando...
+    </div>
+
+    <div *ngIf="hasError && !isLoading" class="alert alert-danger" role="alert">
+      Não foi possível carregar as atividades.
+    </div>
+
+    <ng-container *ngIf="hasItems && !isLoading">
+      <div class="upcoming-activities-card__list">
+        <app-activity-notification
+          *ngFor="let activity of activities"
+          [name]="activity.name"
+          [description]="activity.description"
+          [subjectName]="activity.subjectName"
+          [activityDate]="activity.activityDate"
+        ></app-activity-notification>
+      </div>
+
+      <app-pagination-controls
+        *ngIf="totalPages > 1"
+        class="upcoming-activities-card__pagination"
+        [page]="page"
+        [totalPages]="totalPages"
+        [disabled]="isLoading"
+        (pageChange)="onPageChange($event)"
+      ></app-pagination-controls>
     </ng-container>
 
-    <ng-template #emptyState>
-      <p class="upcoming-activities-card__empty">{{ emptyMessage }}</p>
-    </ng-template>
+    <p *ngIf="!hasItems && !isLoading && !hasError" class="upcoming-activities-card__empty">
+      {{ emptyMessage }}
+    </p>
   </div>
 </section>
