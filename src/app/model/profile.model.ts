@@ -1,19 +1,19 @@
+import type { PlanType } from './auth.model';
+
+export type GenderType = 'M' | 'F';
+
 export interface UpdateProfileDTO {
   fullName: string;
   birthDate: string;
-  gender: string;
-}
-
-export interface ProfileEntity {
-  id: number;
-  fullName: string | null;
-  birthDate: string | null;
-  gender: string | null;
-  createdAt: string;
-  updatedAt: string;
+  gender: GenderType;
 }
 
 export interface ProfileDTO {
-  profile: ProfileEntity;
+  fullName: string | null;
+  birthDate: string | null;
+  gender: GenderType | null;
+  planType: PlanType;
+  createdAt: string;
+  updatedAt: string;
   userUseStorage: number;
 }

@@ -38,6 +38,10 @@ import { GroupCardComponent } from './components/group-card/group-card.component
 import { PaginationControlsComponent } from './components/pagination-controls/pagination-controls.component';
 import { GroupDetailsModalComponent } from './components/group-details-modal/group-details-modal.component';
 import { SortFiltersComponent } from './components/sort-filters/sort-filters.component';
+import { PricingPlansComponent } from './components/pricing-plans/pricing-plans.component';
+import { ProfileFormComponent } from './components/profile-form/profile-form.component';
+import { ProfileUpsertModalComponent } from './components/profile-upsert-modal/profile-upsert-modal.component';
+import { PaymentHistoryCardComponent } from './components/payment-history-card/payment-history-card.component';
 import { ActivateAccountPageComponent } from './pages/activate-account-page/activate-account-page.component';
 import { ResetPasswordPageComponent } from './pages/reset-password/reset-password-page.component';
 
@@ -74,6 +78,10 @@ import { ResetPasswordPageComponent } from './pages/reset-password/reset-passwor
     PaginationControlsComponent,
     GroupDetailsModalComponent,
     SortFiltersComponent,
+    PricingPlansComponent,
+    ProfileFormComponent,
+    ProfileUpsertModalComponent,
+    PaymentHistoryCardComponent
     ActivateAccountPageComponent,
     ResetPasswordPageComponent
   ],

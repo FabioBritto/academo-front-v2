@@ -1,0 +1,60 @@
+<div *ngIf="validationMessage" class="alert alert-warning" role="alert">
+  {{ validationMessage }}
+</div>
+
+<div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+  {{ errorMessage }}
+</div>
+
+<form [formGroup]="form" (ngSubmit)="$event.preventDefault(); submit()">
+  <div class="row g-4">
+    <div class="col-12">
+      <app-input-group
+        label="Nome completo"
+        icon="bi bi-person-fill"
+        placeholder="Seu nome"
+        [invalid]="!!(form.get('fullName')?.touched && form.get('fullName')?.invalid)"
+        formControlName="fullName"
+      ></app-input-group>
+
+      <small class="text-danger" *ngIf="form.get('fullName')?.touched && form.get('fullName')?.hasError('required')">
+        O nome é obrigatório
+      </small>
+    </div>
+
+    <div class="col-12">
+      <app-input-group
+        label="Data de nascimento"
+        icon="bi bi-calendar-event"
+        placeholder="dd/mm/aaaa"
+        type="text"
+        [invalid]="!!(form.get('birthDate')?.touched && form.get('birthDate')?.invalid)"
+        formControlName="birthDate"
+      ></app-input-group>
+
+      <small class="text-danger" *ngIf="form.get('birthDate')?.touched && form.get('birthDate')?.hasError('required')">
+        A data de nascimento é obrigatória
+      </small>
+    </div>
+
+    <div class="col-12">
+      <label class="form-label profile-form__label">Gênero</label>
+
+      <div class="d-flex flex-wrap gap-3">
+        <label class="form-check">
+          <input class="form-check-input" type="radio" value="M" formControlName="gender" />
+          <span class="form-check-label">Masculino</span>
+        </label>
+
+        <label class="form-check">
+          <input class="form-check-input" type="radio" value="F" formControlName="gender" />
+          <span class="form-check-label">Feminino</span>
+        </label>
+      </div>
+
+      <small class="text-danger" *ngIf="form.get('gender')?.touched && form.get('gender')?.hasError('required')">
+        Selecione um gênero
+      </small>
+    </div>
+  </div>
+</form>

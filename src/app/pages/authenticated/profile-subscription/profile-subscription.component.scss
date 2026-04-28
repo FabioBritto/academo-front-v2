@@ -10,3 +10,144 @@
   margin: 0;
   font-weight: 700;
 }
+
+.profile-subscription__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+  overflow-x: hidden;
+}
+
+.profile-subscription__left {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-x: hidden;
+}
+
+.profile-subscription__right {
+  min-width: 0;
+}
+
+.profile-subscription-card {
+  background: var(--surface-color);
+  border-radius: 24px;
+  padding: 48px;
+  box-shadow: 0 20px 60px color-mix(in srgb, var(--default-color) 10%, transparent);
+}
+
+.profile-subscription-card + .profile-subscription-card {
+  margin-top: 16px;
+}
+
+.profile-subscription-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid color-mix(in srgb, var(--default-color) 10%, transparent);
+}
+
+.profile-subscription-card__header h4 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--heading-color);
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.profile-subscription-card__body {
+  min-width: 0;
+}
+
+.profile-subscription__profile-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.profile-subscription__profile-actions ::ng-deep .btn-submit {
+  width: auto;
+  height: 40px;
+  padding: 0 16px;
+  font-size: 14px;
+  border-radius: 14px;
+}
+
+.profile-subscription__subscribe-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-subscription__subscribe-content {
+  text-align: center;
+}
+
+.profile-subscription__subscribe-prices strong {
+  color: var(--heading-color);
+  font-weight: 700;
+}
+
+.profile-subscription__subscribe-actions ::ng-deep .btn-submit {
+  width: auto;
+  height: 44px;
+  padding: 0 18px;
+  font-size: 14px;
+  border-radius: 12px;
+}
+
+.profile-subscription-card__header ::ng-deep .pill-button {
+  pointer-events: none;
+  cursor: default;
+  padding: 8px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 14px;
+}
+
+.profile-subscription-card__header ::ng-deep .pill-button:hover {
+  background: var(--accent-color);
+}
+
+@media (max-width: 992px) {
+  .profile-subscription-card {
+    padding: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-subscription__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-subscription__subscribe-actions {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+  }
+
+  .profile-subscription-card {
+    padding: 32px 24px;
+  }
+
+  .profile-subscription-card__header h4 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 576px) {
+  .profile-subscription-card {
+    padding: 24px 20px;
+  }
+
+  .profile-subscription-card__header {
+    padding-bottom: 16px;
+  }
+}

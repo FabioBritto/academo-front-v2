@@ -1,11 +1,128 @@
 <section class="profile-subscription">
-  <header class="profile-subscription__header">
-    <h2 class="profile-subscription__title">Perfil e Assinatura</h2>
-  </header>
 
   <div class="profile-subscription__body">
-    <p class="text-muted m-0">
-      Em breve: configurações de perfil e gerenciamento da assinatura.
-    </p>
+    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="isLoading" class="text-muted">Carregando...</div>
+
+    <ng-container *ngIf="!isLoading && profile">
+      <div class="profile-subscription__grid">
+        <div class="profile-subscription__left">
+          <section class="profile-subscription-card" aria-label="Dados do perfil">
+            <header class="profile-subscription-card__header">
+              <h4>Dados do perfil</h4>
+              <div class="profile-subscription__profile-actions">
+                <app-pill-button
+                  *ngIf="profile.planType"
+                  [label]="'Plano atual: ' + currentPlanLabel"
+                ></app-pill-button>
+
+                <app-submit-button
+                  type="button"
+                  label="Editar Perfil"
+                  icon="bi bi-pencil-fill"
+                  (click)="onEditProfile()"
+                ></app-submit-button>
+              </div>
+            </header>
+
+            <div class="profile-subscription-card__body">
+              <div class="row gy-2">
+                <div class="col-12 col-md-6">
+                  <div class="text-muted small">Nome completo</div>
+                  <div>{{ profile.fullName || '-' }}</div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                  <div class="text-muted small">Nascimento</div>
+                  <div>{{ formatBirthDate(profile.birthDate) }}</div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                  <div class="text-muted small">Gênero</div>
+                  <div>{{ profile.gender || '-' }}</div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                  <div class="text-muted small">Uso de armazenamento</div>
+                  <div>{{ profile.userUseStorage }}</div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                  <div class="text-muted small">Criado em</div>
+                  <div>{{ formatDateTime(profile.createdAt) }}</div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                  <div class="text-muted small">Atualizado em</div>
+                  <div>{{ formatDateTime(profile.updatedAt) }}</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          
+
+          <section class="profile-subscription-card" aria-label="Planos">
+            <header class="profile-subscription-card__header">
+              <h4>Planos</h4>
+            </header>
+
+            <div class="profile-subscription-card__body">
+              <app-pricing-plans></app-pricing-plans>
+            </div>
+          </section>
+
+          <section class="profile-subscription-card" aria-label="Assinar">
+            <header class="profile-subscription-card__header">
+              <h4>Assinar</h4>
+            </header>
+
+            <div class="profile-subscription-card__body">
+              <div *ngIf="createPaymentErrorMessage" class="alert alert-danger" role="alert">
+                {{ createPaymentErrorMessage }}
+              </div>
+
+              <div class="profile-subscription__subscribe-content">
+                <p class="text-muted mb-3">Escolha um plano para gerar o link de pagamento.</p>
+
+                <div class="profile-subscription__subscribe-actions" appEqualizeModalButtons>
+                  <app-submit-button
+                    type="button"
+                    label="MENSAL"
+                    icon=""
+                    [disabled]="isCreatingPaymentLink"
+                    (click)="onSubscribeMonthly()"
+                  ></app-submit-button>
+
+                  <app-submit-button
+                    type="button"
+                    label="ANUAL"
+                    icon=""
+                    [disabled]="isCreatingPaymentLink"
+                    (click)="onSubscribeYearly()"
+                  ></app-submit-button>
+                </div>
+
+                <div class="profile-subscription__subscribe-prices text-muted small mt-3">
+                  <div><strong>{{ formatBrl(17.9) }}</strong> por mês (assinatura mensal)</div>
+                  <div><strong>{{ formatBrl(149.9) }}</strong> por ano (pagamento único anual)</div>
+                </div>
+
+                <div class="text-muted small mt-3">
+                  Economize {{ yearlyDiscountPercent }}% no plano anual
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="profile-subscription__right">
+          <app-payment-history-card></app-payment-history-card>
+        </div>
+      </div>
+    </ng-container>
   </div>
 </section>

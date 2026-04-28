@@ -35,6 +35,14 @@
             icon="bi bi-plus-circle-fill"
             (click)="onAddSubjects()"
           ></app-submit-button>
+
+          <app-submit-button
+            type="button"
+            label="Excluir"
+            icon="bi bi-trash-fill"
+            [disabled]="isDeleting"
+            (click)="onDelete()"
+          ></app-submit-button>
         </div>
       </div>
 

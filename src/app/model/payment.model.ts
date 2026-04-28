@@ -2,6 +2,7 @@ export type BillingType = 'BOLETO' | 'CREDIT_CARD' | 'PIX';
 export type ChargeType = 'DETACHED' | 'RECURRENT' | 'INSTALLMENT';
 export type SubscriptionCycle = 'MONTHLY' | 'YEARLY';
 export type PaymentStatus = 'PAID' | 'WAITING_PAYMENT' | 'EXPIRED' | 'CANCELED';
+export type PlanType = 'MONTHLY_RECURRENT' | 'YEARLY_RECURRENT';
 
 export interface PaymentOptionsDTO {
   billingType: BillingType;
@@ -34,6 +35,8 @@ export interface PaymentHistoryDTO {
   paymentId: string;
   paymentStatus: PaymentStatus;
   value: number;
+  url: string;
+  planType: PlanType;
   planDueDate: string;
   createdAt: string;
   updatedAt: string;
