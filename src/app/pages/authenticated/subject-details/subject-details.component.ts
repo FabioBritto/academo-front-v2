@@ -1,0 +1,87 @@
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
+import type { SubjectDTO } from '../../../model/subjects.model';
+import { SubjectsService } from '../../../services/subjects.service';
+import type { TabOption } from '../../../components/tabs/tabs.component';
+
+@Component({
+  selector: 'app-subject-details',
+  templateUrl: './subject-details.component.html',
+  styleUrls: ['./subject-details.component.scss']
+})
+export class SubjectDetailsComponent implements OnInit {
+  subject: SubjectDTO | null = null;
+
+  periodTab = 'period1';
+  contentTab = 'files';
+
+  readonly periodOptions: TabOption[] = [
+    { label: 'Período 1', value: 'period1' },
+    { label: 'Período 2', value: 'period2' }
+  ];
+
+  readonly contentOptions: TabOption[] = [
+    { label: 'Flashcards', value: 'flashcards' },
+    { label: 'Arquivos', value: 'files' }
+  ];
+
+  constructor(
+    private readonly route: ActivatedRoute,
+    private readonly subjectsService: SubjectsService
+  ) {}
+
+  ngOnInit(): void {
+    const idParam = this.route.snapshot.paramMap.get('id');
+    const id = idParam ? Number(idParam) : NaN;
+
+    if (!idParam || Number.isNaN(id)) {
+      this.subject = null;
+      return;
+    }
+
+    this.loadSubject(id);
+  }
+
+  loadSubject(subjectId: number): void {
+    this.subjectsService.getById(subjectId).subscribe({
+      next: (subject) => {
+        this.subject = subject;
+      },
+      error: () => {
+        this.subject = null;
+      }
+    });
+  }
+
+  onPeriodTabChange(nextValue: string): void {
+    this.periodTab = nextValue;
+  }
+
+  onContentTabChange(nextValue: string): void {
+    this.contentTab = nextValue;
+  }
+
+  get breadcrumbLabel(): string {
+    return this.subject?.name ?? 'Carregando...';
+  }
+
+  get calculationTypeLabel(): string {
+    const type = this.subject?.calculationType;
+
+    if (type === 'MEDIA_ARITMETICA') {
+      return 'média aritmética';
+    }
+
+    if (type === 'MEDIA_PONDERADA') {
+      return 'média ponderada';
+    }
+
+    return '-';
+  }
+
+  get finalGradeDisplay(): string {
+    const g = this.subject?.finalGrade;
+    return g === null || g === undefined ? '-' : String(g);
+  }
+}

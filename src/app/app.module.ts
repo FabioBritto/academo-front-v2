@@ -47,6 +47,11 @@ import { ActivateAccountPageComponent } from './pages/activate-account-page/acti
 import { ResetPasswordPageComponent } from './pages/reset-password/reset-password-page.component';
 import { SubjectViewCardComponent } from './components/subject-view-card/subject-view-card.component';
 import { SubjectCardComponent } from './components/subject-card/subject-card.component';
+import { TabsComponent } from './components/tabs/tabs.component';
+import { PeriodDetailsComponent } from './components/period-details/period-details.component';
+import { SubjectFilesListComponent } from './components/subject-files-list/subject-files-list.component';
+import { SubjectFlashcardListComponent } from './components/subject-flashcard-list/subject-flashcard-list.component';
+import { SubjectDetailsComponent } from './pages/authenticated/subject-details/subject-details.component';
 
 @NgModule({
   declarations: [
@@ -89,7 +94,12 @@ import { SubjectCardComponent } from './components/subject-card/subject-card.com
     ActivateAccountPageComponent,
     ResetPasswordPageComponent,
     SubjectViewCardComponent,
-    SubjectCardComponent
+    SubjectCardComponent,
+    TabsComponent,
+    PeriodDetailsComponent,
+    SubjectFilesListComponent,
+    SubjectFlashcardListComponent,
+    SubjectDetailsComponent
   ],
   imports: [
     BrowserModule,

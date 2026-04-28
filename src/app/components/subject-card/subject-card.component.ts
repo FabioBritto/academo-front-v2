@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, HostListener, Input } from '@angular/core';
+import { Router } from '@angular/router';
 
 import type { SubjectDTO } from '../../model/subjects.model';
 
@@ -11,4 +12,16 @@ export class SubjectCardComponent {
   @Input({ required: true }) subject!: SubjectDTO;
 
   @Input() iconClass = 'bi bi-book-fill';
+
+  constructor(private readonly router: Router) {}
+
+  @HostListener('click')
+  onHostClick(): void {
+    void this.router.navigate(['/app/materias', this.subject.id]);
+  }
+
+  @HostListener('keydown.enter')
+  onEnter(): void {
+    void this.router.navigate(['/app/materias', this.subject.id]);
+  }
 }

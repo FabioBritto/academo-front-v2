@@ -1,0 +1,16 @@
+<div class="tabs" aria-label="Abas">
+  <ul class="tabs__list" role="tablist">
+    <li
+      *ngFor="let option of options"
+      class="tabs__item"
+      [class.tabs__item--active]="isActive(option)"
+      (click)="select(option.value)"
+      role="tab"
+      [attr.aria-selected]="isActive(option)"
+      tabindex="0"
+      (keydown.enter)="select(option.value)"
+    >
+      {{ option.label }}
+    </li>
+  </ul>
+</div>

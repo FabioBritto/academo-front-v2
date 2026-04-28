@@ -1,0 +1,62 @@
+<div class="subject-details">
+  <div class="subject-details__breadcrumb">Matérias &gt; {{ breadcrumbLabel }}</div>
+
+  <section class="subject-details__header">
+    <div class="subject-details__header-main">
+      <h2 class="subject-details__title">{{ subject?.name }}</h2>
+      <p class="subject-details__description">{{ subject?.description }}</p>
+
+      <div class="subject-details__meta">
+        <div class="subject-details__meta-item">
+          <span class="subject-details__meta-label">Tipo de cálculo:</span>
+          <span class="subject-details__meta-value">{{ calculationTypeLabel }}</span>
+        </div>
+
+        <div class="subject-details__meta-item subject-details__meta-item--right">
+          <span class="subject-details__meta-label">Média Final:</span>
+          <span class="subject-details__meta-value">{{ finalGradeDisplay }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="subject-details__header-actions">
+      <app-submit-button
+        label="Editar Matéria"
+        icon="bi bi-pencil-square"
+        type="button"
+      ></app-submit-button>
+    </div>
+  </section>
+
+  <div class="subject-details__content">
+    <div class="subject-details__left">
+      <div class="subject-details__tabs">
+        <app-tabs [value]="periodTab" [options]="periodOptions" (valueChange)="onPeriodTabChange($event)"></app-tabs>
+      </div>
+
+      <app-period-details [periodLabel]="periodTab === 'period1' ? '1' : '2'">
+        <div class="subject-details__period-summary">
+          <div class="subject-details__period-metric">
+            <span class="subject-details__period-metric-label">Nota:</span>
+            <span class="subject-details__period-metric-value">-</span>
+          </div>
+          <div class="subject-details__period-metric">
+            <span class="subject-details__period-metric-label">Peso:</span>
+            <span class="subject-details__period-metric-value">-</span>
+          </div>
+        </div>
+      </app-period-details>
+    </div>
+
+    <div class="subject-details__right">
+      <div class="subject-details__tabs">
+        <app-tabs [value]="contentTab" [options]="contentOptions" (valueChange)="onContentTabChange($event)"></app-tabs>
+      </div>
+
+      <ng-container [ngSwitch]="contentTab">
+        <app-subject-flashcard-list *ngSwitchCase="'flashcards'"></app-subject-flashcard-list>
+        <app-subject-files-list *ngSwitchDefault></app-subject-files-list>
+      </ng-container>
+    </div>
+  </div>
+</div>

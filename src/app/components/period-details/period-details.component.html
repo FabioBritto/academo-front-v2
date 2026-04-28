@@ -1,0 +1,21 @@
+<section class="period-details" aria-label="Detalhes do período">
+  <header class="period-details__header">
+    <h5 class="period-details__title">Lista de atividades</h5>
+
+    <app-submit-button
+      label="Filtro por tipo"
+      icon="bi bi-funnel-fill"
+      type="button"
+    ></app-submit-button>
+  </header>
+
+  <div class="period-details__summary">
+    <ng-content></ng-content>
+  </div>
+
+  <div class="period-details__body">
+    <div class="period-details__placeholder">
+      Conteúdo do período {{ periodLabel }} (placeholder)
+    </div>
+  </div>
+</section>
