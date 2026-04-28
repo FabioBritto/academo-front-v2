@@ -33,6 +33,11 @@
   color: color-mix(in srgb, var(--default-color) 75%, transparent);
 }
 
+.subject-files-list__empty {
+  margin: 0;
+  color: color-mix(in srgb, var(--default-color) 70%, transparent);
+}
+
 .subject-files-list__header ::ng-deep .btn-submit {
   width: auto;
   height: 40px;

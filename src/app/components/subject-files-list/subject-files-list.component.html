@@ -6,6 +6,12 @@
   </header>
 
   <div class="subject-files-list__body">
-    <div class="subject-files-list__placeholder">Conteúdo de arquivos (placeholder)</div>
+    <ng-container *ngIf="hasItems; else emptyState">
+      <div class="subject-files-list__placeholder">Conteúdo de arquivos (placeholder)</div>
+    </ng-container>
+
+    <ng-template #emptyState>
+      <p class="subject-files-list__empty">{{ emptyMessage }}</p>
+    </ng-template>
   </div>
 </section>

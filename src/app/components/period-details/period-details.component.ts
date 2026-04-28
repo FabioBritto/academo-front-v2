@@ -7,4 +7,8 @@ import { Component, Input } from '@angular/core';
 })
 export class PeriodDetailsComponent {
   @Input() periodLabel = '';
+
+  @Input() hasItems = false;
+
+  @Input() emptyMessage = 'Nenhuma atividade por enquanto.';
 }

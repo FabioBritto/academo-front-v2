@@ -1,8 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-subject-flashcard-list',
   templateUrl: './subject-flashcard-list.component.html',
   styleUrls: ['./subject-flashcard-list.component.scss']
 })
-export class SubjectFlashcardListComponent {}
+export class SubjectFlashcardListComponent {
+  @Input() hasItems = false;
+
+  @Input() emptyMessage = 'Nenhum flashcard por enquanto.';
+}

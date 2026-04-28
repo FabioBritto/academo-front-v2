@@ -26,6 +26,14 @@
   color: var(--heading-color);
 }
 
+.period-details__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
 .period-details__header ::ng-deep .btn-submit {
   width: auto;
   height: 40px;
@@ -43,4 +51,9 @@
   border-radius: 14px;
   padding: 24px;
   color: color-mix(in srgb, var(--default-color) 75%, transparent);
+}
+
+.period-details__empty {
+  margin: 0;
+  color: color-mix(in srgb, var(--default-color) 70%, transparent);
 }

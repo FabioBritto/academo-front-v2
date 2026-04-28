@@ -70,11 +70,11 @@ export class SubjectDetailsComponent implements OnInit {
     const type = this.subject?.calculationType;
 
     if (type === 'MEDIA_ARITMETICA') {
-      return 'média aritmética';
+      return 'Média Aritmética';
     }
 
     if (type === 'MEDIA_PONDERADA') {
-      return 'média ponderada';
+      return 'Média Ponderada';
     }
 
     return '-';

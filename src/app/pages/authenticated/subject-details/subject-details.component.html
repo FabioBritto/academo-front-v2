@@ -34,7 +34,11 @@
         <app-tabs [value]="periodTab" [options]="periodOptions" (valueChange)="onPeriodTabChange($event)"></app-tabs>
       </div>
 
-      <app-period-details [periodLabel]="periodTab === 'period1' ? '1' : '2'">
+      <app-period-details
+        [periodLabel]="periodTab === 'period1' ? '1' : '2'"
+        [hasItems]="false"
+        emptyMessage="Nenhuma atividade por enquanto."
+      >
         <div class="subject-details__period-summary">
           <div class="subject-details__period-metric">
             <span class="subject-details__period-metric-label">Nota:</span>
@@ -54,8 +58,16 @@
       </div>
 
       <ng-container [ngSwitch]="contentTab">
-        <app-subject-flashcard-list *ngSwitchCase="'flashcards'"></app-subject-flashcard-list>
-        <app-subject-files-list *ngSwitchDefault></app-subject-files-list>
+        <app-subject-flashcard-list
+          *ngSwitchCase="'flashcards'"
+          [hasItems]="false"
+          emptyMessage="Nenhum flashcard por enquanto."
+        ></app-subject-flashcard-list>
+        <app-subject-files-list
+          *ngSwitchDefault
+          [hasItems]="false"
+          emptyMessage="Nenhum arquivo por enquanto."
+        ></app-subject-files-list>
       </ng-container>
     </div>
   </div>
