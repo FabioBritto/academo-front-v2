@@ -1,0 +1,83 @@
+<div *ngIf="validationMessage" class="alert alert-warning" role="alert">
+  {{ validationMessage }}
+</div>
+
+<div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+  {{ errorMessage }}
+</div>
+
+<form [formGroup]="form" (ngSubmit)="$event.preventDefault(); submit()">
+  <div class="row g-4">
+    <div class="col-12">
+      <app-input-group
+        label="Nome"
+        icon="bi bi-book"
+        placeholder="Nome da matéria"
+        [invalid]="!!(form.get('name')?.touched && form.get('name')?.invalid)"
+        formControlName="name"
+      ></app-input-group>
+
+      <small class="text-danger" *ngIf="form.get('name')?.touched && form.get('name')?.hasError('required')">
+        O nome é obrigatório
+      </small>
+    </div>
+
+    <div class="col-12">
+      <app-input-group
+        label="Descrição"
+        icon="bi bi-card-text"
+        placeholder="Descrição da matéria (opcional)"
+        [textarea]="true"
+        [rows]="6"
+        [invalid]="!!(form.get('description')?.touched && form.get('description')?.invalid)"
+        formControlName="description"
+      ></app-input-group>
+    </div>
+
+    <div class="col-12" *ngIf="subject">
+      <div class="row g-3">
+        <div class="col-12 col-md-6">
+          <label class="subject-form__label" for="subjectPassingGrade">Nota mínima</label>
+          <input
+            id="subjectPassingGrade"
+            class="form-control subject-form__control"
+            type="number"
+            min="0.1"
+            max="10"
+            step="0.1"
+            formControlName="passingGrade"
+          />
+
+          <small
+            class="text-danger"
+            *ngIf="form.get('passingGrade')?.touched && (form.get('passingGrade')?.hasError('required') || form.get('passingGrade')?.hasError('min') || form.get('passingGrade')?.hasError('max'))"
+          >
+            Informe uma nota maior que 0 e menor ou igual a 10
+          </small>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <label class="subject-form__label" for="subjectCalculationType">Tipo de cálculo</label>
+          <select
+            id="subjectCalculationType"
+            class="form-select subject-form__control"
+            formControlName="calculationType"
+          >
+            <option *ngFor="let option of calculationTypeOptions" [value]="option.value">{{ option.label }}</option>
+          </select>
+
+          <small class="text-danger" *ngIf="form.get('calculationType')?.touched && form.get('calculationType')?.hasError('required')">
+            Selecione um tipo de cálculo
+          </small>
+        </div>
+
+        <div class="col-12">
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="subjectIsActive" formControlName="isActive" />
+            <label class="form-check-label" for="subjectIsActive">Ativo</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

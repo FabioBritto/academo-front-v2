@@ -19,6 +19,19 @@
     </div>
   </header>
 
+  <div class="group-view-card__subheader">
+    <div class="form-check form-switch group-view-card__inactive-switch">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        id="toggleGroupInactive"
+        [checked]="showInactive"
+        (change)="toggleShowInactive()"
+      />
+      <label class="form-check-label" for="toggleGroupInactive">Mostrar Inativos</label>
+    </div>
+  </div>
+
   <div class="group-view-card__body">
     <ng-container *ngIf="hasItems; else emptyState">
       <div class="group-view-card__list">

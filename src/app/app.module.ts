@@ -47,6 +47,8 @@ import { ActivateAccountPageComponent } from './pages/activate-account-page/acti
 import { ResetPasswordPageComponent } from './pages/reset-password/reset-password-page.component';
 import { SubjectViewCardComponent } from './components/subject-view-card/subject-view-card.component';
 import { SubjectCardComponent } from './components/subject-card/subject-card.component';
+import { SubjectFormComponent } from './components/subject-form/subject-form.component';
+import { SubjectUpsertModalComponent } from './components/subject-upsert-modal/subject-upsert-modal.component';
 import { TabsComponent } from './components/tabs/tabs.component';
 import { PeriodDetailsComponent } from './components/period-details/period-details.component';
 import { SubjectFilesListComponent } from './components/subject-files-list/subject-files-list.component';
@@ -95,6 +97,8 @@ import { SubjectDetailsComponent } from './pages/authenticated/subject-details/s
     ResetPasswordPageComponent,
     SubjectViewCardComponent,
     SubjectCardComponent,
+    SubjectFormComponent,
+    SubjectUpsertModalComponent,
     TabsComponent,
     PeriodDetailsComponent,
     SubjectFilesListComponent,

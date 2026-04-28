@@ -27,6 +27,22 @@
   gap: 12px;
 }
 
+.group-view-card__subheader {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px 12px 0;
+}
+
+.group-view-card__inactive-switch {
+  margin: 0;
+}
+
+.group-view-card__inactive-switch .form-check-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: color-mix(in srgb, var(--default-color) 80%, transparent);
+}
+
 .group-view-card__sort {
   flex-shrink: 0;
 }

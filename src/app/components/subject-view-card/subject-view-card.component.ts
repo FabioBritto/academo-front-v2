@@ -1,8 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import type { SubjectDTO } from '../../model/subjects.model';
 import { SubjectsService } from '../../services/subjects.service';
 import type { SortFilterOption } from '../sort-filters/sort-filters.component';
+import { SubjectUpsertModalComponent } from '../subject-upsert-modal/subject-upsert-modal.component';
 
 @Component({
   selector: 'app-subject-view-card',
@@ -11,6 +13,8 @@ import type { SortFilterOption } from '../sort-filters/sort-filters.component';
 })
 export class SubjectViewCardComponent implements OnInit {
   @Input() emptyMessage = 'Nenhuma matéria por aqui ainda.';
+
+  showInactive = false;
 
   sort = 'updatedAt,desc';
 
@@ -21,13 +25,18 @@ export class SubjectViewCardComponent implements OnInit {
     { label: 'Atualização (mais antiga)', value: 'updatedAt,asc' }
   ];
 
+  allSubjects: SubjectDTO[] = [];
+
   subjects: SubjectDTO[] = [];
 
   page = 0;
   pageSize = 12;
   totalPages = 0;
 
-  constructor(private readonly subjectsService: SubjectsService) {}
+  constructor(
+    private readonly modalService: NgbModal,
+    private readonly subjectsService: SubjectsService
+  ) {}
 
   get hasItems(): boolean {
     return this.subjects.length > 0;
@@ -46,14 +55,30 @@ export class SubjectViewCardComponent implements OnInit {
       })
       .subscribe({
         next: (page) => {
-          this.subjects = page.content;
+          this.allSubjects = page.content;
+          this.applyActiveFilter();
           this.totalPages = page.totalPages;
         },
         error: () => {
+          this.allSubjects = [];
           this.subjects = [];
           this.totalPages = 0;
         }
       });
+  }
+
+  applyActiveFilter(): void {
+    if (this.showInactive) {
+      this.subjects = this.allSubjects;
+      return;
+    }
+
+    this.subjects = this.allSubjects.filter((s) => s.isActive);
+  }
+
+  toggleShowInactive(): void {
+    this.showInactive = !this.showInactive;
+    this.applyActiveFilter();
   }
 
   onSortChange(nextSort: string): void {
@@ -73,5 +98,18 @@ export class SubjectViewCardComponent implements OnInit {
 
     this.page = nextPage;
     this.loadSubjects();
+  }
+
+  openNewSubjectModal(): void {
+    const modalRef = this.modalService.open(SubjectUpsertModalComponent, {
+      centered: true,
+      size: 'xl'
+    });
+
+    modalRef.closed.subscribe((result) => {
+      if (result) {
+        this.loadSubjects();
+      }
+    });
   }
 }

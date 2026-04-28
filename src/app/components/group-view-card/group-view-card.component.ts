@@ -14,6 +14,8 @@ import type { SortFilterOption } from '../sort-filters/sort-filters.component';
 export class GroupViewCardComponent {
   @Input() emptyMessage = 'Nenhum grupo por aqui ainda.';
 
+  showInactive = false;
+
   sort = 'updatedAt,desc';
 
   readonly sortOptions: SortFilterOption[] = [
@@ -22,6 +24,8 @@ export class GroupViewCardComponent {
     { label: 'Atualização (mais recente)', value: 'updatedAt,desc' },
     { label: 'Atualização (mais antiga)', value: 'updatedAt,asc' }
   ];
+
+  allGroups: GroupDTO[] = [];
 
   groups: GroupDTO[] = [];
 
@@ -49,14 +53,30 @@ export class GroupViewCardComponent {
       sort: [this.sort]
     }).subscribe({
       next: (page) => {
-        this.groups = page.content;
+        this.allGroups = page.content;
+        this.applyActiveFilter();
         this.totalPages = page.totalPages;
       },
       error: () => {
+        this.allGroups = [];
         this.groups = [];
         this.totalPages = 0;
       }
     });
+  }
+
+  applyActiveFilter(): void {
+    if (this.showInactive) {
+      this.groups = this.allGroups;
+      return;
+    }
+
+    this.groups = this.allGroups.filter((g) => g.isActive);
+  }
+
+  toggleShowInactive(): void {
+    this.showInactive = !this.showInactive;
+    this.applyActiveFilter();
   }
 
   onSortChange(nextSort: string): void {

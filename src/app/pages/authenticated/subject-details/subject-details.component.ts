@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import type { SubjectDTO } from '../../../model/subjects.model';
 import { SubjectsService } from '../../../services/subjects.service';
 import type { TabOption } from '../../../components/tabs/tabs.component';
+import { SubjectUpsertModalComponent } from '../../../components/subject-upsert-modal/subject-upsert-modal.component';
 
 @Component({
   selector: 'app-subject-details',
@@ -28,6 +30,7 @@ export class SubjectDetailsComponent implements OnInit {
 
   constructor(
     private readonly route: ActivatedRoute,
+    private readonly modalService: NgbModal,
     private readonly subjectsService: SubjectsService
   ) {}
 
@@ -50,6 +53,25 @@ export class SubjectDetailsComponent implements OnInit {
       },
       error: () => {
         this.subject = null;
+      }
+    });
+  }
+
+  openEditSubjectModal(): void {
+    if (!this.subject) {
+      return;
+    }
+
+    const modalRef = this.modalService.open(SubjectUpsertModalComponent, {
+      centered: true,
+      size: 'xl'
+    });
+
+    modalRef.componentInstance.subject = this.subject;
+
+    modalRef.closed.subscribe((result) => {
+      if (result && this.subject) {
+        this.loadSubject(this.subject.id);
       }
     });
   }
