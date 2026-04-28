@@ -45,6 +45,8 @@ import { PaymentHistoryCardComponent } from './components/payment-history-card/p
 import { ActivityNotificationComponent } from './components/activity-notification/activity-notification.component';
 import { ActivateAccountPageComponent } from './pages/activate-account-page/activate-account-page.component';
 import { ResetPasswordPageComponent } from './pages/reset-password/reset-password-page.component';
+import { SubjectViewCardComponent } from './components/subject-view-card/subject-view-card.component';
+import { SubjectCardComponent } from './components/subject-card/subject-card.component';
 
 @NgModule({
   declarations: [
@@ -85,7 +87,9 @@ import { ResetPasswordPageComponent } from './pages/reset-password/reset-passwor
     PaymentHistoryCardComponent,
     ActivityNotificationComponent,
     ActivateAccountPageComponent,
-    ResetPasswordPageComponent
+    ResetPasswordPageComponent,
+    SubjectViewCardComponent,
+    SubjectCardComponent
   ],
   imports: [
     BrowserModule,

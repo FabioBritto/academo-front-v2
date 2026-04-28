@@ -1,0 +1,39 @@
+<section class="subject-view-card" aria-label="Matérias">
+  <header class="subject-view-card__header">
+    <h4>Matérias</h4>
+
+    <div class="subject-view-card__header-action">
+      <app-sort-filters
+        class="subject-view-card__sort"
+        [value]="sort"
+        [options]="sortOptions"
+        (valueChange)="onSortChange($event)"
+      ></app-sort-filters>
+
+      <app-submit-button
+        label="Nova Matéria"
+        icon="bi bi-plus-circle-fill"
+        type="button"
+      ></app-submit-button>
+    </div>
+  </header>
+
+  <div class="subject-view-card__body">
+    <ng-container *ngIf="hasItems; else emptyState">
+      <div class="subject-view-card__list">
+        <app-subject-card *ngFor="let subject of subjects" [subject]="subject"></app-subject-card>
+      </div>
+
+      <app-pagination-controls
+        *ngIf="totalPages > 1"
+        [page]="page"
+        [totalPages]="totalPages"
+        (pageChange)="onPageChange($event)"
+      ></app-pagination-controls>
+    </ng-container>
+
+    <ng-template #emptyState>
+      <p class="subject-view-card__empty">{{ emptyMessage }}</p>
+    </ng-template>
+  </div>
+</section>
