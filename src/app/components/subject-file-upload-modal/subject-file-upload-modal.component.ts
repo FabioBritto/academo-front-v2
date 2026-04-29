@@ -29,6 +29,14 @@ export class SubjectFileUploadModalComponent {
     private readonly filesService: FilesService
   ) {}
 
+  openPicker(input: HTMLInputElement | null): void {
+    if (!input || this.isSubmitting) {
+      return;
+    }
+
+    input.click();
+  }
+
   onFileChange(event: Event): void {
     const input = event.target as HTMLInputElement | null;
     const file = input?.files?.item(0) ?? null;
@@ -38,7 +46,10 @@ export class SubjectFileUploadModalComponent {
     this.errorMessage = '';
 
     if (file) {
-      this.validateFile(file);
+      const ok = this.validateFile(file);
+      if (ok) {
+        this.upload();
+      }
     }
   }
 
