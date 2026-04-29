@@ -14,6 +14,7 @@ import { LandingPageComponent } from './pages/landing-page/landing-page.componen
 import { PillButtonComponent } from './components/pill-button/pill-button.component';
 import { FormCardComponent } from './components/form-card/form-card.component';
 import { AppSubmitButtonComponent } from './components/app-submit-button/app-submit-button.component';
+import { DeleteButtonComponent } from './components/delete-button/delete-button.component';
 import { InputGroupComponent } from './components/input-group/input-group.component';
 import { RegisterModalComponent } from './components/register-modal/register-modal.component';
 import { LoginModalComponent } from './components/login-modal/login-modal.component';
@@ -74,6 +75,7 @@ import { SubjectDetailsComponent } from './pages/authenticated/subject-details/s
     PillButtonComponent,
     FormCardComponent,
     AppSubmitButtonComponent,
+    DeleteButtonComponent,
     InputGroupComponent,
     RegisterModalComponent,
     LoginModalComponent,

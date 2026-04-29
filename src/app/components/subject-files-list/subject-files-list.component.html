@@ -11,8 +11,51 @@
   </header>
 
   <div class="subject-files-list__body">
-    <ng-container *ngIf="hasItems; else emptyState">
-      <div class="subject-files-list__placeholder">Conteúdo de arquivos (placeholder)</div>
+    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="isLoading" class="subject-files-list__loading">Carregando...</div>
+
+    <ng-container *ngIf="!isLoading">
+      <ng-container *ngIf="hasItems; else emptyState">
+        <div class="subject-files-list__items">
+          <article class="subject-files-list__item" *ngFor="let f of files">
+            <div class="subject-files-list__item-main">
+              <div class="subject-files-list__item-name">{{ f.fileName }}</div>
+              <div class="subject-files-list__item-meta">{{ formatBytes(f.size) }} • {{ f.fileType }}</div>
+            </div>
+
+            <div class="subject-files-list__item-actions">
+              <app-submit-button
+                label="Download"
+                icon="bi bi-download"
+                type="button"
+                [disabled]="isLoading"
+                (click)="download(f)"
+              ></app-submit-button>
+
+              <app-delete-button
+                label="Excluir"
+                icon="bi bi-trash-fill"
+                [disabled]="isLoading"
+                [isSubmitting]="isLoading"
+                confirmTitle="Excluir arquivo"
+                [confirmMessage]="'Tem certeza que deseja excluir o arquivo ' + f.fileName + '?'"
+                (confirmed)="delete(f)"
+              ></app-delete-button>
+            </div>
+          </article>
+        </div>
+
+        <app-pagination-controls
+          *ngIf="totalPages > 1"
+          [page]="page"
+          [totalPages]="totalPages"
+          [disabled]="isLoading"
+          (pageChange)="onPageChange($event)"
+        ></app-pagination-controls>
+      </ng-container>
     </ng-container>
 
     <ng-template #emptyState>

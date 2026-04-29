@@ -77,7 +77,6 @@
         <app-subject-files-list
           *ngSwitchDefault
           [subjectId]="subject?.id || 0"
-          [hasItems]="false"
           emptyMessage="Nenhum arquivo por enquanto."
           (changed)="onFilesChanged()"
         ></app-subject-files-list>
