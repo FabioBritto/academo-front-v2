@@ -5,7 +5,6 @@ import type { GroupDTO } from '../../model/groups.model';
 import { GroupsService } from '../../services/groups.service';
 import { ToastService } from '../../services/toast.service';
 import { getHttpErrorMessage } from '../../utils/http-error.util';
-import { ConfirmActionModalComponent } from '../confirm-action-modal/confirm-action-modal.component';
 import { GroupUpsertModalComponent } from '../group-upsert-modal/group-upsert-modal.component';
 
 @Component({
@@ -38,39 +37,26 @@ export class GroupDetailsModalComponent implements OnInit {
       return;
     }
 
-    const modalRef = this.modalService.open(ConfirmActionModalComponent, {
-      centered: true
-    });
+    this.isDeleting = true;
 
-    modalRef.componentInstance.title = 'Excluir grupo';
-    modalRef.componentInstance.message = `Tem certeza que deseja excluir o grupo "${this.group.name}"?`;
-    modalRef.componentInstance.confirmLabel = 'Excluir';
-    modalRef.componentInstance.cancelLabel = 'Cancelar';
-
-    modalRef.closed.subscribe((confirmed) => {
-      if (confirmed === true) {
-        this.isDeleting = true;
-
-        this.groupsService.delete(this.groupId).subscribe({
-          next: () => {
-            this.isDeleting = false;
-            this.toastService.show('Grupo excluído com sucesso.', {
-              classname: 'bg-success text-light',
-              delay: 3500,
-              autohide: true
-            });
-            this.activeModal.close('deleted');
-          },
-          error: (err: unknown) => {
-            this.isDeleting = false;
-            this.toastService.show(getHttpErrorMessage(err, {
-              fallback: 'Não foi possível excluir o grupo. Tente novamente.'
-            }), {
-              classname: 'bg-danger text-light',
-              delay: 4500,
-              autohide: true
-            });
-          }
+    this.groupsService.delete(this.groupId).subscribe({
+      next: () => {
+        this.isDeleting = false;
+        this.toastService.show('Grupo excluído com sucesso.', {
+          classname: 'bg-success text-light',
+          delay: 3500,
+          autohide: true
+        });
+        this.activeModal.close('deleted');
+      },
+      error: (err: unknown) => {
+        this.isDeleting = false;
+        this.toastService.show(getHttpErrorMessage(err, {
+          fallback: 'Não foi possível excluir o grupo. Tente novamente.'
+        }), {
+          classname: 'bg-danger text-light',
+          delay: 4500,
+          autohide: true
         });
       }
     });

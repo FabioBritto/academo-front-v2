@@ -127,11 +127,6 @@ export class SubjectFilesListComponent implements OnInit, OnChanges {
   }
 
   delete(file: FileDTO): void {
-    const ok = window.confirm(`Tem certeza que deseja excluir o arquivo "${file.fileName}"?`);
-    if (!ok) {
-      return;
-    }
-
     this.isLoading = true;
     this.errorMessage = '';
 

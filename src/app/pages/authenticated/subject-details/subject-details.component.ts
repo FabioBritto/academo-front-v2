@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import type { SubjectDTO } from '../../../model/subjects.model';
 import { SubjectsService } from '../../../services/subjects.service';
+import { ToastService } from '../../../services/toast.service';
 import type { TabOption } from '../../../components/tabs/tabs.component';
 import { SubjectUpsertModalComponent } from '../../../components/subject-upsert-modal/subject-upsert-modal.component';
+import { getHttpErrorMessage } from '../../../utils/http-error.util';
 
 @Component({
   selector: 'app-subject-details',
@@ -14,6 +17,8 @@ import { SubjectUpsertModalComponent } from '../../../components/subject-upsert-
 })
 export class SubjectDetailsComponent implements OnInit {
   subject: SubjectDTO | null = null;
+
+  isDeleting = false;
 
   periodTab = 'period1';
   contentTab = 'files';
@@ -30,8 +35,10 @@ export class SubjectDetailsComponent implements OnInit {
 
   constructor(
     private readonly route: ActivatedRoute,
+    private readonly router: Router,
     private readonly modalService: NgbModal,
-    private readonly subjectsService: SubjectsService
+    private readonly subjectsService: SubjectsService,
+    private readonly toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -53,6 +60,36 @@ export class SubjectDetailsComponent implements OnInit {
       },
       error: () => {
         this.subject = null;
+      }
+    });
+  }
+
+  onDeleteSubject(): void {
+    if (!this.subject || this.isDeleting) {
+      return;
+    }
+
+    this.isDeleting = true;
+
+    this.subjectsService.delete(this.subject.id).subscribe({
+      next: () => {
+        this.isDeleting = false;
+        this.toastService.show('Matéria excluída com sucesso.', {
+          classname: 'bg-success text-light',
+          delay: 3500,
+          autohide: true
+        });
+        this.router.navigate(['/app/materias']);
+      },
+      error: (err: unknown) => {
+        this.isDeleting = false;
+        this.toastService.show(getHttpErrorMessage(err, {
+          fallback: 'Não foi possível excluir a matéria. Tente novamente.'
+        }), {
+          classname: 'bg-danger text-light',
+          delay: 4500,
+          autohide: true
+        });
       }
     });
   }

@@ -36,6 +36,17 @@
         type="button"
         (click)="openEditSubjectModal()"
       ></app-submit-button>
+
+      <app-delete-button
+        class="mt-2"
+        label="Excluir Matéria"
+        icon="bi bi-trash-fill"
+        [disabled]="isDeleting || !subject"
+        [isSubmitting]="isDeleting"
+        confirmTitle="Excluir matéria"
+        [confirmMessage]="subject ? ('Tem certeza que deseja excluir a matéria ' + subject.name + '?') : ''"
+        (confirmed)="onDeleteSubject()"
+      ></app-delete-button>
     </div>
   </section>
 

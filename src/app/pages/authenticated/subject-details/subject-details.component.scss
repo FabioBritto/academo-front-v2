@@ -24,6 +24,13 @@
   margin-bottom: 24px;
 }
 
+.subject-details__header-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
 .subject-details__title {
   margin: 0;
   font-size: 26px;
@@ -69,7 +76,15 @@
 }
 
 .subject-details__header-actions ::ng-deep .btn-submit {
-  width: auto;
+  width: 200px;
+  height: 44px;
+  padding: 0 16px;
+  font-size: 14px;
+  border-radius: 12px;
+}
+
+.subject-details__header-actions ::ng-deep .btn-delete {
+  width: 200px;
   height: 44px;
   padding: 0 16px;
   font-size: 14px;
