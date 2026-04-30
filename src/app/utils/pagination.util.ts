@@ -4,6 +4,7 @@ export interface PageRequest {
   page?: number;
   size?: number;
   sort?: string[];
+  isActive?: boolean;
 }
 
 export function withPageParams(params: HttpParams = new HttpParams(), pageRequest?: PageRequest): HttpParams {
@@ -23,6 +24,10 @@ export function withPageParams(params: HttpParams = new HttpParams(), pageReques
     pageRequest.sort.forEach((s) => {
       next = next.append('sort', s);
     });
+  }
+
+  if (pageRequest.isActive !== undefined) {
+    next = next.set('isActive', String(pageRequest.isActive));
   }
 
   return next;

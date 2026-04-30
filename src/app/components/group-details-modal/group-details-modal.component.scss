@@ -31,7 +31,15 @@
 }
 
 .group-details-modal__actions ::ng-deep .btn-submit {
-  width: 100%;
+  width: 200px;
+  height: 44px;
+  padding: 0 16px;
+  font-size: 14px;
+  border-radius: 12px;
+}
+
+.group-details-modal__actions ::ng-deep .btn-delete {
+  width: 200px;
   height: 44px;
   padding: 0 16px;
   font-size: 14px;
@@ -67,6 +75,10 @@
   }
 
   .group-details-modal__actions ::ng-deep .btn-submit {
+    width: auto;
+  }
+
+  .group-details-modal__actions ::ng-deep .btn-delete {
     width: auto;
   }
 }

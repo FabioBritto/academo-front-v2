@@ -1,0 +1,17 @@
+<section class="subject-flashcard-list" aria-label="Flashcards">
+  <header class="subject-flashcard-list__header">
+    <h5 class="subject-flashcard-list__title">Lista de Flashcards</h5>
+
+    <app-submit-button label="Novo Flashcard" icon="bi bi-plus-circle-fill" type="button"></app-submit-button>
+  </header>
+
+  <div class="subject-flashcard-list__body">
+    <ng-container *ngIf="hasItems; else emptyState">
+      <div class="subject-flashcard-list__placeholder">Conteúdo de flashcards (placeholder)</div>
+    </ng-container>
+
+    <ng-template #emptyState>
+      <p class="subject-flashcard-list__empty">{{ emptyMessage }}</p>
+    </ng-template>
+  </div>
+</section>

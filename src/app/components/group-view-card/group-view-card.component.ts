@@ -14,6 +14,8 @@ import type { SortFilterOption } from '../sort-filters/sort-filters.component';
 export class GroupViewCardComponent {
   @Input() emptyMessage = 'Nenhum grupo por aqui ainda.';
 
+  showInactive = false;
+
   sort = 'updatedAt,desc';
 
   readonly sortOptions: SortFilterOption[] = [
@@ -46,7 +48,8 @@ export class GroupViewCardComponent {
     this.groupsService.listPaged({
       page: this.page,
       size: this.pageSize,
-      sort: [this.sort]
+      sort: [this.sort],
+      isActive: this.showInactive ? undefined : true
     }).subscribe({
       next: (page) => {
         this.groups = page.content;
@@ -57,6 +60,12 @@ export class GroupViewCardComponent {
         this.totalPages = 0;
       }
     });
+  }
+
+  toggleShowInactive(): void {
+    this.showInactive = !this.showInactive;
+    this.page = 0;
+    this.loadGroups();
   }
 
   onSortChange(nextSort: string): void {

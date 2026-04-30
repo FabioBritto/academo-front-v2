@@ -1,4 +1,10 @@
 <div class="group-card" role="button" tabindex="0">
+  <span
+    class="status-dot"
+    [class.status-dot--active]="group.isActive"
+    [class.status-dot--inactive]="!group.isActive"
+    [attr.title]="group.isActive ? 'Ativa' : 'Inativa'"
+  ></span>
   <div class="group-card__icon">
     <i [class]="iconClass" aria-hidden="true"></i>
   </div>

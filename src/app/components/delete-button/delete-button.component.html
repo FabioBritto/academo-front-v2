@@ -1,0 +1,4 @@
+<button class="btn-delete" type="button" [disabled]="disabled || isSubmitting" (click)="openConfirm()">
+  <span>{{ label }}</span>
+  <i *ngIf="icon" [class]="icon" aria-hidden="true"></i>
+</button>

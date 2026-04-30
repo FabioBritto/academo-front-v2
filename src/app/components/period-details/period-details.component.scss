@@ -1,0 +1,59 @@
+:host {
+  display: block;
+}
+
+.period-details {
+  background: var(--surface-color);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 12px 30px color-mix(in srgb, var(--default-color) 10%, transparent);
+}
+
+.period-details__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid color-mix(in srgb, var(--default-color) 12%, transparent);
+}
+
+.period-details__title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--heading-color);
+}
+
+.period-details__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.period-details__header ::ng-deep .btn-submit {
+  width: auto;
+  height: 40px;
+  padding: 0 14px;
+  font-size: 13px;
+  border-radius: 12px;
+}
+
+.period-details__summary {
+  margin-bottom: 12px;
+}
+
+.period-details__placeholder {
+  border: 1px dashed color-mix(in srgb, var(--default-color) 25%, transparent);
+  border-radius: 14px;
+  padding: 24px;
+  color: color-mix(in srgb, var(--default-color) 75%, transparent);
+}
+
+.period-details__empty {
+  margin: 0;
+  color: color-mix(in srgb, var(--default-color) 70%, transparent);
+}

@@ -1,0 +1,35 @@
+<section class="period-details" aria-label="Detalhes do período">
+  <header class="period-details__header">
+    <h5 class="period-details__title">Lista de atividades</h5>
+
+    <div class="period-details__actions">
+      <app-submit-button
+        label="Filtrar por Tipo"
+        icon="bi bi-funnel-fill"
+        type="button"
+      ></app-submit-button>
+
+      <app-submit-button
+        label="Nova Atividade"
+        icon="bi bi-plus-circle-fill"
+        type="button"
+      ></app-submit-button>
+    </div>
+  </header>
+
+  <div class="period-details__summary">
+    <ng-content></ng-content>
+  </div>
+
+  <div class="period-details__body">
+    <ng-container *ngIf="hasItems; else emptyState">
+      <div class="period-details__placeholder">
+        Conteúdo do período {{ periodLabel }} (placeholder)
+      </div>
+    </ng-container>
+
+    <ng-template #emptyState>
+      <p class="period-details__empty">{{ emptyMessage }}</p>
+    </ng-template>
+  </div>
+</section>

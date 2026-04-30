@@ -5,6 +5,7 @@ import { LandingPageComponent } from './pages/landing-page/landing-page.componen
 import { HomeComponent } from './pages/home/home.component';
 import { AuthenticatedLayoutComponent } from './pages/authenticated/authenticated-layout/authenticated-layout.component';
 import { SubjectsComponent } from './pages/authenticated/subjects/subjects.component';
+import { SubjectDetailsComponent } from './pages/authenticated/subject-details/subject-details.component';
 import { ActivitiesComponent } from './pages/authenticated/activities/activities.component';
 import { FilesComponent } from './pages/authenticated/files/files.component';
 import { FlashcardsComponent } from './pages/authenticated/flashcards/flashcards.component';
@@ -38,6 +39,10 @@ const routes: Routes = [
       {
         path: 'materias',
         component: SubjectsComponent
+      },
+      {
+        path: 'materias/:id',
+        component: SubjectDetailsComponent
       },
       {
         path: 'atividades',

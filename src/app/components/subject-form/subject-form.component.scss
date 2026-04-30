@@ -1,0 +1,27 @@
+.subject-form__label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--heading-color);
+  margin-bottom: 10px;
+}
+
+.subject-form__control {
+  height: 56px;
+  border-radius: 14px;
+  border: 2px solid transparent;
+  background: color-mix(in srgb, var(--default-color) 4%, transparent);
+  transition: all 0.3s ease;
+}
+
+.subject-form__control:focus {
+  outline: none;
+  background: var(--surface-color);
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-color) 12%, transparent);
+}
+
+.form-check-label {
+  font-weight: 600;
+  color: var(--heading-color);
+}

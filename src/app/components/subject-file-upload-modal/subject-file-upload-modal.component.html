@@ -1,0 +1,66 @@
+<div class="modal-header">
+  <h5 class="modal-title">Upload de arquivo</h5>
+
+  <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
+</div>
+
+<div class="modal-body">
+  <div *ngIf="validationMessage" class="alert alert-warning" role="alert">
+    {{ validationMessage }}
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+    {{ errorMessage }}
+  </div>
+
+  <div class="subject-file-upload-modal__content">
+    <input
+      #fileInput
+      class="subject-file-upload-modal__file-input"
+      type="file"
+      [accept]="accept"
+      (change)="onFileChange($event)"
+    />
+
+    <button
+      type="button"
+      class="subject-file-upload-modal__dropzone"
+      [disabled]="isSubmitting"
+      (click)="openPicker(fileInput)"
+    >
+      <div class="subject-file-upload-modal__dropzone-icon">
+        <i class="bi bi-cloud-arrow-up-fill" aria-hidden="true"></i>
+      </div>
+
+      <div class="subject-file-upload-modal__dropzone-title">Clique para selecionar um arquivo</div>
+      <div class="subject-file-upload-modal__dropzone-subtitle">
+        Limite: {{ maxSizeLabel }}
+        <span class="subject-file-upload-modal__dot">•</span>
+        Tipos suportados: {{ supportedTypesLabel }}
+      </div>
+    </button>
+
+    <div *ngIf="selectedFile" class="subject-file-upload-modal__selected">
+      <span class="subject-file-upload-modal__selected-label">Selecionado:</span>
+      <span class="subject-file-upload-modal__selected-name">{{ selectedFile.name }}</span>
+    </div>
+  </div>
+
+  <div class="subject-file-upload-modal__actions mt-4" appEqualizeModalButtons>
+    <app-submit-button
+      type="button"
+      label="Cancelar"
+      icon=""
+      [disabled]="isSubmitting"
+      (click)="close()"
+    ></app-submit-button>
+
+    <app-submit-button
+      type="button"
+      label="Enviar"
+      icon=""
+      [disabled]="isSubmitting"
+      (click)="openPicker(fileInput)"
+    ></app-submit-button>
+  </div>
+</div>

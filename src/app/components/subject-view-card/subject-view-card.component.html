@@ -1,41 +1,41 @@
-<section class="group-view-card" aria-label="Grupos">
-  <header class="group-view-card__header">
-    <h4>Grupos</h4>
+<section class="subject-view-card" aria-label="Matérias">
+  <header class="subject-view-card__header">
+    <h4>Matérias</h4>
 
-    <div class="group-view-card__header-action">
+    <div class="subject-view-card__header-action">
       <app-sort-filters
-        class="group-view-card__sort"
+        class="subject-view-card__sort"
         [value]="sort"
         [options]="sortOptions"
         (valueChange)="onSortChange($event)"
       ></app-sort-filters>
 
       <app-submit-button
-        label="Novo Grupo"
+        label="Nova Matéria"
         icon="bi bi-plus-circle-fill"
         type="button"
-        (click)="openNewGroupModal()"
+        (click)="openNewSubjectModal()"
       ></app-submit-button>
     </div>
   </header>
 
-  <div class="group-view-card__subheader">
-    <div class="form-check form-switch group-view-card__inactive-switch">
+  <div class="subject-view-card__subheader">
+    <div class="form-check form-switch subject-view-card__inactive-switch">
       <input
         class="form-check-input"
         type="checkbox"
-        id="toggleGroupInactive"
+        id="toggleSubjectInactive"
         [checked]="showInactive"
         (change)="toggleShowInactive()"
       />
-      <label class="form-check-label" for="toggleGroupInactive">Mostrar Inativos</label>
+      <label class="form-check-label" for="toggleSubjectInactive">Mostrar Inativos</label>
     </div>
   </div>
 
-  <div class="group-view-card__body">
+  <div class="subject-view-card__body">
     <ng-container *ngIf="hasItems; else emptyState">
-      <div class="group-view-card__list">
-        <app-group-card *ngFor="let group of groups" [group]="group" (changed)="loadGroups()"></app-group-card>
+      <div class="subject-view-card__list">
+        <app-subject-card *ngFor="let subject of subjects" [subject]="subject"></app-subject-card>
       </div>
 
       <app-pagination-controls
@@ -47,7 +47,7 @@
     </ng-container>
 
     <ng-template #emptyState>
-      <p class="group-view-card__empty">{{ emptyMessage }}</p>
+      <p class="subject-view-card__empty">{{ emptyMessage }}</p>
     </ng-template>
   </div>
 </section>

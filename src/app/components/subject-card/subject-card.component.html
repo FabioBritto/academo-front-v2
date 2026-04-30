@@ -1,0 +1,14 @@
+<div class="subject-card" role="button" tabindex="0">
+  <span
+    class="status-dot"
+    [class.status-dot--active]="subject.isActive"
+    [class.status-dot--inactive]="!subject.isActive"
+    [attr.title]="subject.isActive ? 'Ativa' : 'Inativa'"
+  ></span>
+  <div class="subject-card__icon">
+    <i [class]="iconClass" aria-hidden="true"></i>
+  </div>
+
+  <h4 class="subject-card__title">{{ subject.name }}</h4>
+  <p class="subject-card__description">{{ subject.description }}</p>
+</div>

@@ -1,4 +1,4 @@
-.group-card {
+.subject-card {
   background: #fff;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 14px;
@@ -11,7 +11,6 @@
   display: flex;
   flex-direction: column;
   transition: all 0.3s ease;
-  cursor: pointer;
 }
 
 .status-dot {
@@ -35,17 +34,17 @@
   background-color: #adb5bd;
 }
 
-.group-card:hover {
+.subject-card:hover {
   background-color: color-mix(in srgb, var(--accent-color), transparent 92%);
   border-color: color-mix(in srgb, var(--accent-color), transparent 70%);
   transform: translateX(4px);
 }
 
-.group-card:hover .group-card__title {
+.subject-card:hover .subject-card__title {
   color: var(--accent-color);
 }
 
-.group-card__icon {
+.subject-card__icon {
   width: 44px;
   height: 44px;
   border-radius: 12px;
@@ -61,13 +60,13 @@
   }
 }
 
-.group-card__title {
+.subject-card__title {
   margin: 0 0 8px;
   font-size: 1.05rem;
   font-weight: 700;
 }
 
-.group-card__description {
+.subject-card__description {
   margin: 0;
   color: #5b6169;
   line-height: 1.35;

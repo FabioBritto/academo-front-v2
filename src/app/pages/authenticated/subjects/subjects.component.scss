@@ -1,1 +1,9 @@
+.app-subjects {
+  padding: 32px;
+}
 
+@media (max-width: 768px) {
+  .app-subjects {
+    padding: 20px;
+  }
+}

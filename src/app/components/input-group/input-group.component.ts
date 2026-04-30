@@ -29,6 +29,12 @@ export class InputGroupComponent implements ControlValueAccessor {
 
   @Input() type = 'text';
 
+  @Input() inputMode?: string;
+
+  @Input() pattern?: string;
+
+  @Input() maxLength?: number;
+
   @Input() showPasswordToggle = false;
 
   @Input() textarea = false;
