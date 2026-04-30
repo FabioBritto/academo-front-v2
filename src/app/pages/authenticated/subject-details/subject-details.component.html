@@ -1,5 +1,9 @@
 <div class="subject-details">
-  <div class="subject-details__breadcrumb">Matérias &gt; {{ breadcrumbLabel }}</div>
+  <div class="subject-details__breadcrumb">
+    <a class="subject-details__breadcrumb-link" [routerLink]="['/app/materias']">Matérias</a>
+    <span class="subject-details__breadcrumb-sep">&gt;</span>
+    <span>{{ breadcrumbLabel }}</span>
+  </div>
 
   <section class="subject-details__header">
     <div class="subject-details__header-main">
