@@ -26,11 +26,68 @@
   color: var(--heading-color);
 }
 
-.subject-flashcard-list__placeholder {
-  border: 1px dashed color-mix(in srgb, var(--default-color) 25%, transparent);
-  border-radius: 14px;
-  padding: 24px;
+.subject-flashcard-list__loading {
+  padding: 12px;
   color: color-mix(in srgb, var(--default-color) 75%, transparent);
+}
+
+.subject-flashcard-list__items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.subject-flashcard-list__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--default-color) 12%, transparent);
+  background: color-mix(in srgb, var(--default-color) 2%, transparent);
+}
+
+.subject-flashcard-list__item-main {
+  min-width: 0;
+}
+
+.subject-flashcard-list__item-name {
+  font-weight: 700;
+  color: var(--heading-color);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.subject-flashcard-list__item-meta {
+  font-size: 13px;
+  color: color-mix(in srgb, var(--default-color) 75%, transparent);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.subject-flashcard-list__item-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+.subject-flashcard-list__item-actions ::ng-deep .btn-submit,
+.subject-flashcard-list__item-actions ::ng-deep .btn-delete {
+  width: auto;
+  height: 40px;
+  padding: 0 14px;
+  font-size: 13px;
+  border-radius: 12px;
+}
+
+.subject-flashcard-list__item-actions ::ng-deep .btn-submit i,
+.subject-flashcard-list__item-actions ::ng-deep .btn-delete i {
+  font-size: 16px;
 }
 
 .subject-flashcard-list__empty {

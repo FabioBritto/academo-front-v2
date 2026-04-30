@@ -125,6 +125,10 @@ export class SubjectDetailsComponent implements OnInit {
     // Placeholder: when files list is implemented, trigger refresh here.
   }
 
+  onFlashcardsChanged(): void {
+    // Placeholder: when flashcards list is implemented, trigger refresh here.
+  }
+
   get breadcrumbLabel(): string {
     return this.subject?.name ?? 'Carregando...';
   }

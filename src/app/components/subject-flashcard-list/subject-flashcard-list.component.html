@@ -1,13 +1,61 @@
 <section class="subject-flashcard-list" aria-label="Flashcards">
   <header class="subject-flashcard-list__header">
-    <h5 class="subject-flashcard-list__title">Lista de Flashcards</h5>
+    <h5 class="subject-flashcard-list__title">Lista de flashcards</h5>
 
-    <app-submit-button label="Novo Flashcard" icon="bi bi-plus-circle-fill" type="button"></app-submit-button>
+    <app-submit-button
+      label="Novo Flashcard"
+      icon="bi bi-plus-circle-fill"
+      type="button"
+      (click)="openCreateFlashcardModal()"
+    ></app-submit-button>
   </header>
 
   <div class="subject-flashcard-list__body">
-    <ng-container *ngIf="hasItems; else emptyState">
-      <div class="subject-flashcard-list__placeholder">Conteúdo de flashcards (placeholder)</div>
+    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="isLoading" class="subject-flashcard-list__loading">Carregando...</div>
+
+    <ng-container *ngIf="!isLoading">
+      <ng-container *ngIf="hasItems; else emptyState">
+        <div class="subject-flashcard-list__items">
+          <article class="subject-flashcard-list__item" *ngFor="let c of flashcards">
+            <div class="subject-flashcard-list__item-main">
+              <div class="subject-flashcard-list__item-name">{{ c.frontPart }}</div>
+              <div class="subject-flashcard-list__item-meta">Nível: {{ c.level }}</div>
+            </div>
+
+            <div class="subject-flashcard-list__item-actions">
+              <app-submit-button
+                label="Expandir"
+                icon="bi bi-arrows-angle-expand"
+                type="button"
+                [disabled]="isLoading"
+                (click)="openExpandModal(c)"
+              ></app-submit-button>
+
+              <app-delete-button
+                label="Excluir"
+                icon="bi bi-trash-fill"
+                [disabled]="isLoading"
+                [isSubmitting]="isLoading"
+                confirmTitle="Excluir flashcard"
+                confirmMessage="Tem certeza que deseja excluir este flashcard?"
+                (confirmed)="deleteFlashcard(c)"
+              ></app-delete-button>
+            </div>
+          </article>
+        </div>
+
+        <app-pagination-controls
+          *ngIf="totalPages > 1"
+          [page]="page"
+          [totalPages]="totalPages"
+          [disabled]="isLoading"
+          (pageChange)="onPageChange($event)"
+        ></app-pagination-controls>
+      </ng-container>
     </ng-container>
 
     <ng-template #emptyState>

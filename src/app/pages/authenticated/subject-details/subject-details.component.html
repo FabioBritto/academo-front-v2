@@ -86,8 +86,9 @@
       <ng-container [ngSwitch]="contentTab">
         <app-subject-flashcard-list
           *ngSwitchCase="'flashcards'"
-          [hasItems]="false"
+          [subjectId]="subject?.id || 0"
           emptyMessage="Nenhum flashcard por enquanto."
+          (changed)="onFlashcardsChanged()"
         ></app-subject-flashcard-list>
         <app-subject-files-list
           *ngSwitchDefault

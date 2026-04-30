@@ -56,6 +56,8 @@ import { PeriodDetailsComponent } from './components/period-details/period-detai
 import { SubjectFilesListComponent } from './components/subject-files-list/subject-files-list.component';
 import { SubjectFlashcardListComponent } from './components/subject-flashcard-list/subject-flashcard-list.component';
 import { SubjectDetailsComponent } from './pages/authenticated/subject-details/subject-details.component';
+import { FlashcardFormComponent } from './components/flashcard-form/flashcard-form.component';
+import { FlashcardUpsertModalComponent } from './components/flashcard-upsert-modal/flashcard-upsert-modal.component';
 
 @NgModule({
   declarations: [
@@ -107,7 +109,9 @@ import { SubjectDetailsComponent } from './pages/authenticated/subject-details/s
     PeriodDetailsComponent,
     SubjectFilesListComponent,
     SubjectFlashcardListComponent,
-    SubjectDetailsComponent
+    SubjectDetailsComponent,
+    FlashcardFormComponent,
+    FlashcardUpsertModalComponent
   ],
   imports: [
     BrowserModule,

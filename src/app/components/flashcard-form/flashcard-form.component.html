@@ -1,0 +1,69 @@
+<div *ngIf="validationMessage" class="alert alert-warning" role="alert">
+  {{ validationMessage }}
+</div>
+
+<div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+  {{ errorMessage }}
+</div>
+
+<form [formGroup]="form" (ngSubmit)="$event.preventDefault(); submit()">
+  <div class="row g-4">
+    <div class="col-12">
+      <app-input-group
+        label="Front"
+        icon="bi bi-card-text"
+        placeholder="Digite o texto da frente"
+        [textarea]="true"
+        [rows]="4"
+        [maxLength]="maxLength"
+        [invalid]="!!(form.get('frontPart')?.touched && form.get('frontPart')?.invalid)"
+        formControlName="frontPart"
+      ></app-input-group>
+
+      <small class="text-danger" *ngIf="form.get('frontPart')?.touched && form.get('frontPart')?.hasError('required')">
+        O front é obrigatório
+      </small>
+
+      <small class="text-danger" *ngIf="form.get('frontPart')?.touched && form.get('frontPart')?.hasError('maxlength')">
+        Limite de {{ maxLength }} caracteres
+      </small>
+    </div>
+
+    <div class="col-12">
+      <app-input-group
+        label="Back"
+        icon="bi bi-card-text"
+        placeholder="Digite o texto do verso"
+        [textarea]="true"
+        [rows]="7"
+        [maxLength]="maxLength"
+        [invalid]="!!(form.get('backPart')?.touched && form.get('backPart')?.invalid)"
+        formControlName="backPart"
+      ></app-input-group>
+
+      <small class="text-danger" *ngIf="form.get('backPart')?.touched && form.get('backPart')?.hasError('required')">
+        O back é obrigatório
+      </small>
+
+      <small class="text-danger" *ngIf="form.get('backPart')?.touched && form.get('backPart')?.hasError('maxlength')">
+        Limite de {{ maxLength }} caracteres
+      </small>
+    </div>
+
+    <div class="col-12" *ngIf="flashcard">
+      <div class="flashcard-form__levels" role="group" aria-label="Nível do flashcard">
+        <button
+          *ngFor="let opt of levelOptions"
+          type="button"
+          class="flashcard-form__level"
+          [class.flashcard-form__level--active]="form.get('level')?.value === opt.value"
+          [attr.data-level]="opt.value"
+          [disabled]="isSubmitting"
+          (click)="setLevel(opt.value)"
+        >
+          {{ opt.label }}
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
