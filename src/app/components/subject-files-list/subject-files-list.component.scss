@@ -10,13 +10,18 @@
 }
 
 .subject-files-list__header {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
   padding-bottom: 12px;
   margin-bottom: 12px;
   border-bottom: 1px solid color-mix(in srgb, var(--default-color) 12%, transparent);
+}
+
+.subject-files-list__sort {
+  display: flex;
+  justify-content: center;
 }
 
 .subject-files-list__title {

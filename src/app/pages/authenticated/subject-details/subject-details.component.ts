@@ -8,7 +8,9 @@ import { SubjectsService } from '../../../services/subjects.service';
 import { ToastService } from '../../../services/toast.service';
 import type { TabOption } from '../../../components/tabs/tabs.component';
 import { SubjectUpsertModalComponent } from '../../../components/subject-upsert-modal/subject-upsert-modal.component';
+import { StudyConfigModalComponent } from '../../../components/study-config-modal/study-config-modal.component';
 import { getHttpErrorMessage } from '../../../utils/http-error.util';
+import type { CardLevel } from '../../../model/flashcards.model';
 
 @Component({
   selector: 'app-subject-details',
@@ -119,6 +121,33 @@ export class SubjectDetailsComponent implements OnInit {
 
   onContentTabChange(nextValue: string): void {
     this.contentTab = nextValue;
+  }
+
+  openStudyConfigModal(): void {
+    if (!this.subject) {
+      return;
+    }
+
+    const modalRef = this.modalService.open(StudyConfigModalComponent, {
+      centered: true,
+      size: 'lg'
+    });
+
+    modalRef.componentInstance.subjectId = this.subject.id;
+
+    modalRef.closed.subscribe((result: { level?: CardLevel } | undefined) => {
+      if (!result || !this.subject) {
+        return;
+      }
+
+      const level = result.level;
+      if (level) {
+        this.router.navigate([`/app/materias/${this.subject.id}/estudar`], { queryParams: { level } });
+        return;
+      }
+
+      this.router.navigate([`/app/materias/${this.subject.id}/estudar`]);
+    });
   }
 
   onFilesChanged(): void {

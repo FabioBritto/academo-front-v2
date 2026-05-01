@@ -2,6 +2,10 @@
   <header class="subject-flashcard-list__header">
     <h5 class="subject-flashcard-list__title">Lista de flashcards</h5>
 
+    <div class="subject-flashcard-list__sort">
+      <app-sort-filters [value]="sort" [options]="sortOptions" (valueChange)="onSortChange($event)"></app-sort-filters>
+    </div>
+
     <app-submit-button
       label="Novo Flashcard"
       icon="bi bi-plus-circle-fill"
@@ -23,13 +27,13 @@
           <article class="subject-flashcard-list__item" *ngFor="let c of flashcards">
             <div class="subject-flashcard-list__item-main">
               <div class="subject-flashcard-list__item-name">{{ c.frontPart }}</div>
-              <div class="subject-flashcard-list__item-meta">Nível: {{ c.level }}</div>
+              <div class="subject-flashcard-list__item-meta">{{ c.level }}</div>
             </div>
 
             <div class="subject-flashcard-list__item-actions">
               <app-submit-button
-                label="Expandir"
-                icon="bi bi-arrows-angle-expand"
+                label="Editar"
+                icon="bi bi-pencil-square"
                 type="button"
                 [disabled]="isLoading"
                 (click)="openExpandModal(c)"

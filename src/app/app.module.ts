@@ -58,6 +58,8 @@ import { SubjectFlashcardListComponent } from './components/subject-flashcard-li
 import { SubjectDetailsComponent } from './pages/authenticated/subject-details/subject-details.component';
 import { FlashcardFormComponent } from './components/flashcard-form/flashcard-form.component';
 import { FlashcardUpsertModalComponent } from './components/flashcard-upsert-modal/flashcard-upsert-modal.component';
+import { StudyConfigModalComponent } from './components/study-config-modal/study-config-modal.component';
+import { SubjectStudyComponent } from './pages/authenticated/subject-study/subject-study.component';
 
 @NgModule({
   declarations: [
@@ -110,8 +112,10 @@ import { FlashcardUpsertModalComponent } from './components/flashcard-upsert-mod
     SubjectFilesListComponent,
     SubjectFlashcardListComponent,
     SubjectDetailsComponent,
+    SubjectStudyComponent,
     FlashcardFormComponent,
-    FlashcardUpsertModalComponent
+    FlashcardUpsertModalComponent,
+    StudyConfigModalComponent
   ],
   imports: [
     BrowserModule,

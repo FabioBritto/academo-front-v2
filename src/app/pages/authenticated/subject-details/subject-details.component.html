@@ -79,8 +79,17 @@
     </div>
 
     <div class="subject-details__right">
-      <div class="subject-details__tabs">
+      <div class="subject-details__tabs subject-details__tabs--with-action">
         <app-tabs [value]="contentTab" [options]="contentOptions" (valueChange)="onContentTabChange($event)"></app-tabs>
+
+        <app-submit-button
+          *ngIf="contentTab === 'flashcards'"
+          class="subject-details__study-button"
+          label="Estudar"
+          icon=""
+          type="button"
+          (click)="openStudyConfigModal()"
+        ></app-submit-button>
       </div>
 
       <ng-container [ngSwitch]="contentTab">

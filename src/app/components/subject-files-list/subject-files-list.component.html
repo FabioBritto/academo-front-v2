@@ -2,6 +2,10 @@
   <header class="subject-files-list__header">
     <h5 class="subject-files-list__title">Lista de arquivos</h5>
 
+    <div class="subject-files-list__sort">
+      <app-sort-filters [value]="sort" [options]="sortOptions" (valueChange)="onSortChange($event)"></app-sort-filters>
+    </div>
+
     <app-submit-button
       label="Fazer Upload"
       icon="bi bi-upload"

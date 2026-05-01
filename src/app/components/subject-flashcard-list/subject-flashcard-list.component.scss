@@ -10,13 +10,18 @@
 }
 
 .subject-flashcard-list__header {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
   padding-bottom: 12px;
   margin-bottom: 12px;
   border-bottom: 1px solid color-mix(in srgb, var(--default-color) 12%, transparent);
+}
+
+.subject-flashcard-list__sort {
+  display: flex;
+  justify-content: center;
 }
 
 .subject-flashcard-list__title {
@@ -62,6 +67,7 @@
 
 .subject-flashcard-list__item-meta {
   font-size: 13px;
+  font-weight: 550;
   color: color-mix(in srgb, var(--default-color) 75%, transparent);
   overflow: hidden;
   text-overflow: ellipsis;

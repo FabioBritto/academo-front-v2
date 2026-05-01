@@ -10,7 +10,7 @@
   <div class="row g-4">
     <div class="col-12">
       <app-input-group
-        label="Front"
+        label="Frente"
         icon="bi bi-card-text"
         placeholder="Digite o texto da frente"
         [textarea]="true"
@@ -21,7 +21,7 @@
       ></app-input-group>
 
       <small class="text-danger" *ngIf="form.get('frontPart')?.touched && form.get('frontPart')?.hasError('required')">
-        O front é obrigatório
+        A parte da frente é obrigatório
       </small>
 
       <small class="text-danger" *ngIf="form.get('frontPart')?.touched && form.get('frontPart')?.hasError('maxlength')">
@@ -31,7 +31,7 @@
 
     <div class="col-12">
       <app-input-group
-        label="Back"
+        label="Verso"
         icon="bi bi-card-text"
         placeholder="Digite o texto do verso"
         [textarea]="true"
@@ -42,7 +42,7 @@
       ></app-input-group>
 
       <small class="text-danger" *ngIf="form.get('backPart')?.touched && form.get('backPart')?.hasError('required')">
-        O back é obrigatório
+        O verso é obrigatório
       </small>
 
       <small class="text-danger" *ngIf="form.get('backPart')?.touched && form.get('backPart')?.hasError('maxlength')">

@@ -4,6 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import type { FlashcardDTO } from '../../model/flashcards.model';
 import { FlashcardsService } from '../../services/flashcards.service';
 import { getHttpErrorMessage } from '../../utils/http-error.util';
+import type { SortFilterOption } from '../sort-filters/sort-filters.component';
 import { FlashcardUpsertModalComponent } from '../flashcard-upsert-modal/flashcard-upsert-modal.component';
 
 @Component({
@@ -27,6 +28,13 @@ export class SubjectFlashcardListComponent {
   page = 0;
   pageSize = 6;
   totalPages = 0;
+
+  sort = 'updatedAt,desc';
+
+  readonly sortOptions: SortFilterOption[] = [
+    { label: 'Atualização (mais recente)', value: 'updatedAt,desc' },
+    { label: 'Atualização (mais antiga)', value: 'updatedAt,asc' }
+  ];
 
   constructor(
     private readonly modalService: NgbModal,
@@ -79,6 +87,8 @@ export class SubjectFlashcardListComponent {
   }
 
   applyPagination(): void {
+    this.applySort();
+
     const total = this.allFlashcards.length;
     this.totalPages = total === 0 ? 0 : Math.ceil(total / this.pageSize);
 
@@ -88,6 +98,31 @@ export class SubjectFlashcardListComponent {
 
     const start = this.page * this.pageSize;
     this.flashcards = this.allFlashcards.slice(start, start + this.pageSize);
+  }
+
+  onSortChange(nextSort: string): void {
+    if (nextSort === this.sort) {
+      return;
+    }
+
+    this.sort = nextSort;
+    this.page = 0;
+    this.applyPagination();
+  }
+
+  applySort(): void {
+    const [, direction] = this.sort.split(',');
+    const dir = direction === 'asc' ? 1 : -1;
+
+    this.allFlashcards = [...this.allFlashcards].sort((a, b) => {
+      const ad = new Date(a.updatedAt).getTime();
+      const bd = new Date(b.updatedAt).getTime();
+
+      const aTime = Number.isFinite(ad) ? ad : 0;
+      const bTime = Number.isFinite(bd) ? bd : 0;
+
+      return (aTime - bTime) * dir;
+    });
   }
 
   onPageChange(nextPage: number): void {

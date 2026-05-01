@@ -1,0 +1,29 @@
+:host {
+  display: block;
+}
+
+.subject-study {
+  padding: 32px;
+}
+
+.subject-study__header {
+  margin-bottom: 16px;
+}
+
+.subject-study__title {
+  margin: 0;
+  font-weight: 800;
+  color: var(--heading-color);
+}
+
+.subject-study__card {
+  background: var(--surface-color);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 12px 30px color-mix(in srgb, var(--default-color) 10%, transparent);
+}
+
+.subject-study__hint {
+  margin: 12px 0 0;
+  color: color-mix(in srgb, var(--default-color) 75%, transparent);
+}

@@ -4,6 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import type { FileDTO } from '../../model/files.model';
 import { FilesService } from '../../services/files.service';
 import { getHttpErrorMessage } from '../../utils/http-error.util';
+import type { SortFilterOption } from '../sort-filters/sort-filters.component';
 import { SubjectFileUploadModalComponent } from '../subject-file-upload-modal/subject-file-upload-modal.component';
 
 @Component({
@@ -26,7 +27,12 @@ export class SubjectFilesListComponent implements OnInit, OnChanges {
   page = 0;
   pageSize = 6;
   totalPages = 0;
-  sort = 'createdAt,desc';
+  sort = 'fileName,asc';
+
+  readonly sortOptions: SortFilterOption[] = [
+    { label: 'Nome (A→Z)', value: 'fileName,asc' },
+    { label: 'Nome (Z→A)', value: 'fileName,desc' }
+  ];
 
   constructor(
     private readonly modalService: NgbModal,
@@ -35,6 +41,16 @@ export class SubjectFilesListComponent implements OnInit, OnChanges {
 
   get hasItems(): boolean {
     return this.files.length > 0;
+  }
+
+  onSortChange(nextSort: string): void {
+    if (nextSort === this.sort) {
+      return;
+    }
+
+    this.sort = nextSort;
+    this.page = 0;
+    this.loadFiles();
   }
 
   ngOnInit(): void {

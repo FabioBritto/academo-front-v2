@@ -22,7 +22,7 @@
 }
 
 .flashcard-form__level--active {
-  background: color-mix(in srgb, var(--accent-color) 12%, transparent);
+  background: color-mix(in srgb, var(--accent-color) 26%, transparent);
   border-color: var(--accent-color);
 }
 
@@ -36,7 +36,7 @@
 }
 
 .flashcard-form__level--active[data-level='FACIL'] {
-  background: color-mix(in srgb, #198754 12%, transparent);
+  background: color-mix(in srgb, #198754 26%, transparent);
 }
 
 .flashcard-form__level[data-level='MEDIO'] {
@@ -45,7 +45,7 @@
 }
 
 .flashcard-form__level--active[data-level='MEDIO'] {
-  background: color-mix(in srgb, #20c997 12%, transparent);
+  background: color-mix(in srgb, #20c997 26%, transparent);
 }
 
 .flashcard-form__level[data-level='DIFICIL'] {
@@ -54,7 +54,7 @@
 }
 
 .flashcard-form__level--active[data-level='DIFICIL'] {
-  background: color-mix(in srgb, #fd7e14 12%, transparent);
+  background: color-mix(in srgb, #fd7e14 26%, transparent);
 }
 
 .flashcard-form__level[data-level='MUITO_DIFICIL'] {
@@ -63,7 +63,7 @@
 }
 
 .flashcard-form__level--active[data-level='MUITO_DIFICIL'] {
-  background: color-mix(in srgb, #dc3545 12%, transparent);
+  background: color-mix(in srgb, #dc3545 26%, transparent);
 }
 
 @media (max-width: 576px) {
