@@ -1,24 +1,28 @@
-<div class="study-config-modal">
-  <div class="study-config-modal__header">
-    <h4 class="study-config-modal__title">Escolha como deseja estudar</h4>
-  </div>
+<div class="modal-header">
+  <h5 class="modal-title">Escolha como deseja estudar</h5>
 
-  <div class="study-config-modal__body">
-    <button
-      *ngFor="let option of levelOptions"
-      type="button"
-      class="study-config-modal__option"
-      [class.study-config-modal__option--active]="selectedLevel === option.value"
-      [attr.data-style]="option.style"
-      (click)="selectLevel(option.value)"
-    >
-      {{ option.label }}
-    </button>
-  </div>
+  <button type="button" class="btn-close" aria-label="Close" (click)="cancel()"></button>
+</div>
 
-  <div class="study-config-modal__actions mt-4" appEqualizeModalButtons>
-    <app-submit-button type="button" label="Cancelar" icon="" (click)="cancel()"></app-submit-button>
+<div class="modal-body">
+  <div class="study-config-modal">
+    <div class="study-config-modal__body">
+      <button
+        *ngFor="let option of levelOptions"
+        type="button"
+        class="study-config-modal__option"
+        [class.study-config-modal__option--active]="selectedLevel === option.value"
+        [attr.data-style]="option.style"
+        (click)="selectLevel(option.value)"
+      >
+        {{ option.label }}
+      </button>
+    </div>
 
-    <app-submit-button type="button" label="Iniciar Estudo" icon="" (click)="start()"></app-submit-button>
+    <div class="modal-actions mt-4" appEqualizeModalButtons>
+      <app-submit-button type="button" label="Cancelar" icon="" (click)="cancel()"></app-submit-button>
+
+      <app-submit-button type="button" label="Iniciar Estudo" icon="" (click)="start()"></app-submit-button>
+    </div>
   </div>
 </div>
