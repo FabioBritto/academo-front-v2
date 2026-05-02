@@ -1,0 +1,82 @@
+:host {
+  display: block;
+}
+
+.study-config-modal {
+  padding: 8px 2px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.modal-actions app-submit-button {
+  flex: 0 0 auto;
+}
+
+.study-config-modal__body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 0 6px;
+}
+
+.study-config-modal__loading {
+  padding: 10px 6px;
+  text-align: center;
+  color: color-mix(in srgb, var(--default-color) 75%, transparent);
+}
+
+.study-config-modal__option {
+  width: min(360px, 100%);
+  height: 44px;
+  border-radius: 12px;
+  border: 2px solid color-mix(in srgb, var(--default-color) 60%, transparent);
+  background: transparent;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  color: var(--heading-color);
+  transition: transform 120ms ease, background-color 160ms ease, border-color 160ms ease;
+}
+
+.study-config-modal__option:hover {
+  transform: translateY(-1px);
+}
+
+.study-config-modal__option:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.study-config-modal__option--active {
+  background: color-mix(in srgb, var(--default-color) 10%, transparent);
+}
+
+.study-config-modal__option[data-style='easy'] {
+  border-color: color-mix(in srgb, #2ecc71 85%, transparent);
+  color: #2ecc71;
+}
+
+.study-config-modal__option[data-style='medium'] {
+  border-color: color-mix(in srgb, #1abc9c 85%, transparent);
+  color: #1abc9c;
+}
+
+.study-config-modal__option[data-style='hard'] {
+  border-color: color-mix(in srgb, #f39c12 90%, transparent);
+  color: #f39c12;
+}
+
+.study-config-modal__option[data-style='very-hard'] {
+  border-color: color-mix(in srgb, #e74c3c 90%, transparent);
+  color: #e74c3c;
+}
+
+.study-config-modal__option[data-style='no-level'] {
+  border-color: color-mix(in srgb, var(--default-color) 60%, transparent);
+  color: var(--heading-color);
+}

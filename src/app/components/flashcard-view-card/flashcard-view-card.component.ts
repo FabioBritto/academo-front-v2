@@ -1,10 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import type { FlashcardDTO } from '../../model/flashcards.model';
+import type { CardLevel } from '../../model/flashcards.model';
 import type { SubjectDTO } from '../../model/subjects.model';
 import { FlashcardsService } from '../../services/flashcards.service';
 import { SubjectsService } from '../../services/subjects.service';
 import type { SortFilterOption } from '../sort-filters/sort-filters.component';
+import { StudyConfigGlobalModalComponent } from '../study-config-global-modal/study-config-global-modal.component';
 
 @Component({
   selector: 'app-flashcard-view-card',
@@ -32,6 +36,8 @@ export class FlashcardViewCardComponent implements OnInit {
   private subjectNameById = new Map<number, string>();
 
   constructor(
+    private readonly modalService: NgbModal,
+    private readonly router: Router,
     private readonly flashcardsService: FlashcardsService,
     private readonly subjectsService: SubjectsService
   ) {}
@@ -79,6 +85,27 @@ export class FlashcardViewCardComponent implements OnInit {
           this.subjectNameById = new Map<number, string>();
         }
       });
+  }
+
+  goToStudy(): void {
+    const modalRef = this.modalService.open(StudyConfigGlobalModalComponent, {
+      centered: true,
+      size: 'lg'
+    });
+
+    modalRef.closed.subscribe((result: { level?: CardLevel } | undefined) => {
+      if (!result) {
+        return;
+      }
+
+      const level = result.level;
+      if (level) {
+        this.router.navigate(['/app/flashcards/estudar'], { queryParams: { level } });
+        return;
+      }
+
+      this.router.navigate(['/app/flashcards/estudar']);
+    });
   }
 
   private setSubjectsIndex(subjects: SubjectDTO[]): void {

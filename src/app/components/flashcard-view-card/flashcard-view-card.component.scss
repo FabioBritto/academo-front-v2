@@ -27,6 +27,14 @@
   gap: 12px;
 }
 
+.flashcard-view-card__header-action ::ng-deep .btn-submit {
+  width: auto;
+  height: 44px;
+  padding: 0 16px;
+  font-size: 14px;
+  border-radius: 12px;
+}
+
 .flashcard-view-card__sort {
   flex-shrink: 0;
 }

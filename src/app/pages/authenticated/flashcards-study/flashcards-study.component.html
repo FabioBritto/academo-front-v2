@@ -1,0 +1,118 @@
+<div class="subject-study">
+  <div class="subject-study__breadcrumb">
+    <a class="subject-study__breadcrumb-link" [routerLink]="['/app/flashcards']">Flashcards</a>
+    <span class="subject-study__breadcrumb-sep">&gt;</span>
+    <span>Estudo de Flashcards</span>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+    {{ errorMessage }}
+  </div>
+
+  <section class="subject-study__panel" aria-label="Sessão de estudo">
+    <button
+      *ngIf="!isCompleted"
+      type="button"
+      class="subject-study__nav subject-study__nav--left"
+      [disabled]="!canGoPrev"
+      (click)="goPrev()"
+      aria-label="Flashcard anterior"
+    >
+      <i class="bi bi-chevron-left"></i>
+    </button>
+
+    <div class="subject-study__content">
+      <ng-container *ngIf="isCompleted; else studyContent">
+        <div class="subject-study__card subject-study__card--done">
+          <div>Todos os cartões foram estudados.</div>
+
+          <app-submit-button label="Voltar" icon="" type="button" (click)="goBack()"></app-submit-button>
+        </div>
+      </ng-container>
+
+      <ng-template #studyContent>
+        <div class="subject-study__card subject-study__card--question">
+          <ng-container *ngIf="isLoading">Carregando...</ng-container>
+
+          <ng-container *ngIf="!isLoading">
+            <ng-container *ngIf="currentFlashcard; else emptyState">
+              {{ currentFlashcard.frontPart }}
+            </ng-container>
+          </ng-container>
+        </div>
+
+        <button
+          type="button"
+          class="subject-study__card subject-study__card--answer"
+          [disabled]="isLoading || !hasFlashcards"
+          (click)="toggleAnswer()"
+        >
+          <ng-container *ngIf="!showAnswer">
+            <i class="bi bi-eye subject-study__eye" aria-hidden="true"></i>
+          </ng-container>
+
+          <ng-container *ngIf="showAnswer">
+            {{ currentFlashcard?.backPart }}
+          </ng-container>
+        </button>
+
+        <div class="subject-study__levels">
+          <button
+            type="button"
+            class="subject-study__level-btn subject-study__level-btn--easy"
+            [class.subject-study__level-btn--active]="selectedNextLevel === 'FACIL'"
+            [disabled]="isLoading || isPatching || !hasFlashcards"
+            (click)="selectNextLevel('FACIL')"
+          >
+            FÁCIL
+          </button>
+
+          <button
+            type="button"
+            class="subject-study__level-btn subject-study__level-btn--medium"
+            [class.subject-study__level-btn--active]="selectedNextLevel === 'MEDIO'"
+            [disabled]="isLoading || isPatching || !hasFlashcards"
+            (click)="selectNextLevel('MEDIO')"
+          >
+            MÉDIO
+          </button>
+
+          <button
+            type="button"
+            class="subject-study__level-btn subject-study__level-btn--hard"
+            [class.subject-study__level-btn--active]="selectedNextLevel === 'DIFICIL'"
+            [disabled]="isLoading || isPatching || !hasFlashcards"
+            (click)="selectNextLevel('DIFICIL')"
+          >
+            DIFÍCIL
+          </button>
+
+          <button
+            type="button"
+            class="subject-study__level-btn subject-study__level-btn--very-hard"
+            [class.subject-study__level-btn--active]="selectedNextLevel === 'MUITO_DIFICIL'"
+            [disabled]="isLoading || isPatching || !hasFlashcards"
+            (click)="selectNextLevel('MUITO_DIFICIL')"
+          >
+            MUITO DIFÍCIL
+          </button>
+        </div>
+      </ng-template>
+    </div>
+
+    <button
+      *ngIf="!isCompleted"
+      type="button"
+      class="subject-study__nav subject-study__nav--right"
+      [disabled]="!canGoNext"
+      (click)="goNext()"
+      aria-label="Próximo flashcard"
+    >
+      <i class="bi bi-chevron-right"></i>
+    </button>
+  </section>
+
+  <ng-template #emptyState>
+    <div class="subject-study__empty">Nenhum flashcard encontrado para esse filtro.</div>
+  </ng-template>
+</div>
