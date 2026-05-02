@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -20,6 +21,8 @@ export class SubjectStudyComponent implements OnInit, OnDestroy {
   showAnswer = false;
   selectedNextLevel: CardLevel | null = null;
 
+  isCompleted = false;
+
   isLoading = false;
   isPatching = false;
   errorMessage = '';
@@ -28,6 +31,7 @@ export class SubjectStudyComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly route: ActivatedRoute,
+    private readonly router: Router,
     private readonly flashcardsService: FlashcardsService
   ) {}
 
@@ -47,6 +51,15 @@ export class SubjectStudyComponent implements OnInit, OnDestroy {
 
         this.loadFlashcards();
       });
+  }
+
+  goBackToSubject(): void {
+    if (this.subjectId) {
+      this.router.navigate(['/app/materias', this.subjectId]);
+      return;
+    }
+
+    this.router.navigate(['/app/materias']);
   }
 
   ngOnDestroy(): void {
@@ -71,7 +84,7 @@ export class SubjectStudyComponent implements OnInit, OnDestroy {
       !this.isLoading &&
       !this.isPatching &&
       this.selectedNextLevel !== null &&
-      this.currentIndex < this.flashcards.length - 1
+      this.flashcards.length > 0
     );
   }
 
@@ -108,6 +121,14 @@ export class SubjectStudyComponent implements OnInit, OnDestroy {
     this.flashcardsService.patchLevel(current.id, { level: this.selectedNextLevel }).subscribe({
       next: () => {
         this.isPatching = false;
+        const isLast = this.currentIndex >= this.flashcards.length - 1;
+        if (isLast) {
+          this.isCompleted = true;
+          this.showAnswer = false;
+          this.selectedNextLevel = null;
+          return;
+        }
+
         this.currentIndex = Math.min(this.flashcards.length - 1, this.currentIndex + 1);
         this.showAnswer = false;
         this.selectedNextLevel = null;
@@ -134,6 +155,7 @@ export class SubjectStudyComponent implements OnInit, OnDestroy {
 
     this.isLoading = true;
     this.isPatching = false;
+    this.isCompleted = false;
     this.errorMessage = '';
     this.flashcards = [];
     this.currentIndex = 0;

@@ -13,6 +13,7 @@
 
   <section class="subject-study__panel" aria-label="Sessão de estudo">
     <button
+      *ngIf="!isCompleted"
       type="button"
       class="subject-study__nav subject-study__nav--left"
       [disabled]="!canGoPrev"
@@ -23,6 +24,20 @@
     </button>
 
     <div class="subject-study__content">
+      <ng-container *ngIf="isCompleted; else studyContent">
+        <div class="subject-study__card subject-study__card--done">
+          <div>Todos os cartões foram estudados.</div>
+
+          <app-submit-button
+            label="Voltar à Matéria"
+            icon=""
+            type="button"
+            (click)="goBackToSubject()"
+          ></app-submit-button>
+        </div>
+      </ng-container>
+
+      <ng-template #studyContent>
       <div class="subject-study__card subject-study__card--question">
         <ng-container *ngIf="isLoading">Carregando...</ng-container>
 
@@ -39,6 +54,10 @@
         [disabled]="isLoading || !hasFlashcards"
         (click)="toggleAnswer()"
       >
+        <ng-container *ngIf="!showAnswer">
+          <i class="bi bi-eye subject-study__eye" aria-hidden="true"></i>
+        </ng-container>
+
         <ng-container *ngIf="showAnswer">
           {{ currentFlashcard?.backPart }}
         </ng-container>
@@ -85,9 +104,11 @@
           MUITO DIFÍCIL
         </button>
       </div>
+      </ng-template>
     </div>
 
     <button
+      *ngIf="!isCompleted"
       type="button"
       class="subject-study__nav subject-study__nav--right"
       [disabled]="!canGoNext"

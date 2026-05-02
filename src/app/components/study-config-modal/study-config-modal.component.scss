@@ -24,6 +24,12 @@
   padding: 0 6px;
 }
 
+.study-config-modal__loading {
+  padding: 10px 6px;
+  text-align: center;
+  color: color-mix(in srgb, var(--default-color) 75%, transparent);
+}
+
 .study-config-modal__option {
   width: min(360px, 100%);
   height: 44px;
@@ -38,6 +44,12 @@
 
 .study-config-modal__option:hover {
   transform: translateY(-1px);
+}
+
+.study-config-modal__option:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .study-config-modal__option--active {

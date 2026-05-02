@@ -6,23 +6,36 @@
 
 <div class="modal-body">
   <div class="study-config-modal">
+    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="isLoading" class="study-config-modal__loading">Carregando...</div>
+
     <div class="study-config-modal__body">
       <button
         *ngFor="let option of levelOptions"
         type="button"
         class="study-config-modal__option"
         [class.study-config-modal__option--active]="selectedLevel === option.value"
+        [disabled]="isOptionDisabled(option)"
         [attr.data-style]="option.style"
         (click)="selectLevel(option.value)"
       >
-        {{ option.label }}
+        {{ getOptionLabel(option) }}
       </button>
     </div>
 
     <div class="modal-actions mt-4" appEqualizeModalButtons>
       <app-submit-button type="button" label="Cancelar" icon="" (click)="cancel()"></app-submit-button>
 
-      <app-submit-button type="button" label="Iniciar Estudo" icon="" (click)="start()"></app-submit-button>
+      <app-submit-button
+        type="button"
+        label="Iniciar Estudo"
+        icon=""
+        [disabled]="isLoading || totalCount === 0"
+        (click)="start()"
+      ></app-submit-button>
     </div>
   </div>
 </div>
