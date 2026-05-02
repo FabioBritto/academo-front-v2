@@ -21,6 +21,7 @@
           *ngFor="let flashcard of flashcards"
           [flashcard]="flashcard"
           [subjectName]="subjectName(flashcard.subjectId)"
+          (selected)="openFlashcardReadonlyModal(flashcard)"
         ></app-flashcard-card>
       </div>
 

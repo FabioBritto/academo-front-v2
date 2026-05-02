@@ -1,0 +1,41 @@
+<div class="modal-header">
+  <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
+</div>
+
+<div class="modal-body">
+  <div class="flashcard-readonly-modal">
+    <div class="flashcard-readonly-modal__section">
+      <div class="flashcard-readonly-modal__label">Front</div>
+      <div class="flashcard-readonly-modal__value">{{ flashcard.frontPart }}</div>
+    </div>
+
+    <div class="flashcard-readonly-modal__section">
+      <div class="flashcard-readonly-modal__label">Back</div>
+      <div class="flashcard-readonly-modal__value">{{ flashcard.backPart }}</div>
+    </div>
+
+    <div class="flashcard-readonly-modal__meta">
+      <div class="flashcard-readonly-modal__meta-item">
+        <span class="flashcard-readonly-modal__meta-label">Matéria:</span>
+        <span class="flashcard-readonly-modal__meta-value">{{ subjectName }}</span>
+      </div>
+
+      <div class="flashcard-readonly-modal__meta-row">
+        <div class="flashcard-readonly-modal__meta-item">
+          <span class="flashcard-readonly-modal__meta-label">Criado em:</span>
+          <span class="flashcard-readonly-modal__meta-value">{{ flashcard.createdAt | date: 'dd/MM/yyyy' }}</span>
+        </div>
+
+        <div class="flashcard-readonly-modal__meta-item">
+          <span class="flashcard-readonly-modal__meta-label">Estudado pela última vez em:</span>
+          <span class="flashcard-readonly-modal__meta-value">{{ flashcard.updatedAt | date: 'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+
+        <div class="flashcard-readonly-modal__meta-item">
+          <span class="flashcard-readonly-modal__meta-label">Nível:</span>
+          <span class="flashcard-readonly-modal__meta-value">{{ levelLabel(flashcard.level) }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

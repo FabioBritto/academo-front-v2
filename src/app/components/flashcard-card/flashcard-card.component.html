@@ -1,4 +1,4 @@
-<div class="flashcard-card" tabindex="0">
+<div class="flashcard-card" tabindex="0" role="button" (click)="onSelect()">
   <h4 class="flashcard-card__title" [attr.title]="flashcard.frontPart">
     {{ flashcard.frontPart.length > 35 ? ((flashcard.frontPart | slice: 0:32) + '...') : flashcard.frontPart }}
   </h4>

@@ -1,20 +1,21 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import type { CardLevel, FlashcardDTO } from '../../model/flashcards.model';
 
 @Component({
-  selector: 'app-flashcard-card',
-  templateUrl: './flashcard-card.component.html',
-  styleUrls: ['./flashcard-card.component.scss']
+  selector: 'app-flashcard-readonly-modal',
+  templateUrl: './flashcard-readonly-modal.component.html',
+  styleUrls: ['./flashcard-readonly-modal.component.scss']
 })
-export class FlashcardCardComponent {
+export class FlashcardReadonlyModalComponent {
   @Input({ required: true }) flashcard!: FlashcardDTO;
   @Input() subjectName = '';
 
-  @Output() selected = new EventEmitter<FlashcardDTO>();
+  constructor(public readonly activeModal: NgbActiveModal) {}
 
-  onSelect(): void {
-    this.selected.emit(this.flashcard);
+  close(): void {
+    this.activeModal.dismiss('close');
   }
 
   levelLabel(level: CardLevel): string {

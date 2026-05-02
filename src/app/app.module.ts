@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -64,6 +65,7 @@ import { FlashcardViewCardComponent } from './components/flashcard-view-card/fla
 import { FlashcardCardComponent } from './components/flashcard-card/flashcard-card.component';
 import { StudyConfigGlobalModalComponent } from './components/study-config-global-modal/study-config-global-modal.component';
 import { FlashcardsStudyComponent } from './pages/authenticated/flashcards-study/flashcards-study.component';
+import { FlashcardReadonlyModalComponent } from './components/flashcard-readonly-modal/flashcard-readonly-modal.component';
 
 @NgModule({
   declarations: [
@@ -123,10 +125,12 @@ import { FlashcardsStudyComponent } from './pages/authenticated/flashcards-study
     FlashcardViewCardComponent,
     FlashcardCardComponent,
     StudyConfigGlobalModalComponent,
-    FlashcardsStudyComponent
+    FlashcardsStudyComponent,
+    FlashcardReadonlyModalComponent
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,

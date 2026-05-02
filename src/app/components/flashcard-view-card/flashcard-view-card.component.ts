@@ -9,6 +9,7 @@ import { FlashcardsService } from '../../services/flashcards.service';
 import { SubjectsService } from '../../services/subjects.service';
 import type { SortFilterOption } from '../sort-filters/sort-filters.component';
 import { StudyConfigGlobalModalComponent } from '../study-config-global-modal/study-config-global-modal.component';
+import { FlashcardReadonlyModalComponent } from '../flashcard-readonly-modal/flashcard-readonly-modal.component';
 
 @Component({
   selector: 'app-flashcard-view-card',
@@ -106,6 +107,16 @@ export class FlashcardViewCardComponent implements OnInit {
 
       this.router.navigate(['/app/flashcards/estudar']);
     });
+  }
+
+  openFlashcardReadonlyModal(flashcard: FlashcardDTO): void {
+    const modalRef = this.modalService.open(FlashcardReadonlyModalComponent, {
+      centered: true,
+      size: 'lg'
+    });
+
+    modalRef.componentInstance.flashcard = flashcard;
+    modalRef.componentInstance.subjectName = this.subjectName(flashcard.subjectId);
   }
 
   private setSubjectsIndex(subjects: SubjectDTO[]): void {
