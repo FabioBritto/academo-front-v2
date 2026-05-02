@@ -25,6 +25,10 @@ export class SubjectUpsertModalComponent {
     return this.subjectForm?.isSubmitting ?? false;
   }
 
+  get isSaveDisabled(): boolean {
+    return this.isSubmitting || (this.subjectForm?.form?.invalid ?? true);
+  }
+
   constructor(public readonly activeModal: NgbActiveModal) {}
 
   close(): void {

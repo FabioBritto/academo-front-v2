@@ -21,6 +21,8 @@ export class SubjectFormComponent implements OnChanges {
   validationMessage = '';
   errorMessage = '';
 
+  readonly maxTextLen = 255;
+
   readonly calculationTypeOptions = [
     { label: 'Média Aritmética', value: 'MEDIA_ARITMETICA' },
     { label: 'Média Ponderada', value: 'MEDIA_PONDERADA' }
@@ -31,12 +33,20 @@ export class SubjectFormComponent implements OnChanges {
     private readonly subjectsService: SubjectsService
   ) {
     this.form = this.fb.group({
-      name: ['', Validators.required],
-      description: [''],
+      name: ['', [Validators.required, Validators.maxLength(this.maxTextLen)]],
+      description: ['', [Validators.maxLength(this.maxTextLen)]],
       passingGrade: [null],
       calculationType: ['MEDIA_ARITMETICA'],
       isActive: [true]
     });
+  }
+
+  get nameLength(): number {
+    return String(this.form.get('name')?.value ?? '').length;
+  }
+
+  get descriptionLength(): number {
+    return String(this.form.get('description')?.value ?? '').length;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
