@@ -1,0 +1,11 @@
+<div class="flashcard-card" tabindex="0">
+  <h4 class="flashcard-card__title" [attr.title]="flashcard.frontPart">
+    {{ flashcard.frontPart.length > 35 ? ((flashcard.frontPart | slice: 0:32) + '...') : flashcard.frontPart }}
+  </h4>
+
+  <p class="flashcard-card__meta">
+    <strong>Matéria:</strong> {{ subjectName + "\n" }}
+    <strong>Criado em:</strong> {{ flashcard.createdAt | date: 'dd/MM/yyyy' + "\n" }}
+    <strong>Nível:</strong> {{ levelLabel(flashcard.level) }}
+  </p>
+</div>

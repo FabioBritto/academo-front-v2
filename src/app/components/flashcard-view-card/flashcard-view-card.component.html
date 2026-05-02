@@ -1,0 +1,37 @@
+<section class="flashcard-view-card" aria-label="Flashcards">
+  <header class="flashcard-view-card__header">
+    <h4>Flashcards</h4>
+
+    <div class="flashcard-view-card__header-action">
+      <app-sort-filters
+        class="flashcard-view-card__sort"
+        [value]="sort"
+        [options]="sortOptions"
+        (valueChange)="onSortChange($event)"
+      ></app-sort-filters>
+    </div>
+  </header>
+
+  <div class="flashcard-view-card__body">
+    <ng-container *ngIf="hasItems; else emptyState">
+      <div class="flashcard-view-card__list">
+        <app-flashcard-card
+          *ngFor="let flashcard of flashcards"
+          [flashcard]="flashcard"
+          [subjectName]="subjectName(flashcard.subjectId)"
+        ></app-flashcard-card>
+      </div>
+
+      <app-pagination-controls
+        *ngIf="totalPages > 1"
+        [page]="page"
+        [totalPages]="totalPages"
+        (pageChange)="onPageChange($event)"
+      ></app-pagination-controls>
+    </ng-container>
+
+    <ng-template #emptyState>
+      <p class="flashcard-view-card__empty">{{ emptyMessage }}</p>
+    </ng-template>
+  </div>
+</section>

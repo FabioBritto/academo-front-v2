@@ -60,6 +60,8 @@ import { FlashcardFormComponent } from './components/flashcard-form/flashcard-fo
 import { FlashcardUpsertModalComponent } from './components/flashcard-upsert-modal/flashcard-upsert-modal.component';
 import { StudyConfigModalComponent } from './components/study-config-modal/study-config-modal.component';
 import { SubjectStudyComponent } from './pages/authenticated/subject-study/subject-study.component';
+import { FlashcardViewCardComponent } from './components/flashcard-view-card/flashcard-view-card.component';
+import { FlashcardCardComponent } from './components/flashcard-card/flashcard-card.component';
 
 @NgModule({
   declarations: [
@@ -115,7 +117,9 @@ import { SubjectStudyComponent } from './pages/authenticated/subject-study/subje
     SubjectStudyComponent,
     FlashcardFormComponent,
     FlashcardUpsertModalComponent,
-    StudyConfigModalComponent
+    StudyConfigModalComponent,
+    FlashcardViewCardComponent,
+    FlashcardCardComponent
   ],
   imports: [
     BrowserModule,
