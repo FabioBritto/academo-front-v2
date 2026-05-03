@@ -67,6 +67,7 @@ import { StudyConfigGlobalModalComponent } from './components/study-config-globa
 import { FlashcardsStudyComponent } from './pages/authenticated/flashcards-study/flashcards-study.component';
 import { FlashcardReadonlyModalComponent } from './components/flashcard-readonly-modal/flashcard-readonly-modal.component';
 import { AdvancedDropdownComponent } from './components/advanced-dropdown/advanced-dropdown.component';
+import { CalculationTypeDropdownComponent } from './components/calculation-type-dropdown/calculation-type-dropdown.component';
 
 @NgModule({
   declarations: [
@@ -128,7 +129,8 @@ import { AdvancedDropdownComponent } from './components/advanced-dropdown/advanc
     StudyConfigGlobalModalComponent,
     FlashcardsStudyComponent,
     FlashcardReadonlyModalComponent,
-    AdvancedDropdownComponent
+    AdvancedDropdownComponent,
+    CalculationTypeDropdownComponent
   ],
   imports: [
     BrowserModule,

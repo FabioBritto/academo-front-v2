@@ -21,6 +21,10 @@
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-color) 12%, transparent);
 }
 
+.subject-form__advanced-field {
+  display: block;
+}
+
 .form-check-label {
   font-weight: 600;
   color: var(--heading-color);

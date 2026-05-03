@@ -84,6 +84,22 @@
   font-size: inherit;
 }
 
+.subject-details__meta-value--action {
+  display: inline-flex;
+}
+
+.subject-details__meta-value--action ::ng-deep .btn-submit {
+  width: auto;
+  height: 34px;
+  padding: 0 12px;
+  font-size: 12px;
+  border-radius: 999px;
+}
+
+.subject-details__meta-value--action ::ng-deep .btn-submit i {
+  font-size: 14px;
+}
+
 .subject-details__meta .badge {
   font-weight: 700;
 }

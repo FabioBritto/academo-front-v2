@@ -13,7 +13,14 @@
       <div class="subject-details__meta">
         <div class="subject-details__meta-item">
           <span class="subject-details__meta-label">Tipo de cálculo:</span>
-          <span class="subject-details__meta-value">{{ calculationTypeLabel }}</span>
+          <ng-container *ngIf="subject?.calculationType === 'MEDIA_PONDERADA'; else calculationTypeText">
+            <span class="subject-details__meta-value subject-details__meta-value--action">
+              <app-submit-button label="Média Ponderada" icon="bi bi-gear" type="button"></app-submit-button>
+            </span>
+          </ng-container>
+          <ng-template #calculationTypeText>
+            <span class="subject-details__meta-value">{{ calculationTypeLabel }}</span>
+          </ng-template>
         </div>
 
         <div class="subject-details__meta-item subject-details__meta-item--right">
@@ -70,7 +77,7 @@
             <span class="subject-details__period-metric-label">Nota:</span>
             <span class="subject-details__period-metric-value">-</span>
           </div>
-          <div class="subject-details__period-metric">
+          <div class="subject-details__period-metric" *ngIf="subject?.calculationType !== 'MEDIA_ARITMETICA'">
             <span class="subject-details__period-metric-label">Peso:</span>
             <span class="subject-details__period-metric-value">-</span>
           </div>
