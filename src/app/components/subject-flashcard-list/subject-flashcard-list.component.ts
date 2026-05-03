@@ -31,8 +31,8 @@ export class SubjectFlashcardListComponent {
   sort = 'updatedAt,desc';
 
   readonly sortOptions: SortFilterOption[] = [
-    { label: 'Atualização (mais recente)', value: 'updatedAt,desc' },
-    { label: 'Atualização (mais antiga)', value: 'updatedAt,asc' }
+    { label: 'Estudado recentemente', value: 'updatedAt,desc' },
+    { label: 'Não estudado recentemente', value: 'updatedAt,asc' }
   ];
 
   constructor(

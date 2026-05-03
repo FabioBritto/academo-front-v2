@@ -29,8 +29,8 @@ export class FlashcardViewCardComponent implements OnInit {
   readonly sortOptions: SortFilterOption[] = [
     { label: 'Nome (A→Z)', value: 'frontPart,asc' },
     { label: 'Nome (Z→A)', value: 'frontPart,desc' },
-    { label: 'Atualização (mais recente)', value: 'updatedAt,desc' },
-    { label: 'Atualização (mais antiga)', value: 'updatedAt,asc' }
+    { label: 'Estudado recentemente', value: 'updatedAt,desc' },
+    { label: 'Não estudado recentemente', value: 'updatedAt,asc' }
   ];
 
   flashcards: FlashcardDTO[] = [];
