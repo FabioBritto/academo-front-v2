@@ -219,10 +219,22 @@ export class FlashcardViewCardComponent implements OnInit {
   }
 
   goToStudy(): void {
+    if (this.filterMode === 'subjects' && !this.selectedSubjectId) {
+      return;
+    }
+
+    if (this.filterMode === 'groups' && !this.selectedGroupId) {
+      return;
+    }
+
     const modalRef = this.modalService.open(StudyConfigGlobalModalComponent, {
       centered: true,
       size: 'lg'
     });
+
+    modalRef.componentInstance.filterMode = this.filterMode;
+    modalRef.componentInstance.subjectId = this.selectedSubjectId;
+    modalRef.componentInstance.groupId = this.selectedGroupId;
 
     modalRef.closed.subscribe((result: { level?: CardLevel } | undefined) => {
       if (!result) {
@@ -230,12 +242,20 @@ export class FlashcardViewCardComponent implements OnInit {
       }
 
       const level = result.level;
-      if (level) {
-        this.router.navigate(['/app/flashcards/estudar'], { queryParams: { level } });
-        return;
+      const queryParams: Record<string, string | number | undefined> = {
+        level,
+        filterMode: this.filterMode
+      };
+
+      if (this.filterMode === 'subjects') {
+        queryParams['subjectId'] = this.selectedSubjectId;
       }
 
-      this.router.navigate(['/app/flashcards/estudar']);
+      if (this.filterMode === 'groups') {
+        queryParams['groupId'] = this.selectedGroupId;
+      }
+
+      this.router.navigate(['/app/flashcards/estudar'], { queryParams });
     });
   }
 

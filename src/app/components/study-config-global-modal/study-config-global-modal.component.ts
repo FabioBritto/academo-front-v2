@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { forkJoin, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
@@ -9,6 +9,8 @@ import { SubjectsService } from '../../services/subjects.service';
 import { getHttpErrorMessage } from '../../utils/http-error.util';
 
 type StudyLevelOptionValue = 'TODOS' | CardLevel;
+
+type StudyFilterMode = 'all' | 'groups' | 'subjects';
 
 interface StudyLevelOption {
   label: string;
@@ -22,6 +24,10 @@ interface StudyLevelOption {
   styleUrls: ['./study-config-global-modal.component.scss']
 })
 export class StudyConfigGlobalModalComponent {
+  @Input() filterMode: StudyFilterMode = 'all';
+  @Input() subjectId?: number;
+  @Input() groupId?: number;
+
   readonly levelOptions: StudyLevelOption[] = [
     { label: 'TODOS', value: 'TODOS', style: 'neutral' },
     { label: 'FÁCIL', value: 'FACIL', style: 'easy' },
@@ -47,6 +53,84 @@ export class StudyConfigGlobalModalComponent {
   ngOnInit(): void {
     this.isLoading = true;
     this.errorMessage = '';
+
+    if (this.filterMode === 'subjects' && !this.subjectId) {
+      this.flashcards = [];
+      this.isLoading = false;
+      this.errorMessage = 'Selecione uma matéria para estudar.';
+      return;
+    }
+
+    if (this.filterMode === 'groups' && !this.groupId) {
+      this.flashcards = [];
+      this.isLoading = false;
+      this.errorMessage = 'Selecione um grupo para estudar.';
+      return;
+    }
+
+    if (this.filterMode === 'subjects' && this.subjectId) {
+      this.flashcardsService
+        .listAllBySubject(this.subjectId, { page: 0, size: 1000 })
+        .pipe(
+          switchMap((firstPage) => {
+            if (firstPage.totalPages <= 1) {
+              return of(firstPage.content);
+            }
+
+            const requests = Array.from({ length: firstPage.totalPages - 1 }, (_, idx) =>
+              this.flashcardsService
+                .listAllBySubject(this.subjectId as number, { page: idx + 1, size: 1000 })
+                .pipe(map((p) => p.content))
+            );
+
+            return forkJoin(requests).pipe(map((pages) => [...firstPage.content, ...pages.flat()]));
+          })
+        )
+        .subscribe({
+          next: (items) => {
+            this.flashcards = items;
+            this.isLoading = false;
+          },
+          error: (err: unknown) => {
+            this.flashcards = [];
+            this.isLoading = false;
+            this.errorMessage = getHttpErrorMessage(err, { fallback: 'Não foi possível carregar os flashcards.' });
+          }
+        });
+      return;
+    }
+
+    if (this.filterMode === 'groups' && this.groupId) {
+      this.flashcardsService
+        .listInGroup(this.groupId, undefined, { page: 0, size: 1000 })
+        .pipe(
+          switchMap((firstPage) => {
+            if (firstPage.totalPages <= 1) {
+              return of(firstPage.content);
+            }
+
+            const requests = Array.from({ length: firstPage.totalPages - 1 }, (_, idx) =>
+              this.flashcardsService
+                .listInGroup(this.groupId as number, undefined, { page: idx + 1, size: 1000 })
+                .pipe(map((p) => p.content))
+            );
+
+            return forkJoin(requests).pipe(map((pages) => [...firstPage.content, ...pages.flat()]));
+          })
+        )
+        .subscribe({
+          next: (items) => {
+            this.flashcards = items;
+            this.isLoading = false;
+          },
+          error: (err: unknown) => {
+            this.flashcards = [];
+            this.isLoading = false;
+            this.errorMessage = getHttpErrorMessage(err, { fallback: 'Não foi possível carregar os flashcards.' });
+          }
+        });
+      return;
+    }
 
     this.subjectsService
       .listPaged({

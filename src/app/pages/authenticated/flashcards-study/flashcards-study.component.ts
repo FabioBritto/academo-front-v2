@@ -15,6 +15,10 @@ import { SubjectsService } from '../../../services/subjects.service';
 export class FlashcardsStudyComponent implements OnInit, OnDestroy {
   level: CardLevel | null = null;
 
+  filterMode: 'all' | 'groups' | 'subjects' = 'all';
+  subjectId: number | null = null;
+  groupId: number | null = null;
+
   flashcards: FlashcardDTO[] = [];
   currentIndex = 0;
   showAnswer = false;
@@ -39,6 +43,15 @@ export class FlashcardsStudyComponent implements OnInit, OnDestroy {
     this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe((queryParams) => {
       const levelParam = queryParams.get('level');
       this.level = this.isCardLevel(levelParam) ? levelParam : null;
+
+      const filterModeParam = queryParams.get('filterMode');
+      this.filterMode = filterModeParam === 'subjects' || filterModeParam === 'groups' || filterModeParam === 'all' ? filterModeParam : 'all';
+
+      const subjectIdParam = queryParams.get('subjectId');
+      this.subjectId = subjectIdParam ? Number(subjectIdParam) : null;
+
+      const groupIdParam = queryParams.get('groupId');
+      this.groupId = groupIdParam ? Number(groupIdParam) : null;
 
       this.loadFlashcards();
     });
@@ -130,6 +143,86 @@ export class FlashcardsStudyComponent implements OnInit, OnDestroy {
     this.currentIndex = 0;
     this.showAnswer = false;
     this.selectedNextLevel = null;
+
+    if (this.filterMode === 'subjects') {
+      if (!this.subjectId) {
+        this.isLoading = false;
+        this.errorMessage = 'Selecione uma matéria para estudar.';
+        return;
+      }
+
+      const first$ = this.level
+        ? this.flashcardsService.listAllBySubjectAndLevel(this.subjectId, this.level, { page: 0, size: 1000 })
+        : this.flashcardsService.listAllBySubject(this.subjectId, { page: 0, size: 1000 });
+
+      first$
+        .pipe(
+          switchMap((firstPage) => {
+            if (firstPage.totalPages <= 1) {
+              return of(firstPage.content);
+            }
+
+            const requests = Array.from({ length: firstPage.totalPages - 1 }, (_, idx) => {
+              const pageRequest = { page: idx + 1, size: 1000 };
+              return this.level
+                ? this.flashcardsService.listAllBySubjectAndLevel(this.subjectId as number, this.level as CardLevel, pageRequest).pipe(map((p) => p.content))
+                : this.flashcardsService.listAllBySubject(this.subjectId as number, pageRequest).pipe(map((p) => p.content));
+            });
+
+            return forkJoin(requests).pipe(map((pages) => [...firstPage.content, ...pages.flat()]));
+          })
+        )
+        .subscribe({
+          next: (items) => {
+            this.flashcards = items;
+            this.isLoading = false;
+          },
+          error: () => {
+            this.flashcards = [];
+            this.isLoading = false;
+            this.errorMessage = 'Não foi possível carregar os flashcards para estudo.';
+          }
+        });
+      return;
+    }
+
+    if (this.filterMode === 'groups') {
+      if (!this.groupId) {
+        this.isLoading = false;
+        this.errorMessage = 'Selecione um grupo para estudar.';
+        return;
+      }
+
+      this.flashcardsService
+        .listInGroup(this.groupId, this.level ?? undefined, { page: 0, size: 1000 })
+        .pipe(
+          switchMap((firstPage) => {
+            if (firstPage.totalPages <= 1) {
+              return of(firstPage.content);
+            }
+
+            const requests = Array.from({ length: firstPage.totalPages - 1 }, (_, idx) =>
+              this.flashcardsService
+                .listInGroup(this.groupId as number, this.level ?? undefined, { page: idx + 1, size: 1000 })
+                .pipe(map((p) => p.content))
+            );
+
+            return forkJoin(requests).pipe(map((pages) => [...firstPage.content, ...pages.flat()]));
+          })
+        )
+        .subscribe({
+          next: (items) => {
+            this.flashcards = items;
+            this.isLoading = false;
+          },
+          error: () => {
+            this.flashcards = [];
+            this.isLoading = false;
+            this.errorMessage = 'Não foi possível carregar os flashcards para estudo.';
+          }
+        });
+      return;
+    }
 
     this.subjectsService
       .listPaged({
