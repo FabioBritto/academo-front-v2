@@ -55,7 +55,9 @@
         (click)="toggleAnswer()"
       >
         <ng-container *ngIf="!showAnswer">
-          <i class="bi bi-eye subject-study__eye" aria-hidden="true"></i>
+          <div class="subject-study__eye-wrapper">
+            <i class="bi bi-eye subject-study__eye" aria-hidden="true"></i>
+          </div>
         </ng-container>
 
         <ng-container *ngIf="showAnswer">
