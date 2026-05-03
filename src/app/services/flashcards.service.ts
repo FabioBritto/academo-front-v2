@@ -19,20 +19,22 @@ export class FlashcardsService {
     return this.http.get<Page<FlashcardDTO>>(`${API_BASE_URL}/flashcards`, { params });
   }
 
-  listAllBySubject(subjectId: number): Observable<FlashcardDTO[]> {
-    return this.http.get<FlashcardDTO[]>(`${API_BASE_URL}/flashcards/all/${subjectId}`);
+  listAllBySubject(subjectId: number, pageRequest?: PageRequest): Observable<Page<FlashcardDTO>> {
+    const params = withPageParams(new HttpParams(), pageRequest);
+    return this.http.get<Page<FlashcardDTO>>(`${API_BASE_URL}/flashcards/all/${subjectId}`, { params });
   }
 
-  listAllBySubjectAndLevel(subjectId: number, level: CardLevel): Observable<FlashcardDTO[]> {
-    return this.http.get<FlashcardDTO[]>(`${API_BASE_URL}/flashcards/all/${subjectId}/${level}`);
+  listAllBySubjectAndLevel(subjectId: number, level: CardLevel, pageRequest?: PageRequest): Observable<Page<FlashcardDTO>> {
+    const params = withPageParams(new HttpParams(), pageRequest);
+    return this.http.get<Page<FlashcardDTO>>(`${API_BASE_URL}/flashcards/all/${subjectId}/${level}`, { params });
   }
 
-  listInGroup(groupId: number, level?: CardLevel): Observable<FlashcardDTO[]> {
-    let params = new HttpParams();
+  listInGroup(groupId: number, level?: CardLevel, pageRequest?: PageRequest): Observable<Page<FlashcardDTO>> {
+    let params = withPageParams(new HttpParams(), pageRequest);
     if (level) {
       params = params.set('level', level);
     }
-    return this.http.get<FlashcardDTO[]>(`${API_BASE_URL}/flashcards/in-group/${groupId}`, { params });
+    return this.http.get<Page<FlashcardDTO>>(`${API_BASE_URL}/flashcards/in-group/${groupId}`, { params });
   }
 
   getById(flashcardId: number): Observable<FlashcardDTO> {

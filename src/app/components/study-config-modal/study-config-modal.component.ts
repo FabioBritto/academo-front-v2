@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { forkJoin, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 import type { CardLevel, FlashcardDTO } from '../../model/flashcards.model';
 import { FlashcardsService } from '../../services/flashcards.service';
@@ -53,17 +55,32 @@ export class StudyConfigModalComponent {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.flashcardsService.listAllBySubject(subjectId).subscribe({
-      next: (items) => {
-        this.flashcards = items;
-        this.isLoading = false;
-      },
-      error: (err: unknown) => {
-        this.flashcards = [];
-        this.isLoading = false;
-        this.errorMessage = getHttpErrorMessage(err, { fallback: 'Não foi possível carregar os flashcards.' });
-      }
-    });
+    this.flashcardsService
+      .listAllBySubject(subjectId, { page: 0, size: 1000 })
+      .pipe(
+        switchMap((firstPage) => {
+          if (firstPage.totalPages <= 1) {
+            return of(firstPage.content);
+          }
+
+          const requests = Array.from({ length: firstPage.totalPages - 1 }, (_, idx) =>
+            this.flashcardsService.listAllBySubject(subjectId, { page: idx + 1, size: 1000 }).pipe(map((p) => p.content))
+          );
+
+          return forkJoin(requests).pipe(map((pages) => [...firstPage.content, ...pages.flat()]));
+        })
+      )
+      .subscribe({
+        next: (items) => {
+          this.flashcards = items;
+          this.isLoading = false;
+        },
+        error: (err: unknown) => {
+          this.flashcards = [];
+          this.isLoading = false;
+          this.errorMessage = getHttpErrorMessage(err, { fallback: 'Não foi possível carregar os flashcards.' });
+        }
+      });
   }
 
   get totalCount(): number {

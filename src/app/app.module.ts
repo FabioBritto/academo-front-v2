@@ -66,6 +66,7 @@ import { FlashcardCardComponent } from './components/flashcard-card/flashcard-ca
 import { StudyConfigGlobalModalComponent } from './components/study-config-global-modal/study-config-global-modal.component';
 import { FlashcardsStudyComponent } from './pages/authenticated/flashcards-study/flashcards-study.component';
 import { FlashcardReadonlyModalComponent } from './components/flashcard-readonly-modal/flashcard-readonly-modal.component';
+import { AdvancedDropdownComponent } from './components/advanced-dropdown/advanced-dropdown.component';
 
 @NgModule({
   declarations: [
@@ -126,7 +127,8 @@ import { FlashcardReadonlyModalComponent } from './components/flashcard-readonly
     FlashcardCardComponent,
     StudyConfigGlobalModalComponent,
     FlashcardsStudyComponent,
-    FlashcardReadonlyModalComponent
+    FlashcardReadonlyModalComponent,
+    AdvancedDropdownComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,19 @@
+<div class="advanced-dropdown dropdown" [class.dropdown--open]="isOpen" [class.dropdown--disabled]="disabled">
+  <button type="button" class="advanced-dropdown__toggle" (click)="toggle($event)" [attr.aria-expanded]="isOpen">
+    <span class="advanced-dropdown__label">{{ selectedLabel }}</span>
+    <i class="bi bi-chevron-down advanced-dropdown__icon" aria-hidden="true"></i>
+  </button>
+
+  <ul class="advanced-dropdown__menu" *ngIf="isOpen">
+    <li *ngFor="let item of items" class="advanced-dropdown__menu-item">
+      <button
+        type="button"
+        class="advanced-dropdown__menu-link"
+        [class.advanced-dropdown__menu-link--active]="item.id === selectedId"
+        (click)="choose(item, $event)"
+      >
+        {{ item.name }}
+      </button>
+    </li>
+  </ul>
+</div>

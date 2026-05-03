@@ -148,13 +148,15 @@ export class FlashcardsStudyComponent implements OnInit, OnDestroy {
           return forkJoin(
             subjectIds.map((subjectId) =>
               (this.level
-                ? this.flashcardsService.listAllBySubjectAndLevel(subjectId, this.level)
-                : this.flashcardsService.listAllBySubject(subjectId)
-              ).pipe(catchError(() => of([] as FlashcardDTO[])))
+                ? this.flashcardsService.listAllBySubjectAndLevel(subjectId, this.level, { page: 0, size: 1000 })
+                : this.flashcardsService.listAllBySubject(subjectId, { page: 0, size: 1000 })
+              ).pipe(
+                map((p) => p.content),
+                catchError(() => of([] as FlashcardDTO[]))
+              )
             )
           ).pipe(map((lists) => lists.flat()));
-        }),
-        map((items) => this.shuffle(items))
+        })
       )
       .subscribe({
         next: (items) => {
@@ -167,15 +169,6 @@ export class FlashcardsStudyComponent implements OnInit, OnDestroy {
           this.errorMessage = 'Não foi possível carregar os flashcards para estudo.';
         }
       });
-  }
-
-  private shuffle(items: FlashcardDTO[]): FlashcardDTO[] {
-    const a = [...items];
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
   }
 
   private isCardLevel(value: string | null): value is CardLevel {

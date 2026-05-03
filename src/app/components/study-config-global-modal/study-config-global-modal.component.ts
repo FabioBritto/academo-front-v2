@@ -64,7 +64,24 @@ export class StudyConfigGlobalModalComponent {
 
           return forkJoin(
             subjectIds.map((subjectId) =>
-              this.flashcardsService.listAllBySubject(subjectId).pipe(catchError(() => of([] as FlashcardDTO[])))
+              this.flashcardsService
+                .listAllBySubject(subjectId, { page: 0, size: 1000 })
+                .pipe(
+                  switchMap((firstPage) => {
+                    if (firstPage.totalPages <= 1) {
+                      return of(firstPage.content);
+                    }
+
+                    const requests = Array.from({ length: firstPage.totalPages - 1 }, (_, idx) =>
+                      this.flashcardsService
+                        .listAllBySubject(subjectId, { page: idx + 1, size: 1000 })
+                        .pipe(map((p) => p.content))
+                    );
+
+                    return forkJoin(requests).pipe(map((pages) => [...firstPage.content, ...pages.flat()]));
+                  }),
+                  catchError(() => of([] as FlashcardDTO[]))
+                )
             )
           ).pipe(map((lists) => lists.flat()));
         })

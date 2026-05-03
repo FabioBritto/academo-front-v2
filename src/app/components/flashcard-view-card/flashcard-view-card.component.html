@@ -1,6 +1,60 @@
 <section class="flashcard-view-card" aria-label="Flashcards">
   <header class="flashcard-view-card__header">
-    <h4>Flashcards</h4>
+    <div class="flashcard-view-card__header-left">
+      <h4>Flashcards</h4>
+
+      <div class="flashcard-view-card__advanced-filters" role="radiogroup" aria-label="Filtro">
+        <label class="flashcard-view-card__radio">
+          <input
+            type="radio"
+            name="flashcardsAdvancedFilter"
+            [checked]="filterMode === 'all'"
+            (change)="onFilterModeChange('all')"
+          />
+          <span>Todos os FlashCards</span>
+        </label>
+
+        <label class="flashcard-view-card__radio">
+          <input
+            type="radio"
+            name="flashcardsAdvancedFilter"
+            [checked]="filterMode === 'groups'"
+            (change)="onFilterModeChange('groups')"
+          />
+          <span>Grupos</span>
+        </label>
+
+        <label class="flashcard-view-card__radio">
+          <input
+            type="radio"
+            name="flashcardsAdvancedFilter"
+            [checked]="filterMode === 'subjects'"
+            (change)="onFilterModeChange('subjects')"
+          />
+          <span>Matérias</span>
+        </label>
+      </div>
+
+      <ng-container *ngIf="filterMode === 'subjects'">
+        <app-advanced-dropdown
+          label="Selecionar matéria"
+          [items]="subjectOptions"
+          [selectedId]="selectedSubjectId"
+          [disabled]="isLoadingAdvancedOptions"
+          (selected)="onSubjectSelected($event)"
+        ></app-advanced-dropdown>
+      </ng-container>
+
+      <ng-container *ngIf="filterMode === 'groups'">
+        <app-advanced-dropdown
+          label="Selecionar grupo"
+          [items]="groupOptions"
+          [selectedId]="selectedGroupId"
+          [disabled]="isLoadingAdvancedOptions"
+          (selected)="onGroupSelected($event)"
+        ></app-advanced-dropdown>
+      </ng-container>
+    </div>
 
     <div class="flashcard-view-card__header-action">
       <app-sort-filters
@@ -13,6 +67,10 @@
       <app-submit-button label="Estudar" icon="" type="button" (click)="goToStudy()"></app-submit-button>
     </div>
   </header>
+
+  <div class="flashcard-view-card__header-sub">
+    Total de Flashcards escolhidos: {{ selectedTotalElements }}
+  </div>
 
   <div class="flashcard-view-card__body">
     <ng-container *ngIf="hasItems; else emptyState">
@@ -29,6 +87,7 @@
         *ngIf="totalPages > 1"
         [page]="page"
         [totalPages]="totalPages"
+        [disabled]="isLoadingFlashcards"
         (pageChange)="onPageChange($event)"
       ></app-pagination-controls>
     </ng-container>

@@ -19,7 +19,6 @@ export class SubjectFlashcardListComponent {
 
   @Output() changed = new EventEmitter<void>();
 
-  allFlashcards: FlashcardDTO[] = [];
   flashcards: FlashcardDTO[] = [];
 
   isLoading = false;
@@ -42,7 +41,7 @@ export class SubjectFlashcardListComponent {
   ) {}
 
   get hasItems(): boolean {
-    return this.allFlashcards.length > 0;
+    return this.flashcards.length > 0;
   }
 
   ngOnInit(): void {
@@ -61,7 +60,6 @@ export class SubjectFlashcardListComponent {
   loadFlashcards(): void {
     const subjectId = Number(this.subjectId);
     if (Number.isNaN(subjectId) || subjectId <= 0) {
-      this.allFlashcards = [];
       this.flashcards = [];
       this.totalPages = 0;
       return;
@@ -70,34 +68,25 @@ export class SubjectFlashcardListComponent {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.flashcardsService.listAllBySubject(subjectId).subscribe({
-      next: (items) => {
-        this.allFlashcards = items;
-        this.applyPagination();
-        this.isLoading = false;
-      },
-      error: (err: unknown) => {
-        this.allFlashcards = [];
-        this.flashcards = [];
-        this.totalPages = 0;
-        this.isLoading = false;
-        this.errorMessage = getHttpErrorMessage(err, { fallback: 'Não foi possível carregar os flashcards.' });
-      }
-    });
-  }
-
-  applyPagination(): void {
-    this.applySort();
-
-    const total = this.allFlashcards.length;
-    this.totalPages = total === 0 ? 0 : Math.ceil(total / this.pageSize);
-
-    if (this.totalPages > 0 && this.page > this.totalPages - 1) {
-      this.page = this.totalPages - 1;
-    }
-
-    const start = this.page * this.pageSize;
-    this.flashcards = this.allFlashcards.slice(start, start + this.pageSize);
+    this.flashcardsService
+      .listAllBySubject(subjectId, {
+        page: this.page,
+        size: this.pageSize,
+        sort: [this.sort]
+      })
+      .subscribe({
+        next: (page) => {
+          this.flashcards = page.content;
+          this.totalPages = page.totalPages;
+          this.isLoading = false;
+        },
+        error: (err: unknown) => {
+          this.flashcards = [];
+          this.totalPages = 0;
+          this.isLoading = false;
+          this.errorMessage = getHttpErrorMessage(err, { fallback: 'Não foi possível carregar os flashcards.' });
+        }
+      });
   }
 
   onSortChange(nextSort: string): void {
@@ -107,22 +96,7 @@ export class SubjectFlashcardListComponent {
 
     this.sort = nextSort;
     this.page = 0;
-    this.applyPagination();
-  }
-
-  applySort(): void {
-    const [, direction] = this.sort.split(',');
-    const dir = direction === 'asc' ? 1 : -1;
-
-    this.allFlashcards = [...this.allFlashcards].sort((a, b) => {
-      const ad = new Date(a.updatedAt).getTime();
-      const bd = new Date(b.updatedAt).getTime();
-
-      const aTime = Number.isFinite(ad) ? ad : 0;
-      const bTime = Number.isFinite(bd) ? bd : 0;
-
-      return (aTime - bTime) * dir;
-    });
+    this.loadFlashcards();
   }
 
   onPageChange(nextPage: number): void {
@@ -131,7 +105,7 @@ export class SubjectFlashcardListComponent {
     }
 
     this.page = nextPage;
-    this.applyPagination();
+    this.loadFlashcards();
   }
 
   openCreateFlashcardModal(): void {

@@ -16,8 +16,9 @@ export class SubjectStudyComponent implements OnInit, OnDestroy {
   subjectId: number | null = null;
   level: CardLevel | null = null;
 
-  flashcards: FlashcardDTO[] = [];
-  currentIndex = 0;
+  currentFlashcard: FlashcardDTO | null = null;
+  pageIndex = 0;
+  totalPages = 0;
   showAnswer = false;
   selectedNextLevel: CardLevel | null = null;
 
@@ -68,15 +69,11 @@ export class SubjectStudyComponent implements OnInit, OnDestroy {
   }
 
   get hasFlashcards(): boolean {
-    return this.flashcards.length > 0;
-  }
-
-  get currentFlashcard(): FlashcardDTO | null {
-    return this.flashcards[this.currentIndex] ?? null;
+    return this.currentFlashcard !== null;
   }
 
   get canGoPrev(): boolean {
-    return !this.isLoading && !this.isPatching && this.currentIndex > 0;
+    return !this.isLoading && !this.isPatching && this.pageIndex > 0;
   }
 
   get canGoNext(): boolean {
@@ -84,7 +81,7 @@ export class SubjectStudyComponent implements OnInit, OnDestroy {
       !this.isLoading &&
       !this.isPatching &&
       this.selectedNextLevel !== null &&
-      this.flashcards.length > 0
+      this.currentFlashcard !== null
     );
   }
 
@@ -105,8 +102,10 @@ export class SubjectStudyComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.currentIndex = Math.max(0, this.currentIndex - 1);
+    this.pageIndex = Math.max(0, this.pageIndex - 1);
     this.showAnswer = false;
+    this.selectedNextLevel = null;
+    this.loadFlashcards();
   }
 
   goNext(): void {
@@ -121,17 +120,10 @@ export class SubjectStudyComponent implements OnInit, OnDestroy {
     this.flashcardsService.patchLevel(current.id, { level: this.selectedNextLevel }).subscribe({
       next: () => {
         this.isPatching = false;
-        const isLast = this.currentIndex >= this.flashcards.length - 1;
-        if (isLast) {
-          this.isCompleted = true;
-          this.showAnswer = false;
-          this.selectedNextLevel = null;
-          return;
-        }
-
-        this.currentIndex = Math.min(this.flashcards.length - 1, this.currentIndex + 1);
+        this.pageIndex = this.pageIndex + 1;
         this.showAnswer = false;
         this.selectedNextLevel = null;
+        this.loadFlashcards();
       },
       error: () => {
         this.isPatching = false;
@@ -143,8 +135,9 @@ export class SubjectStudyComponent implements OnInit, OnDestroy {
   private loadFlashcards(): void {
     const subjectId = Number(this.subjectId);
     if (Number.isNaN(subjectId) || subjectId <= 0) {
-      this.flashcards = [];
-      this.currentIndex = 0;
+      this.currentFlashcard = null;
+      this.pageIndex = 0;
+      this.totalPages = 0;
       this.showAnswer = false;
       this.selectedNextLevel = null;
       this.isLoading = false;
@@ -157,22 +150,23 @@ export class SubjectStudyComponent implements OnInit, OnDestroy {
     this.isPatching = false;
     this.isCompleted = false;
     this.errorMessage = '';
-    this.flashcards = [];
-    this.currentIndex = 0;
+    this.currentFlashcard = null;
     this.showAnswer = false;
     this.selectedNextLevel = null;
 
     const request$ = this.level
-      ? this.flashcardsService.listAllBySubjectAndLevel(subjectId, this.level)
-      : this.flashcardsService.listAllBySubject(subjectId);
+      ? this.flashcardsService.listAllBySubjectAndLevel(subjectId, this.level, { page: this.pageIndex, size: 1 })
+      : this.flashcardsService.listAllBySubject(subjectId, { page: this.pageIndex, size: 1 });
 
     request$.subscribe({
-      next: (items) => {
-        this.flashcards = items;
+      next: (page) => {
+        this.totalPages = page.totalPages;
+        this.currentFlashcard = page.content[0] ?? null;
+        this.isCompleted = this.currentFlashcard === null;
         this.isLoading = false;
       },
       error: () => {
-        this.flashcards = [];
+        this.currentFlashcard = null;
         this.isLoading = false;
         this.errorMessage = 'Não foi possível carregar os flashcards para estudo.';
       }
