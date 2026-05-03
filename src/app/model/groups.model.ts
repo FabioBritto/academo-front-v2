@@ -24,3 +24,9 @@ export interface GroupDTO {
   updatedAt: string;
   subjects: SubjectDTO[];
 }
+
+export interface GroupWithFlashcardDTO {
+  groupId: number;
+  id?: number;
+  name: string;
+}

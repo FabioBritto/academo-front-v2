@@ -24,3 +24,9 @@ export interface SubjectDTO {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface SubjectWithFlashcardDTO {
+  subjectId: number;
+  id?: number;
+  name: string;
+}

@@ -1,1 +1,9 @@
+.app-flashcards {
+  padding: 32px;
+}
 
+@media (max-width: 768px) {
+  .app-flashcards {
+    padding: 20px;
+  }
+}

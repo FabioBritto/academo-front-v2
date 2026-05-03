@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import type { Page } from '../model/common.model';
-import type { AssociateSubjectsDTO, CreateGroupDTO, GroupDTO, UpdateGroupDTO } from '../model/groups.model';
+import type { AssociateSubjectsDTO, CreateGroupDTO, GroupDTO, GroupWithFlashcardDTO, UpdateGroupDTO } from '../model/groups.model';
 import { API_BASE_URL } from './api.config';
 import type { PageRequest } from '../utils/pagination.util';
 import { withPageParams } from '../utils/pagination.util';
@@ -17,6 +17,10 @@ export class GroupsService {
   listPaged(pageRequest?: PageRequest): Observable<Page<GroupDTO>> {
     const params = withPageParams(new HttpParams(), pageRequest);
     return this.http.get<Page<GroupDTO>>(`${API_BASE_URL}/groups`, { params });
+  }
+
+  listWithFlashcards(): Observable<GroupWithFlashcardDTO[]> {
+    return this.http.get<GroupWithFlashcardDTO[]>(`${API_BASE_URL}/groups/with-flashcards`);
   }
 
   getById(groupId: number): Observable<GroupDTO> {

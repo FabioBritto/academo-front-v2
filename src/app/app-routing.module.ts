@@ -11,6 +11,7 @@ import { FilesComponent } from './pages/authenticated/files/files.component';
 import { FlashcardsComponent } from './pages/authenticated/flashcards/flashcards.component';
 import { ProfileSubscriptionComponent } from './pages/authenticated/profile-subscription/profile-subscription.component';
 import { SubjectStudyComponent } from './pages/authenticated/subject-study/subject-study.component';
+import { FlashcardsStudyComponent } from './pages/authenticated/flashcards-study/flashcards-study.component';
 import { ActivateAccountPageComponent } from './pages/activate-account-page/activate-account-page.component';
 import { ResetPasswordPageComponent } from './pages/reset-password/reset-password-page.component';
 import { AuthGuard } from './services/auth.guard';
@@ -60,6 +61,10 @@ const routes: Routes = [
       {
         path: 'flashcards',
         component: FlashcardsComponent
+      },
+      {
+        path: 'flashcards/estudar',
+        component: FlashcardsStudyComponent
       },
       {
         path: 'assinatura',

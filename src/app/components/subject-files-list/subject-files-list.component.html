@@ -26,7 +26,9 @@
         <div class="subject-files-list__items">
           <article class="subject-files-list__item" *ngFor="let f of files">
             <div class="subject-files-list__item-main">
-              <div class="subject-files-list__item-name">{{ f.fileName }}</div>
+              <div class="subject-files-list__item-name">
+                {{ f.fileName.length > 60 ? ((f.fileName | slice: 0:57) + '...') : f.fileName }}
+              </div>
               <div class="subject-files-list__item-meta">{{ formatBytes(f.size) }} • {{ f.fileType }}</div>
             </div>
 

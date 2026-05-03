@@ -26,7 +26,7 @@
           type="button"
           [label]="subject ? 'Salvar' : 'Criar'"
           icon=""
-          [disabled]="isSubmitting"
+          [disabled]="isSaveDisabled"
           (click)="onSaveClick()"
         ></app-submit-button>
       </div>

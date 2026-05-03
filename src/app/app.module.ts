@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -60,6 +61,12 @@ import { FlashcardFormComponent } from './components/flashcard-form/flashcard-fo
 import { FlashcardUpsertModalComponent } from './components/flashcard-upsert-modal/flashcard-upsert-modal.component';
 import { StudyConfigModalComponent } from './components/study-config-modal/study-config-modal.component';
 import { SubjectStudyComponent } from './pages/authenticated/subject-study/subject-study.component';
+import { FlashcardViewCardComponent } from './components/flashcard-view-card/flashcard-view-card.component';
+import { FlashcardCardComponent } from './components/flashcard-card/flashcard-card.component';
+import { StudyConfigGlobalModalComponent } from './components/study-config-global-modal/study-config-global-modal.component';
+import { FlashcardsStudyComponent } from './pages/authenticated/flashcards-study/flashcards-study.component';
+import { FlashcardReadonlyModalComponent } from './components/flashcard-readonly-modal/flashcard-readonly-modal.component';
+import { AdvancedDropdownComponent } from './components/advanced-dropdown/advanced-dropdown.component';
 
 @NgModule({
   declarations: [
@@ -115,10 +122,17 @@ import { SubjectStudyComponent } from './pages/authenticated/subject-study/subje
     SubjectStudyComponent,
     FlashcardFormComponent,
     FlashcardUpsertModalComponent,
-    StudyConfigModalComponent
+    StudyConfigModalComponent,
+    FlashcardViewCardComponent,
+    FlashcardCardComponent,
+    StudyConfigGlobalModalComponent,
+    FlashcardsStudyComponent,
+    FlashcardReadonlyModalComponent,
+    AdvancedDropdownComponent
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,

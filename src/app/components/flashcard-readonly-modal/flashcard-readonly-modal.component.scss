@@ -1,0 +1,67 @@
+:host {
+  display: block;
+}
+
+.flashcard-readonly-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.flashcard-readonly-modal__section {
+  border: 1px solid color-mix(in srgb, var(--default-color) 12%, transparent);
+  border-radius: 14px;
+  padding: 14px;
+  background: color-mix(in srgb, var(--default-color) 2%, transparent);
+}
+
+.flashcard-readonly-modal__label {
+  font-size: 12px;
+  font-weight: 800;
+  color: color-mix(in srgb, var(--default-color) 75%, transparent);
+  margin-bottom: 6px;
+}
+
+.flashcard-readonly-modal__value {
+  white-space: pre-line;
+  font-size: 15px;
+  font-weight: 650;
+  color: var(--heading-color);
+}
+
+.flashcard-readonly-modal__meta {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.flashcard-readonly-modal__meta-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.flashcard-readonly-modal__meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.flashcard-readonly-modal__meta-label {
+  font-size: 12px;
+  font-weight: 800;
+  color: color-mix(in srgb, var(--default-color) 75%, transparent);
+}
+
+.flashcard-readonly-modal__meta-value {
+  font-size: 14px;
+  font-weight: 650;
+  color: var(--heading-color);
+  white-space: pre-line;
+}
+
+@media (max-width: 768px) {
+  .flashcard-readonly-modal__meta-row {
+    grid-template-columns: 1fr;
+  }
+}

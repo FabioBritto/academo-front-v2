@@ -205,7 +205,6 @@ button.subject-study__card:disabled {
   color: color-mix(in srgb, var(--default-color) 80%, transparent);
 }
 
-
 @media (max-width: 900px) {
   .subject-study__panel {
     grid-template-columns: 48px 1fr 48px;
