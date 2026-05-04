@@ -54,10 +54,18 @@
 }
 
 .period-details__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   border: 1px solid color-mix(in srgb, var(--default-color) 12%, transparent);
   background: color-mix(in srgb, var(--default-color) 2%, transparent);
   border-radius: 14px;
   padding: 14px 14px;
+}
+
+.period-details__item-main {
+  min-width: 0;
 }
 
 .period-details__item-name {
@@ -69,6 +77,28 @@
   margin-top: 4px;
   font-size: 13px;
   color: color-mix(in srgb, var(--default-color) 75%, transparent);
+}
+
+.period-details__item-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+.period-details__item-actions ::ng-deep .btn-submit,
+.period-details__item-actions ::ng-deep .btn-delete {
+  width: auto;
+  height: 40px;
+  padding: 0 14px;
+  font-size: 13px;
+  border-radius: 12px;
+}
+
+.period-details__item-actions ::ng-deep .btn-submit i,
+.period-details__item-actions ::ng-deep .btn-delete i {
+  font-size: 16px;
 }
 
 .period-details__empty {

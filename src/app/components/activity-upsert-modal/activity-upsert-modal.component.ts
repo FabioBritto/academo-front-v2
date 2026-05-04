@@ -19,6 +19,8 @@ export class ActivityUpsertModalComponent implements OnInit {
   @Input({ required: true }) periodId!: number;
   @Input() activityId?: number;
 
+  private loadedActivity: ActivityDTO | null = null;
+
   imageSrc = 'assets/images/study-03.jpeg';
   imageAlt = 'Ilustração de estudo';
 
@@ -45,7 +47,7 @@ export class ActivityUpsertModalComponent implements OnInit {
     this.form = this.fb.group({
       activityDate: ['', [Validators.required]],
       name: ['', [Validators.required, Validators.maxLength(120)]],
-      description: ['', [Validators.required, Validators.maxLength(1000)]],
+      description: ['', [Validators.maxLength(1000)]],
       grade: [0, [Validators.required, Validators.min(0.1), Validators.max(10)]],
       subjectId: [this.subjectId, [Validators.required]],
       activityTypeId: [null, [Validators.required]]
@@ -135,6 +137,7 @@ export class ActivityUpsertModalComponent implements OnInit {
         next: (page) => {
           this.activityTypes = page.content ?? [];
           this.isLoadingActivityTypes = false;
+          this.applyActivityTypeSelection();
         },
         error: () => {
           this.activityTypes = [];
@@ -146,6 +149,7 @@ export class ActivityUpsertModalComponent implements OnInit {
   private loadActivity(activityId: number): void {
     this.activitiesService.getById(activityId).subscribe({
       next: (a: ActivityDTO) => {
+        this.loadedActivity = a;
         this.form.patchValue({
           activityDate: a.activityDate,
           name: a.name,
@@ -153,11 +157,37 @@ export class ActivityUpsertModalComponent implements OnInit {
           grade: a.grade,
           subjectId: this.subjectId
         });
+
+        this.applyActivityTypeSelection();
       },
       error: () => {
         // manter form vazio, apenas não travar o modal
       }
     });
+  }
+
+  private applyActivityTypeSelection(): void {
+    const activity = this.loadedActivity;
+    if (!activity) {
+      return;
+    }
+
+    const current = this.form.get('activityTypeId')?.value;
+    if (current) {
+      return;
+    }
+
+    const activityTypeName = String(activity.activityTypeName ?? '').trim();
+    if (!activityTypeName) {
+      return;
+    }
+
+    const match = (this.activityTypes ?? []).find((t) => String(t.name ?? '').trim() === activityTypeName);
+    if (!match) {
+      return;
+    }
+
+    this.form.patchValue({ activityTypeId: match.id });
   }
 
   submit(): void {

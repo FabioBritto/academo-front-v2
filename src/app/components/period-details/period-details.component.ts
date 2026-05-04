@@ -3,6 +3,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import type { ActivityDTO } from '../../model/activities.model';
 import type { PeriodDTO } from '../../model/periods.model';
+import { ActivitiesService } from '../../services/activities.service';
+import { ToastService } from '../../services/toast.service';
+import { getHttpErrorMessage } from '../../utils/http-error.util';
 import { ActivityUpsertModalComponent } from '../activity-upsert-modal/activity-upsert-modal.component';
 
 @Component({
@@ -25,51 +28,61 @@ export class PeriodDetailsComponent {
 
   page = 0;
 
-  constructor(private readonly modalService: NgbModal) {}
+  totalPages = 0;
+
+  isLoading = false;
+
+  errorMessage = '';
+
+  activities: ActivityDTO[] = [];
+
+  constructor(
+    private readonly modalService: NgbModal,
+    private readonly activitiesService: ActivitiesService,
+    private readonly toastService: ToastService
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if ('period' in changes) {
       this.page = 0;
+      this.loadActivities(0);
     }
   }
 
-  get activities(): ActivityDTO[] {
-    const period = this.period;
-    if (!period) {
-      return [];
+  private loadActivities(page: number): void {
+    const periodId = this.period?.id;
+    if (!periodId) {
+      this.activities = [];
+      this.totalPages = 0;
+      this.errorMessage = '';
+      this.isLoading = false;
+      return;
     }
 
-    const list = period.activityTypeList ?? [];
-    const items = list.flatMap((t) => t.activities ?? []);
+    this.isLoading = true;
+    this.errorMessage = '';
 
-    return [...items].sort((a, b) => {
-      const ad = String(a.activityDate ?? '');
-      const bd = String(b.activityDate ?? '');
-      if (ad !== bd) {
-        return bd.localeCompare(ad);
-      }
-      return (b.id ?? 0) - (a.id ?? 0);
-    });
-  }
-
-  get totalPages(): number {
-    const size = Number(this.pageSize);
-    if (!Number.isFinite(size) || size <= 0) {
-      return 0;
-    }
-
-    return Math.ceil(this.activities.length / size);
-  }
-
-  get pagedActivities(): ActivityDTO[] {
-    const size = Number(this.pageSize);
-    if (!Number.isFinite(size) || size <= 0) {
-      return [];
-    }
-
-    const start = this.page * size;
-    const end = start + size;
-    return this.activities.slice(start, end);
+    this.activitiesService
+      .listByPeriodPaged(periodId, {
+        page,
+        size: this.pageSize,
+        sort: ['activityDate,desc']
+      })
+      .subscribe({
+        next: (res) => {
+          this.page = page;
+          this.activities = res.content ?? [];
+          this.totalPages = res.totalPages ?? 0;
+          this.isLoading = false;
+        },
+        error: (err: unknown) => {
+          this.page = page;
+          this.activities = [];
+          this.totalPages = 0;
+          this.isLoading = false;
+          this.errorMessage = getHttpErrorMessage(err);
+        }
+      });
   }
 
   onPageChange(next: number): void {
@@ -79,7 +92,8 @@ export class PeriodDetailsComponent {
     }
 
     const max = Math.max(0, this.totalPages - 1);
-    this.page = Math.min(max, n);
+    const nextPage = Math.min(max, n);
+    this.loadActivities(nextPage);
   }
 
   openNewActivityModal(): void {
@@ -96,5 +110,70 @@ export class PeriodDetailsComponent {
 
     modalRef.componentInstance.subjectId = subjectId;
     modalRef.componentInstance.periodId = periodId;
+
+    modalRef.closed.subscribe(() => {
+      this.toastService.show('Atividade criada com sucesso.', {
+        classname: 'bg-success text-light',
+        delay: 3500,
+        autohide: true
+      });
+      this.loadActivities(0);
+    });
+  }
+
+  openEditActivityModal(activity: ActivityDTO): void {
+    const subjectId = this.subjectId;
+    const periodId = this.period?.id;
+    if (!subjectId || !periodId || !activity?.id) {
+      return;
+    }
+
+    const modalRef = this.modalService.open(ActivityUpsertModalComponent, {
+      centered: true,
+      size: 'xl'
+    });
+
+    modalRef.componentInstance.subjectId = subjectId;
+    modalRef.componentInstance.periodId = periodId;
+    modalRef.componentInstance.activityId = activity.id;
+
+    modalRef.closed.subscribe(() => {
+      this.toastService.show('Atividade atualizada com sucesso.', {
+        classname: 'bg-success text-light',
+        delay: 3500,
+        autohide: true
+      });
+      this.loadActivities(0);
+    });
+  }
+
+  deleteActivity(activity: ActivityDTO): void {
+    if (this.isLoading) {
+      return;
+    }
+
+    const activityId = activity?.id;
+    if (!activityId) {
+      return;
+    }
+
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    this.activitiesService.delete(activityId).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.toastService.show('Atividade excluída com sucesso.', {
+          classname: 'bg-success text-light',
+          delay: 3500,
+          autohide: true
+        });
+        this.loadActivities(0);
+      },
+      error: (err: unknown) => {
+        this.isLoading = false;
+        this.errorMessage = getHttpErrorMessage(err, { fallback: 'Não foi possível excluir a atividade.' });
+      }
+    });
   }
 }

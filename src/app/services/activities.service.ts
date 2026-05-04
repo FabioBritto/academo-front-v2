@@ -28,6 +28,11 @@ export class ActivitiesService {
     return this.http.get<Page<ActivityDTO>>(`${API_BASE_URL}/activities/by-subject/${subjectId}`, { params });
   }
 
+  listByPeriodPaged(periodId: number, pageRequest?: PageRequest): Observable<Page<ActivityDTO>> {
+    const params = withPageParams(new HttpParams(), pageRequest);
+    return this.http.get<Page<ActivityDTO>>(`${API_BASE_URL}/activities/by-period/${periodId}`, { params });
+  }
+
   create(body: SaveActivityDTO): Observable<ActivityDTO> {
     return this.http.post<ActivityDTO>(`${API_BASE_URL}/activities`, body);
   }

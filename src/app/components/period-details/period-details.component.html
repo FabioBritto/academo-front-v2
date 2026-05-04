@@ -23,9 +23,13 @@
   </div>
 
   <div class="period-details__body">
-    <ng-container *ngIf="pagedActivities.length > 0; else emptyState">
+    <div class="alert alert-danger" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <ng-container *ngIf="activities.length > 0; else emptyState">
       <div class="period-details__items">
-        <article class="period-details__item" *ngFor="let a of pagedActivities">
+        <article class="period-details__item" *ngFor="let a of activities">
           <div class="period-details__item-main">
             <div class="period-details__item-name">
               {{ a.name.length > 60 ? ((a.name | slice: 0:57) + '...') : a.name }}
@@ -34,6 +38,26 @@
               {{ a.activityDate }} • {{ a.activityTypeName }} • Nota: {{ a.grade }}
             </div>
           </div>
+
+          <div class="period-details__item-actions">
+            <app-submit-button
+              label="Editar"
+              icon="bi bi-pencil-square"
+              type="button"
+              [disabled]="isLoading"
+              (click)="openEditActivityModal(a)"
+            ></app-submit-button>
+
+            <app-delete-button
+              label="Excluir"
+              icon="bi bi-trash-fill"
+              [disabled]="isLoading"
+              [isSubmitting]="isLoading"
+              confirmTitle="Excluir atividade"
+              confirmMessage="Tem certeza que deseja excluir esta atividade?"
+              (confirmed)="deleteActivity(a)"
+            ></app-delete-button>
+          </div>
         </article>
       </div>
 
@@ -41,13 +65,13 @@
         *ngIf="totalPages > 1"
         [page]="page"
         [totalPages]="totalPages"
-        [disabled]="false"
+        [disabled]="isLoading"
         (pageChange)="onPageChange($event)"
       ></app-pagination-controls>
     </ng-container>
 
     <ng-template #emptyState>
-      <p class="period-details__empty">{{ emptyMessage }}</p>
+      <p class="period-details__empty">{{ isLoading ? 'Carregando...' : emptyMessage }}</p>
     </ng-template>
   </div>
 </section>
