@@ -51,6 +51,27 @@
   flex-wrap: wrap;
 }
 
+.activity-upsert-modal__activity-type-add {
+  flex: 0 0 auto;
+}
+
+.activity-upsert-modal__activity-type-add ::ng-deep .btn-submit {
+  width: auto;
+  min-width: 42px;
+  height: 42px;
+  padding: 0;
+  justify-content: center;
+  gap: 0;
+}
+
+.activity-upsert-modal__activity-type-add ::ng-deep .btn-submit span {
+  display: none;
+}
+
+.activity-upsert-modal__activity-type-add ::ng-deep .btn-submit i {
+  font-size: 18px;
+}
+
 .modal-actions {
   display: flex;
   justify-content: flex-end;

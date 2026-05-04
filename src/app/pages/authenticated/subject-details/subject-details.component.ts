@@ -61,6 +61,8 @@ export class SubjectDetailsComponent implements OnInit {
       return;
     }
 
+    const subjectId = this.subject.id;
+
     const p1 = this.periods[0];
     const p2 = this.periods[1];
     if (!p1 || !p2) {
@@ -72,7 +74,7 @@ export class SubjectDetailsComponent implements OnInit {
       size: 'lg'
     });
 
-    modalRef.componentInstance.subjectId = this.subject.id;
+    modalRef.componentInstance.subjectId = subjectId;
     modalRef.componentInstance.firstPeriodName = p1.name;
     modalRef.componentInstance.secondPeriodName = p2.name;
     modalRef.componentInstance.firstPeriodWeight = p1.weight;
@@ -84,6 +86,8 @@ export class SubjectDetailsComponent implements OnInit {
         delay: 3500,
         autohide: true
       });
+
+      this.loadSubject(subjectId);
     });
   }
 
@@ -107,6 +111,15 @@ export class SubjectDetailsComponent implements OnInit {
         this.periodOptions = [];
       }
     });
+  }
+
+  onActivitiesChanged(): void {
+    const subjectId = this.subject?.id;
+    if (!subjectId) {
+      return;
+    }
+
+    this.loadSubject(subjectId);
   }
 
   private buildPeriodOptions(periods: PeriodDTO[]): TabOption[] {

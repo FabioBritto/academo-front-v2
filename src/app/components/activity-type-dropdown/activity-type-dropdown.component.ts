@@ -17,6 +17,7 @@ export class ActivityTypeDropdownComponent {
   @Input() disabled = false;
 
   @Output() valueChange = new EventEmitter<number>();
+  @Output() editClick = new EventEmitter<number>();
 
   isOpen = false;
 
@@ -46,9 +47,26 @@ export class ActivityTypeDropdownComponent {
       return;
     }
 
+    console.log('[ActivityTypeDropdown] choose', {
+      previousValue: this.value,
+      chosenId: item.id,
+      chosenName: item.name
+    });
+
     this.value = item.id;
     this.valueChange.emit(item.id);
     this.isOpen = false;
+  }
+
+  edit(item: ActivityTypeDropdownItem, event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (this.disabled) {
+      return;
+    }
+
+    this.editClick.emit(item.id);
   }
 
   @HostListener('document:click', ['$event'])

@@ -5,6 +5,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -70,6 +71,7 @@ import { AdvancedDropdownComponent } from './components/advanced-dropdown/advanc
 import { CalculationTypeDropdownComponent } from './components/calculation-type-dropdown/calculation-type-dropdown.component';
 import { WeightedAverageConfigModalComponent } from './components/weighted-average-config-modal/weighted-average-config-modal.component';
 import { ActivityTypeDropdownComponent } from './components/activity-type-dropdown/activity-type-dropdown.component';
+import { ActivityTypeCreateModalComponent } from './components/activity-type-create-modal/activity-type-create-modal.component';
 import { ActivityUpsertModalComponent } from './components/activity-upsert-modal/activity-upsert-modal.component';
 
 @NgModule({
@@ -136,6 +138,7 @@ import { ActivityUpsertModalComponent } from './components/activity-upsert-modal
     CalculationTypeDropdownComponent,
     WeightedAverageConfigModalComponent,
     ActivityTypeDropdownComponent,
+    ActivityTypeCreateModalComponent,
     ActivityUpsertModalComponent
   ],
   imports: [
@@ -145,6 +148,8 @@ import { ActivityUpsertModalComponent } from './components/activity-upsert-modal
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
+    NgxMaskDirective,
+    NgxMaskPipe,
     AppRoutingModule
   ],
   providers: [
@@ -152,7 +157,8 @@ import { ActivityUpsertModalComponent } from './components/activity-upsert-modal
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    }
+    },
+    provideNgxMask()
   ],
   bootstrap: [AppComponent]
 })

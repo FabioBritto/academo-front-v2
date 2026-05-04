@@ -6,14 +6,27 @@
 
   <ul class="calculation-type-dropdown__menu" *ngIf="isOpen">
     <li *ngFor="let item of items" class="calculation-type-dropdown__menu-item">
-      <button
-        type="button"
-        class="calculation-type-dropdown__menu-link"
-        [class.calculation-type-dropdown__menu-link--active]="item.id === value"
-        (click)="choose(item, $event)"
+      <div
+        class="calculation-type-dropdown__menu-row"
+        [class.calculation-type-dropdown__menu-row--active]="item.id === value"
       >
-        {{ item.name }}
-      </button>
+        <button
+          type="button"
+          class="calculation-type-dropdown__menu-link"
+          (click)="choose(item, $event)"
+        >
+          {{ item.name }}
+        </button>
+
+        <button
+          type="button"
+          class="calculation-type-dropdown__menu-edit"
+          aria-label="Editar"
+          (click)="edit(item, $event)"
+        >
+          <i class="bi bi-pencil" aria-hidden="true"></i>
+        </button>
+      </div>
     </li>
   </ul>
 </div>

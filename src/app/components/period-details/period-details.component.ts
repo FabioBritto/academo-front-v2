@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import type { ActivityDTO } from '../../model/activities.model';
@@ -25,6 +25,8 @@ export class PeriodDetailsComponent {
   @Input() pageSize = 6;
 
   @Input() emptyMessage = 'Nenhuma atividade por enquanto.';
+
+  @Output() changed = new EventEmitter<void>();
 
   page = 0;
 
@@ -118,6 +120,7 @@ export class PeriodDetailsComponent {
         autohide: true
       });
       this.loadActivities(0);
+      this.changed.emit();
     });
   }
 
@@ -144,6 +147,7 @@ export class PeriodDetailsComponent {
         autohide: true
       });
       this.loadActivities(0);
+      this.changed.emit();
     });
   }
 
@@ -169,6 +173,7 @@ export class PeriodDetailsComponent {
           autohide: true
         });
         this.loadActivities(0);
+        this.changed.emit();
       },
       error: (err: unknown) => {
         this.isLoading = false;

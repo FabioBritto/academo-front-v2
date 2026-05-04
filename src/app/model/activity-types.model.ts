@@ -2,14 +2,13 @@ import type { ActivityDTO } from './activities.model';
 
 export interface SaveActivityTypeDTO {
   name: string;
-  description: string;
+  description: string | null;
   periodId: number;
 }
 
 export interface UpdateActivityTypeDTO {
   name: string;
   description: string;
-  weight: number;
   periodId: number;
 }
 

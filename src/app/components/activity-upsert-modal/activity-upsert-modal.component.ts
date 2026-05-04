@@ -1,10 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { distinctUntilChanged } from 'rxjs';
 
 import type { ActivityTypeDTO } from '../../model/activity-types.model';
 import type { ActivityDTO, SaveActivityDTO } from '../../model/activities.model';
+import { ActivityTypeCreateModalComponent } from '../activity-type-create-modal/activity-type-create-modal.component';
 import { ActivitiesService } from '../../services/activities.service';
 import { ActivityTypesService } from '../../services/activity-types.service';
 import { getHttpErrorMessage } from '../../utils/http-error.util';
@@ -14,7 +16,7 @@ import { getHttpErrorMessage } from '../../utils/http-error.util';
   templateUrl: './activity-upsert-modal.component.html',
   styleUrls: ['./activity-upsert-modal.component.scss']
 })
-export class ActivityUpsertModalComponent implements OnInit {
+export class ActivityUpsertModalComponent implements OnInit, AfterViewInit {
   @Input({ required: true }) subjectId!: number;
   @Input({ required: true }) periodId!: number;
   @Input() activityId?: number;
@@ -34,6 +36,7 @@ export class ActivityUpsertModalComponent implements OnInit {
 
   constructor(
     public readonly activeModal: NgbActiveModal,
+    private readonly modalService: NgbModal,
     private readonly fb: FormBuilder,
     private readonly activitiesService: ActivitiesService,
     private readonly activityTypesService: ActivityTypesService
@@ -48,10 +51,14 @@ export class ActivityUpsertModalComponent implements OnInit {
       activityDate: ['', [Validators.required]],
       name: ['', [Validators.required, Validators.maxLength(120)]],
       description: ['', [Validators.maxLength(1000)]],
-      grade: [0, [Validators.required, Validators.min(0.1), Validators.max(10)]],
+      grade: [0, [Validators.required, Validators.min(0), Validators.max(10)]],
       subjectId: [this.subjectId, [Validators.required]],
       activityTypeId: [null, [Validators.required]]
     });
+
+    if (!this.activityId) {
+      this.form.patchValue({ grade: 0 }, { emitEvent: false });
+    }
 
     this.setupGradeSanitization();
 
@@ -60,6 +67,21 @@ export class ActivityUpsertModalComponent implements OnInit {
     if (this.activityId) {
       this.loadActivity(this.activityId);
     }
+  }
+
+  ngAfterViewInit(): void {
+    if (this.activityId) {
+      return;
+    }
+
+    const gradeControl = this.form?.get('grade');
+    if (!gradeControl) {
+      return;
+    }
+
+    setTimeout(() => {
+      gradeControl.setValue(0, { emitEvent: false });
+    }, 0);
   }
 
   close(): void {
@@ -75,12 +97,150 @@ export class ActivityUpsertModalComponent implements OnInit {
   }
 
   onActivityTypeChange(id: number): void {
-    this.form.patchValue({ activityTypeId: id });
-    this.form.markAsDirty();
+    const control = this.form.get('activityTypeId');
+    if (!control) {
+      return;
+    }
+
+    control.setValue(Number(id));
+    control.markAsDirty();
+    control.markAsTouched();
+    control.updateValueAndValidity();
+
+    console.log('[ActivityUpsertModal] onActivityTypeChange', {
+      received: id,
+      controlValue: control.value
+    });
+  }
+
+  onEditActivityTypeClick(activityTypeId: number): void {
+    if (this.isSubmitting) {
+      return;
+    }
+
+    const modalRef = this.modalService.open(ActivityTypeCreateModalComponent, {
+      centered: true,
+      size: 'lg'
+    });
+
+    modalRef.componentInstance.periodId = this.periodId;
+    modalRef.componentInstance.activityTypeId = activityTypeId;
+
+    modalRef.closed.subscribe((updated: unknown) => {
+      const activityType = updated as ActivityTypeDTO;
+      const updatedId = activityType?.id;
+      this.loadActivityTypes();
+      if (updatedId) {
+        this.onActivityTypeChange(updatedId);
+      }
+    });
   }
 
   onNewActivityTypeClick(): void {
-    return;
+    if (this.isSubmitting) {
+      return;
+    }
+
+    const modalRef = this.modalService.open(ActivityTypeCreateModalComponent, {
+      centered: true,
+      size: 'lg'
+    });
+
+    modalRef.componentInstance.periodId = this.periodId;
+
+    modalRef.closed.subscribe((created: unknown) => {
+      const activityType = created as ActivityTypeDTO;
+      const createdId = activityType?.id;
+      if (!createdId) {
+        return;
+      }
+
+      this.loadActivityTypes();
+      this.onActivityTypeChange(createdId);
+    });
+  }
+
+  onActivityDateBlur(): void {
+    const control = this.form.get('activityDate');
+    if (!control) {
+      return;
+    }
+
+    control.markAsTouched();
+
+    const value = control.value;
+    if (value == null || String(value).trim() === '') {
+      const errors = { ...(control.errors ?? {}) };
+      delete errors['invalidDate'];
+      control.setErrors(Object.keys(errors).length ? errors : null);
+      return;
+    }
+
+    const isValid = this.parseBrToIsoDate(value) != null;
+    const errors = { ...(control.errors ?? {}) };
+    if (!isValid) {
+      errors['invalidDate'] = true;
+    } else {
+      delete errors['invalidDate'];
+    }
+
+    control.setErrors(Object.keys(errors).length ? errors : null);
+  }
+
+  private formatIsoToBrDate(value: unknown): string {
+    if (value == null) {
+      return '';
+    }
+
+    const str = String(value).trim();
+    const iso = str.slice(0, 10);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) {
+      return '';
+    }
+
+    const [yyyy, mm, dd] = iso.split('-');
+    return `${dd}/${mm}/${yyyy}`;
+  }
+
+  private parseBrToIsoDate(value: unknown): string | null {
+    if (value == null) {
+      return null;
+    }
+
+    const str = String(value).trim();
+    if (!/^\d{2}\/\d{2}\/\d{4}$/.test(str)) {
+      return null;
+    }
+
+    const [ddStr, mmStr, yyyyStr] = str.split('/');
+    const dd = Number(ddStr);
+    const mm = Number(mmStr);
+    const yyyy = Number(yyyyStr);
+
+    if (!Number.isInteger(dd) || !Number.isInteger(mm) || !Number.isInteger(yyyy)) {
+      return null;
+    }
+
+    if (yyyy < 1900 || yyyy > 2100) {
+      return null;
+    }
+
+    if (mm < 1 || mm > 12) {
+      return null;
+    }
+
+    if (dd < 1 || dd > 31) {
+      return null;
+    }
+
+    const dt = new Date(yyyy, mm - 1, dd);
+    if (dt.getFullYear() !== yyyy || dt.getMonth() !== mm - 1 || dt.getDate() !== dd) {
+      return null;
+    }
+
+    const isoMonth = String(mm).padStart(2, '0');
+    const isoDay = String(dd).padStart(2, '0');
+    return `${yyyy}-${isoMonth}-${isoDay}`;
   }
 
   private setupGradeSanitization(): void {
@@ -103,7 +263,7 @@ export class ActivityUpsertModalComponent implements OnInit {
 
   private sanitizeGrade(raw: unknown): number | null {
     if (raw == null) {
-      return 0.1;
+      return 0;
     }
 
     let str = String(raw);
@@ -121,11 +281,11 @@ export class ActivityUpsertModalComponent implements OnInit {
     }
 
     if (str === '' || str === '.') {
-      return 0.1;
+      return 0;
     }
 
     const n = Number(str);
-    return Number.isFinite(n) ? n : 0.1;
+    return Number.isFinite(n) ? n : 0;
   }
 
   private loadActivityTypes(): void {
@@ -150,12 +310,22 @@ export class ActivityUpsertModalComponent implements OnInit {
     this.activitiesService.getById(activityId).subscribe({
       next: (a: ActivityDTO) => {
         this.loadedActivity = a;
+
+        console.log('[ActivityUpsertModal] loadActivity', {
+          activityId: a.id,
+          activityTypeName: a.activityTypeName
+        });
+
         this.form.patchValue({
-          activityDate: a.activityDate,
+          activityDate: this.formatIsoToBrDate(a.activityDate),
           name: a.name,
           description: a.description,
           grade: a.grade,
           subjectId: this.subjectId
+        });
+
+        console.log('[ActivityUpsertModal] loadActivity after patchValue', {
+          activityTypeIdControl: this.form.get('activityTypeId')?.value
         });
 
         this.applyActivityTypeSelection();
@@ -174,6 +344,9 @@ export class ActivityUpsertModalComponent implements OnInit {
 
     const current = this.form.get('activityTypeId')?.value;
     if (current) {
+      console.log('[ActivityUpsertModal] applyActivityTypeSelection skipped (current already set)', {
+        current
+      });
       return;
     }
 
@@ -184,8 +357,17 @@ export class ActivityUpsertModalComponent implements OnInit {
 
     const match = (this.activityTypes ?? []).find((t) => String(t.name ?? '').trim() === activityTypeName);
     if (!match) {
+      console.log('[ActivityUpsertModal] applyActivityTypeSelection no match', {
+        activityTypeName,
+        available: (this.activityTypes ?? []).map((t) => ({ id: t.id, name: t.name }))
+      });
       return;
     }
+
+    console.log('[ActivityUpsertModal] applyActivityTypeSelection match', {
+      activityTypeName,
+      matchId: match.id
+    });
 
     this.form.patchValue({ activityTypeId: match.id });
   }
@@ -197,6 +379,25 @@ export class ActivityUpsertModalComponent implements OnInit {
     }
 
     const body: SaveActivityDTO = this.form.getRawValue() as SaveActivityDTO;
+
+    const activityTypeId = Number(this.form.get('activityTypeId')?.value);
+    if (Number.isFinite(activityTypeId)) {
+      body.activityTypeId = activityTypeId;
+    }
+
+    console.log('[ActivityUpsertModal] submit activityTypeId:', {
+      controlValue: this.form.get('activityTypeId')?.value,
+      bodyValue: body.activityTypeId
+    });
+
+    const activityDateIso = this.parseBrToIsoDate(body.activityDate);
+    if (!activityDateIso) {
+      this.form.get('activityDate')?.setErrors({ invalidDate: true });
+      this.form.get('activityDate')?.markAsTouched();
+      return;
+    }
+
+    (body as unknown as { activityDate: string }).activityDate = activityDateIso;
 
     this.isSubmitting = true;
     this.errorMessage = '';

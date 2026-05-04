@@ -79,6 +79,7 @@
         [period]="selectedPeriod"
         [pageSize]="6"
         emptyMessage="Nenhuma atividade por enquanto."
+        (changed)="onActivitiesChanged()"
       >
         <div class="subject-details__period-summary">
           <div class="subject-details__period-metric">

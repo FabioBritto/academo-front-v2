@@ -1,7 +1,9 @@
 import {
   Component,
+  EventEmitter,
   forwardRef,
-  Input
+  Input,
+  Output
 } from '@angular/core';
 import {
   ControlValueAccessor,
@@ -35,6 +37,10 @@ export class InputGroupComponent implements ControlValueAccessor {
 
   @Input() pattern?: string;
 
+  @Input() mask?: string;
+
+  @Input() dropSpecialCharacters: boolean | string[] | readonly string[] | null = null;
+
   @Input() min?: string | number;
 
   @Input() max?: string | number;
@@ -52,6 +58,8 @@ export class InputGroupComponent implements ControlValueAccessor {
   @Input() name?: string;
 
   @Input() invalid = false;
+
+  @Output() blurred = new EventEmitter<void>();
 
   isPasswordVisible = false;
 
@@ -94,6 +102,7 @@ export class InputGroupComponent implements ControlValueAccessor {
 
   handleBlur(): void {
     this.onTouched();
+    this.blurred.emit();
   }
 
   togglePasswordVisibility(): void {
