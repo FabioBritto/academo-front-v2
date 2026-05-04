@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import type { Page } from '../model/common.model';
-import type { PeriodDTO, SavePeriodDTO, UpdatePeriodDTO } from '../model/periods.model';
+import type { PeriodDTO, SavePeriodDTO, UpdatePeriodDTO, UpdatePeriodsWeight } from '../model/periods.model';
 import { API_BASE_URL } from './api.config';
 import type { PageRequest } from '../utils/pagination.util';
 import { withPageParams } from '../utils/pagination.util';
@@ -25,6 +25,10 @@ export class PeriodsService {
 
   create(body: SavePeriodDTO): Observable<PeriodDTO> {
     return this.http.post<PeriodDTO>(`${API_BASE_URL}/periods`, body);
+  }
+
+  updatePeriodsWeight(subjectId: number, body: UpdatePeriodsWeight): Observable<PeriodDTO> {
+    return this.http.patch<PeriodDTO>(`${API_BASE_URL}/periods/${subjectId}`, body);
   }
 
   update(periodId: number, body: UpdatePeriodDTO): Observable<PeriodDTO> {

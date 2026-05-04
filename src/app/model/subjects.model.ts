@@ -1,3 +1,5 @@
+import type { PeriodDTO } from './periods.model';
+
 export type CalculationType = 'MEDIA_ARITMETICA' | 'MEDIA_PONDERADA';
 
 export interface CreateSubjectDTO {
@@ -29,4 +31,9 @@ export interface SubjectWithFlashcardDTO {
   subjectId: number;
   id?: number;
   name: string;
+}
+
+export interface SubjectWithPeriodDTO {
+  subjectDTO: SubjectDTO;
+  periodsDTO: PeriodDTO[];
 }

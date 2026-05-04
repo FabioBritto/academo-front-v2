@@ -46,10 +46,28 @@
   margin-bottom: 12px;
 }
 
-.period-details__placeholder {
-  border: 1px dashed color-mix(in srgb, var(--default-color) 25%, transparent);
+.period-details__items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.period-details__item {
+  border: 1px solid color-mix(in srgb, var(--default-color) 12%, transparent);
+  background: color-mix(in srgb, var(--default-color) 2%, transparent);
   border-radius: 14px;
-  padding: 24px;
+  padding: 14px 14px;
+}
+
+.period-details__item-name {
+  font-weight: 800;
+  color: var(--heading-color);
+}
+
+.period-details__item-meta {
+  margin-top: 4px;
+  font-size: 13px;
   color: color-mix(in srgb, var(--default-color) 75%, transparent);
 }
 

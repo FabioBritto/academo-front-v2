@@ -21,6 +21,8 @@ import {
   ]
 })
 export class InputGroupComponent implements ControlValueAccessor {
+  @Input() id?: string;
+
   @Input() label = '';
 
   @Input() icon = 'bi bi-chat-square-text';
@@ -32,6 +34,12 @@ export class InputGroupComponent implements ControlValueAccessor {
   @Input() inputMode?: string;
 
   @Input() pattern?: string;
+
+  @Input() min?: string | number;
+
+  @Input() max?: string | number;
+
+  @Input() step?: string | number;
 
   @Input() maxLength?: number;
 

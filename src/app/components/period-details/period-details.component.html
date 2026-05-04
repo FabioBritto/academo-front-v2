@@ -13,6 +13,7 @@
         label="Nova Atividade"
         icon="bi bi-plus-circle-fill"
         type="button"
+        (click)="openNewActivityModal()"
       ></app-submit-button>
     </div>
   </header>
@@ -22,10 +23,27 @@
   </div>
 
   <div class="period-details__body">
-    <ng-container *ngIf="hasItems; else emptyState">
-      <div class="period-details__placeholder">
-        Conteúdo do período {{ periodLabel }} (placeholder)
+    <ng-container *ngIf="pagedActivities.length > 0; else emptyState">
+      <div class="period-details__items">
+        <article class="period-details__item" *ngFor="let a of pagedActivities">
+          <div class="period-details__item-main">
+            <div class="period-details__item-name">
+              {{ a.name.length > 60 ? ((a.name | slice: 0:57) + '...') : a.name }}
+            </div>
+            <div class="period-details__item-meta">
+              {{ a.activityDate }} • {{ a.activityTypeName }} • Nota: {{ a.grade }}
+            </div>
+          </div>
+        </article>
       </div>
+
+      <app-pagination-controls
+        *ngIf="totalPages > 1"
+        [page]="page"
+        [totalPages]="totalPages"
+        [disabled]="false"
+        (pageChange)="onPageChange($event)"
+      ></app-pagination-controls>
     </ng-container>
 
     <ng-template #emptyState>

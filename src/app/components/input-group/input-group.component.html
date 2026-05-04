@@ -6,11 +6,15 @@
 
     <ng-container *ngIf="!textarea; else textareaTpl">
       <input
+        [attr.id]="id || null"
         [attr.type]="resolvedType"
         [attr.name]="name"
         [attr.placeholder]="placeholder"
         [attr.inputmode]="inputMode || null"
         [attr.pattern]="pattern || null"
+        [attr.min]="min ?? null"
+        [attr.max]="max ?? null"
+        [attr.step]="step ?? null"
         [attr.maxlength]="maxLength ?? null"
         [disabled]="isDisabled"
         [value]="value"

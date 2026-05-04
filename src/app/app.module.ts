@@ -68,6 +68,9 @@ import { FlashcardsStudyComponent } from './pages/authenticated/flashcards-study
 import { FlashcardReadonlyModalComponent } from './components/flashcard-readonly-modal/flashcard-readonly-modal.component';
 import { AdvancedDropdownComponent } from './components/advanced-dropdown/advanced-dropdown.component';
 import { CalculationTypeDropdownComponent } from './components/calculation-type-dropdown/calculation-type-dropdown.component';
+import { WeightedAverageConfigModalComponent } from './components/weighted-average-config-modal/weighted-average-config-modal.component';
+import { ActivityTypeDropdownComponent } from './components/activity-type-dropdown/activity-type-dropdown.component';
+import { ActivityUpsertModalComponent } from './components/activity-upsert-modal/activity-upsert-modal.component';
 
 @NgModule({
   declarations: [
@@ -130,7 +133,10 @@ import { CalculationTypeDropdownComponent } from './components/calculation-type-
     FlashcardsStudyComponent,
     FlashcardReadonlyModalComponent,
     AdvancedDropdownComponent,
-    CalculationTypeDropdownComponent
+    CalculationTypeDropdownComponent,
+    WeightedAverageConfigModalComponent,
+    ActivityTypeDropdownComponent,
+    ActivityUpsertModalComponent
   ],
   imports: [
     BrowserModule,

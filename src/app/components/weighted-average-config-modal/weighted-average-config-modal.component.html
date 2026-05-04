@@ -1,0 +1,44 @@
+<div class="modal-header">
+  <h5 class="modal-title">Configurar pesos</h5>
+
+  <button type="button" class="btn-close" aria-label="Close" (click)="cancel()"></button>
+</div>
+
+<div class="modal-body">
+  <div class="weighted-average-config">
+    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+      {{ errorMessage }}
+    </div>
+
+    <div class="weighted-average-config__row">
+      <div class="weighted-average-config__side">
+        <div class="weighted-average-config__period">{{ leftPeriodName }}</div>
+        <div class="weighted-average-config__percent">{{ leftPercent }}%</div>
+      </div>
+
+      <div class="weighted-average-config__slider">
+        <input
+          class="form-range"
+          type="range"
+          min="0"
+          max="100"
+          step="1"
+          [value]="leftPercent"
+          (input)="onSliderInput($event)"
+          [disabled]="isSubmitting"
+          aria-label="Ajustar peso entre os períodos"
+        />
+      </div>
+
+      <div class="weighted-average-config__side weighted-average-config__side--right">
+        <div class="weighted-average-config__period">{{ rightPeriodName }}</div>
+        <div class="weighted-average-config__percent">{{ rightPercent }}%</div>
+      </div>
+    </div>
+
+    <div class="modal-actions mt-4" appEqualizeModalButtons>
+      <app-submit-button type="button" label="Cancelar" icon="" [disabled]="isSubmitting" (click)="cancel()"></app-submit-button>
+      <app-submit-button type="button" label="Salvar" icon="" [disabled]="isSubmitting" (click)="save()"></app-submit-button>
+    </div>
+  </div>
+</div>

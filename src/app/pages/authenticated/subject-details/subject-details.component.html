@@ -15,7 +15,12 @@
           <span class="subject-details__meta-label">Tipo de cálculo:</span>
           <ng-container *ngIf="subject?.calculationType === 'MEDIA_PONDERADA'; else calculationTypeText">
             <span class="subject-details__meta-value subject-details__meta-value--action">
-              <app-submit-button label="Média Ponderada" icon="bi bi-gear" type="button"></app-submit-button>
+              <app-submit-button
+                [label]="weightedButtonLabel"
+                icon="bi bi-gear"
+                type="button"
+                (click)="openWeightedAverageConfigModal()"
+              ></app-submit-button>
             </span>
           </ng-container>
           <ng-template #calculationTypeText>
@@ -68,18 +73,21 @@
       </div>
 
       <app-period-details
-        [periodLabel]="periodTab === 'period1' ? '1' : '2'"
-        [hasItems]="false"
+        [subjectId]="subject?.id ?? null"
+        [periodLabel]="periodTab === 'period1' ? '1' : (periodTab === 'period2' ? '2' : 'Exame')"
+        [hasItems]="!!selectedPeriod"
+        [period]="selectedPeriod"
+        [pageSize]="6"
         emptyMessage="Nenhuma atividade por enquanto."
       >
         <div class="subject-details__period-summary">
           <div class="subject-details__period-metric">
             <span class="subject-details__period-metric-label">Nota:</span>
-            <span class="subject-details__period-metric-value">-</span>
+            <span class="subject-details__period-metric-value">{{ selectedPeriod?.grade ?? '-' }}</span>
           </div>
           <div class="subject-details__period-metric" *ngIf="subject?.calculationType !== 'MEDIA_ARITMETICA'">
             <span class="subject-details__period-metric-label">Peso:</span>
-            <span class="subject-details__period-metric-value">-</span>
+            <span class="subject-details__period-metric-value">{{ formatWeightPercent(selectedPeriod?.weight) }}</span>
           </div>
         </div>
       </app-period-details>
