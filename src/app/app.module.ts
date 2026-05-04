@@ -5,6 +5,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -67,6 +68,12 @@ import { StudyConfigGlobalModalComponent } from './components/study-config-globa
 import { FlashcardsStudyComponent } from './pages/authenticated/flashcards-study/flashcards-study.component';
 import { FlashcardReadonlyModalComponent } from './components/flashcard-readonly-modal/flashcard-readonly-modal.component';
 import { AdvancedDropdownComponent } from './components/advanced-dropdown/advanced-dropdown.component';
+import { CalculationTypeDropdownComponent } from './components/calculation-type-dropdown/calculation-type-dropdown.component';
+import { WeightedAverageConfigModalComponent } from './components/weighted-average-config-modal/weighted-average-config-modal.component';
+import { ActivityTypeDropdownComponent } from './components/activity-type-dropdown/activity-type-dropdown.component';
+import { ActivityTypeCreateModalComponent } from './components/activity-type-create-modal/activity-type-create-modal.component';
+import { ActivityTypeFilterModalComponent } from './components/activity-type-filter-modal/activity-type-filter-modal.component';
+import { ActivityUpsertModalComponent } from './components/activity-upsert-modal/activity-upsert-modal.component';
 
 @NgModule({
   declarations: [
@@ -128,7 +135,13 @@ import { AdvancedDropdownComponent } from './components/advanced-dropdown/advanc
     StudyConfigGlobalModalComponent,
     FlashcardsStudyComponent,
     FlashcardReadonlyModalComponent,
-    AdvancedDropdownComponent
+    AdvancedDropdownComponent,
+    CalculationTypeDropdownComponent,
+    WeightedAverageConfigModalComponent,
+    ActivityTypeDropdownComponent,
+    ActivityTypeCreateModalComponent,
+    ActivityTypeFilterModalComponent,
+    ActivityUpsertModalComponent
   ],
   imports: [
     BrowserModule,
@@ -137,6 +150,8 @@ import { AdvancedDropdownComponent } from './components/advanced-dropdown/advanc
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
+    NgxMaskDirective,
+    NgxMaskPipe,
     AppRoutingModule
   ],
   providers: [
@@ -144,7 +159,8 @@ import { AdvancedDropdownComponent } from './components/advanced-dropdown/advanc
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    }
+    },
+    provideNgxMask()
   ],
   bootstrap: [AppComponent]
 })

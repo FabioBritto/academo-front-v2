@@ -1,0 +1,135 @@
+<div class="modal-header">
+  <h5 class="modal-title">{{ title }}</h5>
+
+  <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
+</div>
+
+<div class="modal-body">
+  <div class="entity-upsert-modal">
+    <div class="entity-upsert-modal__image" aria-hidden="true">
+      <img [src]="imageSrc" [alt]="imageAlt" />
+    </div>
+
+    <div class="entity-upsert-modal__content">
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <div class="row g-3">
+          <div class="col-12 col-md-6">
+            <app-input-group
+              label="Data"
+              id="activityDate"
+              type="text"
+              inputMode="numeric"
+              placeholder="00/00/0000"
+              mask="00/00/0000"
+              [dropSpecialCharacters]="false"
+              [maxLength]="10"
+              formControlName="activityDate"
+              [disabled]="isSubmitting"
+              (blurred)="onActivityDateBlur()"
+            ></app-input-group>
+
+            <small
+              class="text-danger"
+              *ngIf="form.get('activityDate')?.touched && form.get('activityDate')?.hasError('invalidDate')"
+            >
+              Data inválida
+            </small>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <app-input-group
+              label="Nota"
+              id="grade"
+              type="number"
+              inputMode="decimal"
+              pattern="[0-9]*[.,]?[0-9]?"
+              step="0.1"
+              min="0"
+              max="10"
+              placeholder="0"
+              formControlName="grade"
+              [disabled]="isSubmitting"
+            ></app-input-group>
+
+            <small
+              class="text-danger"
+              *ngIf="form.get('grade')?.touched && (form.get('grade')?.hasError('required') || form.get('grade')?.hasError('min') || form.get('grade')?.hasError('max'))"
+            >
+              Informe uma nota maior ou igual a 0 e menor ou igual a 10
+            </small>
+          </div>
+
+          <div class="col-12">
+            <app-input-group
+              label="Nome"
+              id="name"
+              type="text"
+              placeholder="Ex: Lista de exercícios"
+              formControlName="name"
+              [disabled]="isSubmitting"
+            ></app-input-group>
+          </div>
+
+          <div class="col-12">
+            <app-input-group
+              label="Descrição"
+              id="description"
+              [textarea]="true"
+              [rows]="4"
+              placeholder="Descreva a atividade"
+              formControlName="description"
+              [disabled]="isSubmitting"
+            ></app-input-group>
+          </div>
+
+          <div class="col-12">
+            <div class="activity-upsert-modal__activity-type">
+              <div class="activity-upsert-modal__activity-type-label">Tipo de atividade</div>
+
+              <div class="activity-upsert-modal__activity-type-row">
+                <app-activity-type-dropdown
+                  [label]="isLoadingActivityTypes ? 'Carregando...' : 'Selecione'"
+                  [items]="activityTypeItems"
+                  [value]="form.get('activityTypeId')?.value"
+                  [disabled]="isSubmitting || isLoadingActivityTypes"
+                  (valueChange)="onActivityTypeChange($event)"
+                  (editClick)="onEditActivityTypeClick($event)"
+                ></app-activity-type-dropdown>
+
+                <app-submit-button
+                  class="activity-upsert-modal__activity-type-add"
+                  type="button"
+                  icon="bi bi-plus-circle-fill"
+                  [disabled]="isSubmitting"
+                  (click)="onNewActivityTypeClick()"
+                ></app-submit-button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-danger mt-3" *ngIf="errorMessage">
+          {{ errorMessage }}
+        </div>
+
+        <div class="modal-actions mt-4" appEqualizeModalButtons>
+          <app-submit-button
+            type="button"
+            label="Cancelar"
+            icon=""
+            [disabled]="isSubmitting"
+            (click)="close()"
+          ></app-submit-button>
+
+          <app-submit-button
+            type="button"
+            [label]="activityId ? 'Salvar' : 'Criar'"
+            icon=""
+            [disabled]="isSubmitting || form.invalid"
+            (click)="submit()"
+          ></app-submit-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

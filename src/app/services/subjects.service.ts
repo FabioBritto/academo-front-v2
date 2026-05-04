@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import type { Page } from '../model/common.model';
-import type { CreateSubjectDTO, SubjectDTO, SubjectWithFlashcardDTO, UpdateSubjectDTO } from '../model/subjects.model';
+import type { CreateSubjectDTO, SubjectDTO, SubjectWithFlashcardDTO, SubjectWithPeriodDTO, UpdateSubjectDTO } from '../model/subjects.model';
 import { API_BASE_URL } from './api.config';
 import type { PageRequest } from '../utils/pagination.util';
 import { withPageParams } from '../utils/pagination.util';
@@ -27,8 +27,8 @@ export class SubjectsService {
     return this.http.get<SubjectWithFlashcardDTO[]>(`${API_BASE_URL}/subjects/with-flashcards`);
   }
 
-  getById(subjectId: number): Observable<SubjectDTO> {
-    return this.http.get<SubjectDTO>(`${API_BASE_URL}/subjects/${subjectId}`);
+  getById(subjectId: number): Observable<SubjectWithPeriodDTO> {
+    return this.http.get<SubjectWithPeriodDTO>(`${API_BASE_URL}/subjects/${subjectId}`);
   }
 
   update(subjectId: number, body: UpdateSubjectDTO): Observable<SubjectDTO> {

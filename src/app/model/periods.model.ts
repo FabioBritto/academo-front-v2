@@ -22,3 +22,8 @@ export interface PeriodDTO {
   weight: number;
   activityTypeList: ActivityTypeDTO[];
 }
+
+export interface UpdatePeriodsWeight {
+  firstPeriodWeigth: number;
+  secondPeriodWeigth: number;
+}

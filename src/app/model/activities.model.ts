@@ -1,7 +1,7 @@
 export interface SaveActivityDTO {
   activityDate: string;
   name: string;
-  description: string;
+  description?: string;
   grade: number;
   subjectId: number;
   activityTypeId: number;

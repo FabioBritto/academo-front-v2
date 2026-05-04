@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import type { CreateSubjectDTO, SubjectDTO, UpdateSubjectDTO } from '../../model/subjects.model';
+import type { CalculationType } from '../../model/subjects.model';
 import { SubjectsService } from '../../services/subjects.service';
 import { getHttpErrorMessage } from '../../utils/http-error.util';
 
@@ -39,6 +40,16 @@ export class SubjectFormComponent implements OnChanges {
       calculationType: ['MEDIA_ARITMETICA'],
       isActive: [true]
     });
+  }
+
+  onCalculationTypeChange(value: CalculationType): void {
+    if (this.isSubmitting) {
+      return;
+    }
+
+    this.form.get('calculationType')?.setValue(value);
+    this.form.get('calculationType')?.markAsTouched();
+    this.form.get('calculationType')?.updateValueAndValidity();
   }
 
   get nameLength(): number {

@@ -85,14 +85,14 @@
         </div>
 
         <div class="col-12 col-md-6">
-          <label class="subject-form__label" for="subjectCalculationType">Tipo de cálculo</label>
-          <select
-            id="subjectCalculationType"
-            class="form-select subject-form__control"
-            formControlName="calculationType"
-          >
-            <option *ngFor="let option of calculationTypeOptions" [value]="option.value">{{ option.label }}</option>
-          </select>
+          <div class="subject-form__advanced-field">
+            <label class="subject-form__label" for="subjectCalculationType">Tipo de cálculo</label>
+            <app-calculation-type-dropdown
+              [value]="form.get('calculationType')?.value"
+              [disabled]="isSubmitting"
+              (valueChange)="onCalculationTypeChange($event)"
+            ></app-calculation-type-dropdown>
+          </div>
 
           <small class="text-danger" *ngIf="form.get('calculationType')?.touched && form.get('calculationType')?.hasError('required')">
             Selecione um tipo de cálculo

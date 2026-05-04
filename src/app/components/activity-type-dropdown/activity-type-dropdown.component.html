@@ -1,0 +1,32 @@
+<div class="calculation-type-dropdown dropdown" [class.dropdown--open]="isOpen" [class.dropdown--disabled]="disabled">
+  <button type="button" class="calculation-type-dropdown__toggle" (click)="toggle($event)" [attr.aria-expanded]="isOpen">
+    <span class="calculation-type-dropdown__label">{{ selectedLabel }}</span>
+    <i class="bi bi-chevron-down calculation-type-dropdown__icon" aria-hidden="true"></i>
+  </button>
+
+  <ul class="calculation-type-dropdown__menu" *ngIf="isOpen">
+    <li *ngFor="let item of items" class="calculation-type-dropdown__menu-item">
+      <div
+        class="calculation-type-dropdown__menu-row"
+        [class.calculation-type-dropdown__menu-row--active]="item.id === value"
+      >
+        <button
+          type="button"
+          class="calculation-type-dropdown__menu-link"
+          (click)="choose(item, $event)"
+        >
+          {{ item.name }}
+        </button>
+
+        <button
+          type="button"
+          class="calculation-type-dropdown__menu-edit"
+          aria-label="Editar"
+          (click)="edit(item, $event)"
+        >
+          <i class="bi bi-pencil" aria-hidden="true"></i>
+        </button>
+      </div>
+    </li>
+  </ul>
+</div>

@@ -7,12 +7,14 @@
         label="Filtrar por Tipo"
         icon="bi bi-funnel-fill"
         type="button"
+        (click)="openFilterByTypeModal()"
       ></app-submit-button>
 
       <app-submit-button
         label="Nova Atividade"
         icon="bi bi-plus-circle-fill"
         type="button"
+        (click)="openNewActivityModal()"
       ></app-submit-button>
     </div>
   </header>
@@ -22,14 +24,55 @@
   </div>
 
   <div class="period-details__body">
-    <ng-container *ngIf="hasItems; else emptyState">
-      <div class="period-details__placeholder">
-        Conteúdo do período {{ periodLabel }} (placeholder)
+    <div class="alert alert-danger" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <ng-container *ngIf="activities.length > 0; else emptyState">
+      <div class="period-details__items">
+        <article class="period-details__item" *ngFor="let a of activities">
+          <div class="period-details__item-main">
+            <div class="period-details__item-name">
+              {{ a.name.length > 60 ? ((a.name | slice: 0:57) + '...') : a.name }}
+            </div>
+            <div class="period-details__item-meta">
+              {{ a.activityDate }} • {{ a.activityTypeName }} • Nota: {{ a.grade }}
+            </div>
+          </div>
+
+          <div class="period-details__item-actions">
+            <app-submit-button
+              label="Editar"
+              icon="bi bi-pencil-square"
+              type="button"
+              [disabled]="isLoading"
+              (click)="openEditActivityModal(a)"
+            ></app-submit-button>
+
+            <app-delete-button
+              label="Excluir"
+              icon="bi bi-trash-fill"
+              [disabled]="isLoading"
+              [isSubmitting]="isLoading"
+              confirmTitle="Excluir atividade"
+              confirmMessage="Tem certeza que deseja excluir esta atividade?"
+              (confirmed)="deleteActivity(a)"
+            ></app-delete-button>
+          </div>
+        </article>
       </div>
+
+      <app-pagination-controls
+        *ngIf="totalPages > 1"
+        [page]="page"
+        [totalPages]="totalPages"
+        [disabled]="isLoading"
+        (pageChange)="onPageChange($event)"
+      ></app-pagination-controls>
     </ng-container>
 
     <ng-template #emptyState>
-      <p class="period-details__empty">{{ emptyMessage }}</p>
+      <p class="period-details__empty">{{ isLoading ? 'Carregando...' : emptyMessage }}</p>
     </ng-template>
   </div>
 </section>
