@@ -7,6 +7,7 @@ import { ActivitiesService } from '../../services/activities.service';
 import { ToastService } from '../../services/toast.service';
 import { getHttpErrorMessage } from '../../utils/http-error.util';
 import { ActivityUpsertModalComponent } from '../activity-upsert-modal/activity-upsert-modal.component';
+import { ActivityTypeFilterModalComponent } from '../activity-type-filter-modal/activity-type-filter-modal.component';
 
 @Component({
   selector: 'app-period-details',
@@ -38,6 +39,8 @@ export class PeriodDetailsComponent {
 
   activities: ActivityDTO[] = [];
 
+  activityTypeFilterNames: string[] | null = null;
+
   constructor(
     private readonly modalService: NgbModal,
     private readonly activitiesService: ActivitiesService,
@@ -64,12 +67,16 @@ export class PeriodDetailsComponent {
     this.isLoading = true;
     this.errorMessage = '';
 
+    const activityTypeNames = (this.activityTypeFilterNames ?? [])
+      .map((n) => String(n ?? '').trim())
+      .filter((n) => Boolean(n));
+
     this.activitiesService
       .listByPeriodPaged(periodId, {
         page,
         size: this.pageSize,
         sort: ['activityDate,desc']
-      })
+      }, activityTypeNames.length > 0 ? activityTypeNames : undefined)
       .subscribe({
         next: (res) => {
           this.page = page;
@@ -113,12 +120,28 @@ export class PeriodDetailsComponent {
     modalRef.componentInstance.subjectId = subjectId;
     modalRef.componentInstance.periodId = periodId;
 
-    modalRef.closed.subscribe(() => {
+    modalRef.closed.subscribe((saved: unknown) => {
       this.toastService.show('Atividade criada com sucesso.', {
         classname: 'bg-success text-light',
         delay: 3500,
         autohide: true
       });
+
+      const activity = saved as ActivityDTO;
+      if (activity?.id && this.page === 0) {
+        const typeName = String(activity.activityTypeName ?? '').trim();
+        const filter = (this.activityTypeFilterNames ?? [])
+          .map((n) => String(n ?? '').trim())
+          .filter((n) => Boolean(n));
+
+        const shouldShow = filter.length === 0 || (typeName && filter.includes(typeName));
+        if (shouldShow) {
+          const current = this.activities ?? [];
+          const withoutDuplicates = current.filter((a) => a.id !== activity.id);
+          this.activities = [activity, ...withoutDuplicates].slice(0, this.pageSize);
+        }
+      }
+
       this.loadActivities(0);
       this.changed.emit();
     });
@@ -179,6 +202,30 @@ export class PeriodDetailsComponent {
         this.isLoading = false;
         this.errorMessage = getHttpErrorMessage(err, { fallback: 'Não foi possível excluir a atividade.' });
       }
+    });
+  }
+
+  openFilterByTypeModal(): void {
+    const periodId = this.period?.id;
+    if (!periodId) {
+      return;
+    }
+
+    const modalRef = this.modalService.open(ActivityTypeFilterModalComponent, {
+      centered: true,
+      size: 'lg'
+    });
+
+    modalRef.componentInstance.periodId = periodId;
+    modalRef.componentInstance.selectedNames = this.activityTypeFilterNames;
+
+    modalRef.closed.subscribe((result: string[] | null) => {
+      const names = (result ?? [])
+        .map((n) => String(n ?? '').trim())
+        .filter((n) => Boolean(n));
+
+      this.activityTypeFilterNames = names.length > 0 ? names : null;
+      this.loadActivities(0);
     });
   }
 }

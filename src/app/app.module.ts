@@ -72,6 +72,7 @@ import { CalculationTypeDropdownComponent } from './components/calculation-type-
 import { WeightedAverageConfigModalComponent } from './components/weighted-average-config-modal/weighted-average-config-modal.component';
 import { ActivityTypeDropdownComponent } from './components/activity-type-dropdown/activity-type-dropdown.component';
 import { ActivityTypeCreateModalComponent } from './components/activity-type-create-modal/activity-type-create-modal.component';
+import { ActivityTypeFilterModalComponent } from './components/activity-type-filter-modal/activity-type-filter-modal.component';
 import { ActivityUpsertModalComponent } from './components/activity-upsert-modal/activity-upsert-modal.component';
 
 @NgModule({
@@ -139,6 +140,7 @@ import { ActivityUpsertModalComponent } from './components/activity-upsert-modal
     WeightedAverageConfigModalComponent,
     ActivityTypeDropdownComponent,
     ActivityTypeCreateModalComponent,
+    ActivityTypeFilterModalComponent,
     ActivityUpsertModalComponent
   ],
   imports: [

@@ -28,8 +28,21 @@ export class ActivitiesService {
     return this.http.get<Page<ActivityDTO>>(`${API_BASE_URL}/activities/by-subject/${subjectId}`, { params });
   }
 
-  listByPeriodPaged(periodId: number, pageRequest?: PageRequest): Observable<Page<ActivityDTO>> {
-    const params = withPageParams(new HttpParams(), pageRequest);
+  listByPeriodPaged(
+    periodId: number,
+    pageRequest?: PageRequest,
+    activityTypeNames?: string[]
+  ): Observable<Page<ActivityDTO>> {
+    let params = withPageParams(new HttpParams(), pageRequest);
+
+    const names = (activityTypeNames ?? [])
+      .map((n) => String(n ?? '').trim())
+      .filter((n) => Boolean(n));
+
+    for (const name of names) {
+      params = params.append('activityTypeNames', name);
+    }
+
     return this.http.get<Page<ActivityDTO>>(`${API_BASE_URL}/activities/by-period/${periodId}`, { params });
   }
 

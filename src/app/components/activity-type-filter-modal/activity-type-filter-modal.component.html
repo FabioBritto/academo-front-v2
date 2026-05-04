@@ -1,0 +1,64 @@
+<div class="modal-header">
+  <h5 class="modal-title">Filtrar por Tipo</h5>
+
+  <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
+</div>
+
+<div class="modal-body">
+  <div class="alert alert-danger" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <ng-container *ngIf="activityTypes.length > 0; else emptyState">
+    <div class="activity-type-filter__list">
+      <button
+        *ngFor="let t of activityTypes"
+        type="button"
+        class="activity-type-filter__item"
+        [class.activity-type-filter__item--active]="isSelected(t.name)"
+        [disabled]="isLoading"
+        (click)="toggle(t)"
+      >
+        <span class="activity-type-filter__item-name">{{ t.name }}</span>
+      </button>
+    </div>
+
+    <app-pagination-controls
+      *ngIf="totalPages > 1"
+      [page]="page"
+      [totalPages]="totalPages"
+      [disabled]="isLoading"
+      (pageChange)="onPageChange($event)"
+    ></app-pagination-controls>
+  </ng-container>
+
+  <ng-template #emptyState>
+    <p class="activity-type-filter__empty">{{ isLoading ? 'Carregando...' : 'Nenhum tipo cadastrado.' }}</p>
+  </ng-template>
+
+  <div class="activity-type-filter__actions mt-4" appEqualizeModalButtons>
+    <app-submit-button
+      type="button"
+      label="Cancelar"
+      icon=""
+      [disabled]="isLoading"
+      (click)="close()"
+    ></app-submit-button>
+
+    <app-submit-button
+      type="button"
+      label="Limpar Filtros"
+      icon=""
+      [disabled]="isLoading"
+      (click)="clearAndClose()"
+    ></app-submit-button>
+
+    <app-submit-button
+      type="button"
+      label="Filtrar"
+      icon=""
+      [disabled]="isLoading"
+      (click)="applyFilter()"
+    ></app-submit-button>
+  </div>
+</div>
