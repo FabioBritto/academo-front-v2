@@ -5,6 +5,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import type { ActivityDTO } from '../../../model/activities.model';
 import { ActivitiesService } from '../../../services/activities.service';
 import { ActivityDetailsModalComponent } from '../../../components/activity-details-modal/activity-details-modal.component';
+import { ActivityUpsertModalComponent } from '../../../components/activity-upsert-modal/activity-upsert-modal.component';
+import { ConfirmActionModalComponent } from '../../../components/confirm-action-modal/confirm-action-modal.component';
 
 @Component({
   selector: 'app-activities',
@@ -22,6 +24,11 @@ export class ActivitiesComponent implements OnInit {
   private allActivities: ActivityDTO[] = [];
   events: CalendarEvent<{ activity: ActivityDTO; name: string; subjectName: string }>[] = [];
 
+  selectedDate: Date | null = null;
+  selectedActivities: ActivityDTO[] = [];
+
+  isDeletingActivityId: number | null = null;
+
   constructor(
     private readonly activitiesService: ActivitiesService,
     private readonly modalService: NgbModal
@@ -29,6 +36,11 @@ export class ActivitiesComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadActivities();
+  }
+
+  onDayClicked(date: Date): void {
+    this.selectedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
+    this.refreshSelectedDay();
   }
 
   get prevMonthLabel(): string {
@@ -67,6 +79,78 @@ export class ActivitiesComponent implements OnInit {
     ref.componentInstance.activity = activity;
   }
 
+  openActivityDetails(activity: ActivityDTO): void {
+    if (!activity) {
+      return;
+    }
+
+    const ref = this.modalService.open(ActivityDetailsModalComponent, { size: 'lg' });
+    ref.componentInstance.activity = activity;
+  }
+
+  editActivity(activity: ActivityDTO): void {
+    const activityId = activity?.id;
+    const subjectId = activity?.subjectId;
+    const periodId = activity?.periodId;
+    if (!activityId || !subjectId || !periodId) {
+      return;
+    }
+
+    const ref = this.modalService.open(ActivityUpsertModalComponent, {
+      centered: true,
+      size: 'xl'
+    });
+
+    ref.componentInstance.subjectId = subjectId;
+    ref.componentInstance.periodId = periodId;
+    ref.componentInstance.activityId = activityId;
+
+    ref.closed.subscribe(() => {
+      this.loadActivities();
+    });
+  }
+
+  deleteActivity(activity: ActivityDTO): void {
+    const activityId = activity?.id;
+    if (!activityId) {
+      return;
+    }
+
+    if (this.isDeletingActivityId) {
+      return;
+    }
+
+    const confirmRef = this.modalService.open(ConfirmActionModalComponent, {
+      centered: true,
+      size: 'lg'
+    });
+
+    confirmRef.componentInstance.title = 'Excluir atividade';
+    confirmRef.componentInstance.message = 'Tem certeza que deseja excluir esta atividade?';
+    confirmRef.componentInstance.confirmLabel = 'Excluir';
+    confirmRef.componentInstance.cancelLabel = 'Cancelar';
+
+    confirmRef.closed.subscribe((confirmed: unknown) => {
+      if (confirmed !== true) {
+        return;
+      }
+
+      this.isDeletingActivityId = activityId;
+
+      this.activitiesService.delete(activityId).subscribe({
+        next: () => {
+          this.isDeletingActivityId = null;
+          this.allActivities = (this.allActivities ?? []).filter((a) => a.id !== activityId);
+          this.refreshEvents();
+          this.refreshSelectedDay();
+        },
+        error: () => {
+          this.isDeletingActivityId = null;
+        }
+      });
+    });
+  }
+
   private loadActivities(): void {
     this.loading = true;
     this.error = undefined;
@@ -77,6 +161,7 @@ export class ActivitiesComponent implements OnInit {
         next: (page) => {
           this.allActivities = page.content ?? [];
           this.refreshEvents();
+          this.refreshSelectedDay();
           this.loading = false;
         },
         error: () => {
@@ -84,6 +169,36 @@ export class ActivitiesComponent implements OnInit {
           this.loading = false;
         }
       });
+  }
+
+  private refreshSelectedDay(): void {
+    const selected = this.selectedDate;
+    if (!selected) {
+      this.selectedActivities = [];
+      return;
+    }
+
+    const key = this.dateKey(selected);
+    this.selectedActivities = (this.allActivities ?? [])
+      .filter((a) => this.activityDateKey(a.activityDate) === key)
+      .sort((a, b) => String(a.name ?? '').localeCompare(String(b.name ?? '')));
+  }
+
+  private dateKey(date: Date): string {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  }
+
+  private activityDateKey(value: string): string | null {
+    if (!value) {
+      return null;
+    }
+
+    const str = String(value).trim();
+    const iso = str.slice(0, 10);
+    return /^\d{4}-\d{2}-\d{2}$/.test(iso) ? iso : null;
   }
 
   private refreshEvents(): void {

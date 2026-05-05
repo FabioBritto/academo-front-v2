@@ -123,3 +123,73 @@
   margin-bottom: 2px;
 }
 
+.day-activities {
+  background: var(--surface-color);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.day-activities__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--default-color) 12%, transparent);
+}
+
+.day-activities__item + .day-activities__item {
+  margin-top: 10px;
+}
+
+.day-activities__main {
+  min-width: 0;
+  cursor: pointer;
+}
+
+.day-activities__title {
+  font-weight: 700;
+  color: var(--default-color);
+}
+
+.day-activities__subtitle {
+  font-size: 0.9rem;
+  opacity: 0.85;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.day-activities__actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.day-activities__actions ::ng-deep .btn-submit,
+.day-activities__actions ::ng-deep .btn-delete {
+  width: auto;
+  height: 40px;
+  padding: 0 14px;
+  font-size: 13px;
+  border-radius: 12px;
+}
+
+.day-activities__actions ::ng-deep .btn-submit i,
+.day-activities__actions ::ng-deep .btn-delete i {
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  .day-activities__item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .day-activities__actions {
+    justify-content: flex-end;
+  }
+}
+

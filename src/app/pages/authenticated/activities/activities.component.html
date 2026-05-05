@@ -51,7 +51,47 @@
       [events]="events"
       [locale]="'pt'"
       (eventClicked)="openDetails($event.event)"
+      (dayClicked)="onDayClicked($event.day.date)"
     ></mwl-calendar-month-view>
+  </div>
+
+  <div class="day-activities" *ngIf="selectedDate">
+    <div class="day-activities__header">
+      <h6 class="m-0 fw-semibold">Atividades de {{ selectedDate | date: 'dd/MM/yyyy' }}</h6>
+    </div>
+
+    <div *ngIf="selectedActivities.length === 0" class="alert alert-light mt-3">
+      Nenhuma atividade para este dia.
+    </div>
+
+    <div class="day-activities__list mt-3" *ngIf="selectedActivities.length > 0">
+      <div class="day-activities__item" *ngFor="let a of selectedActivities">
+        <div class="day-activities__main" (click)="openActivityDetails(a)">
+          <div class="day-activities__title">{{ a.name }}</div>
+          <div class="day-activities__subtitle">{{ a.subjectName }} • {{ a.activityTypeName }} • Nota: {{ a.grade }}</div>
+        </div>
+
+        <div class="day-activities__actions">
+          <app-submit-button
+            label="Editar"
+            icon="bi bi-pencil-fill"
+            type="button"
+            [disabled]="!a.subjectId || !a.periodId"
+            (click)="editActivity(a)"
+          ></app-submit-button>
+
+          <app-delete-button
+            label="Excluir"
+            icon="bi bi-trash-fill"
+            [disabled]="isDeletingActivityId !== null"
+            [isSubmitting]="isDeletingActivityId === a.id"
+            confirmTitle="Excluir atividade"
+            [confirmMessage]="'Tem certeza que deseja excluir a atividade ' + a.name + '?'"
+            (confirmed)="deleteActivity(a)"
+          ></app-delete-button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
