@@ -20,7 +20,7 @@ export class ActivitiesComponent implements OnInit {
   error?: string;
 
   private allActivities: ActivityDTO[] = [];
-  events: CalendarEvent<{ activity: ActivityDTO }>[] = [];
+  events: CalendarEvent<{ activity: ActivityDTO; name: string; subjectName: string }>[] = [];
 
   constructor(
     private readonly activitiesService: ActivitiesService,
@@ -47,12 +47,17 @@ export class ActivitiesComponent implements OnInit {
     return this.formatMonthLabel(this.addMonths(this.viewDate, 1));
   }
 
+  changeYear(delta: number): void {
+    const next = new Date(this.viewDate.getFullYear() + delta, this.viewDate.getMonth(), 1, 0, 0, 0, 0);
+    this.onViewDateChange(next);
+  }
+
   onViewDateChange(date: Date): void {
     this.viewDate = date;
     this.refreshEvents();
   }
 
-  openDetails(event: CalendarEvent<{ activity: ActivityDTO }>): void {
+  openDetails(event: CalendarEvent<{ activity: ActivityDTO; name: string; subjectName: string }>): void {
     const activity = event.meta?.activity;
     if (!activity) {
       return;
@@ -95,10 +100,18 @@ export class ActivitiesComponent implements OnInit {
         const date = x.date as Date;
 
         return {
-          title: `${activity.subjectName} - ${activity.name}`,
+          title: `${activity.name}\n${activity.subjectName}`,
           start: date,
           allDay: true,
-          meta: { activity }
+          color: {
+            primary: '#1e90ff',
+            secondary: '#D1E8FF'
+          },
+          meta: {
+            activity,
+            name: activity.name,
+            subjectName: activity.subjectName
+          }
         };
       });
   }
@@ -123,11 +136,21 @@ export class ActivitiesComponent implements OnInit {
       return null;
     }
 
-    const d = new Date(value);
-    if (Number.isNaN(d.getTime())) {
+    const dateOnly = /^\d{4}-\d{2}-\d{2}$/;
+    if (dateOnly.test(value)) {
+      const [y, m, d] = value.split('-').map((n) => Number(n));
+      if (!y || !m || !d) {
+        return null;
+      }
+
+      return new Date(y, m - 1, d, 0, 0, 0, 0);
+    }
+
+    const parsed = new Date(value);
+    if (Number.isNaN(parsed.getTime())) {
       return null;
     }
 
-    return new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0, 0);
+    return new Date(parsed.getFullYear(), parsed.getMonth(), parsed.getDate(), 0, 0, 0, 0);
   }
 }

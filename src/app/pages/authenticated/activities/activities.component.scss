@@ -1,11 +1,39 @@
 .calendar-year {
   grid-column: 3;
   justify-self: end;
-  font-weight: 600;
-  font-size: 2rem;
-  color: var(--default-color);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding-right: 8px;
+}
+
+.calendar-year__btn,
+.calendar-year__label {
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 50px;
+  color: var(--default-color);
+  background: var(--surface-color);
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--default-color) 8%, transparent);
   line-height: 1;
+}
+
+.calendar-year__btn {
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.calendar-year__btn:hover {
+  color: var(--accent-color);
+  background: color-mix(in srgb, var(--accent-color) 10%, transparent);
+}
+
+.calendar-year__label {
+  background: var(--accent-color);
+  color: var(--contrast-color);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--accent-color) 40%, transparent);
 }
 
 .calendar-nav {
@@ -72,5 +100,26 @@
   background: var(--surface-color);
   border-radius: 0.75rem;
   padding: 1rem;
+}
+
+:host ::ng-deep .cal-month-view .cal-event {
+  background: transparent;
+  border: 0;
+  color: var(--default-color);
+  font-weight: 500;
+}
+
+:host ::ng-deep .cal-month-view .cal-event-title {
+  white-space: pre-line;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  font-size: 12px;
+  line-height: 1.15;
+  max-width: 100%;
+}
+
+:host ::ng-deep .cal-month-view .cal-event-container {
+  margin-bottom: 2px;
 }
 

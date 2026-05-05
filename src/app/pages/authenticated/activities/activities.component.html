@@ -35,7 +35,11 @@
       </li>
     </ul>
 
-    <div class="calendar-year" aria-label="Ano do calendário">{{ currentYearLabel }}</div>
+    <div class="calendar-year" aria-label="Ano do calendário">
+      <button type="button" class="calendar-year__btn" (click)="changeYear(-1)">-</button>
+      <span class="calendar-year__label">{{ currentYearLabel }}</span>
+      <button type="button" class="calendar-year__btn" (click)="changeYear(1)">+</button>
+    </div>
   </div>
 
   <div *ngIf="loading" class="alert alert-info">Carregando atividades...</div>
