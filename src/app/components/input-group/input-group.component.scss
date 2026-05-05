@@ -32,7 +32,7 @@
   padding: 16px 16px 16px 52px;
   font-size: 15px;
   color: #000;
-  background: color-mix(in srgb, var(--default-color) 4%, transparent);
+  background: var(--surface-color);
   border: 2px solid transparent;
   border-radius: 14px;
   transition: all 0.3s ease;
