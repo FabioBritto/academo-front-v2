@@ -26,14 +26,25 @@
       <app-input-group
         label="Data de nascimento"
         icon="bi bi-calendar-event"
-        placeholder="dd/mm/aaaa"
+        id="birthDate"
         type="text"
+        inputMode="numeric"
+        placeholder="00/00/0000"
+        mask="00/00/0000"
+        [dropSpecialCharacters]="false"
+        [maxLength]="10"
         [invalid]="!!(form.get('birthDate')?.touched && form.get('birthDate')?.invalid)"
         formControlName="birthDate"
+        [disabled]="isSubmitting"
+        (blurred)="onBirthDateBlur()"
       ></app-input-group>
 
       <small class="text-danger" *ngIf="form.get('birthDate')?.touched && form.get('birthDate')?.hasError('required')">
         A data de nascimento é obrigatória
+      </small>
+
+      <small class="text-danger" *ngIf="form.get('birthDate')?.touched && form.get('birthDate')?.hasError('invalidDate')">
+        Data inválida
       </small>
     </div>
 

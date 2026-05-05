@@ -56,6 +56,33 @@ export class ProfileFormComponent implements OnChanges {
     }
   }
 
+  onBirthDateBlur(): void {
+    const control = this.form.get('birthDate');
+    if (!control) {
+      return;
+    }
+
+    control.markAsTouched();
+
+    const value = control.value;
+    if (value == null || String(value).trim() === '') {
+      const errors = { ...(control.errors ?? {}) };
+      delete errors['invalidDate'];
+      control.setErrors(Object.keys(errors).length ? errors : null);
+      return;
+    }
+
+    const isValid = this.parseBrToIsoDate(value) != null;
+    const errors = { ...(control.errors ?? {}) };
+    if (!isValid) {
+      errors['invalidDate'] = true;
+    } else {
+      delete errors['invalidDate'];
+    }
+
+    control.setErrors(Object.keys(errors).length ? errors : null);
+  }
+
   submit(): void {
     if (this.isSubmitting) {
       return;
@@ -72,15 +99,14 @@ export class ProfileFormComponent implements OnChanges {
     this.errorMessage = '';
 
     const birthDatePtBr = String(this.form.value['birthDate'] ?? '').trim();
-    const birthDateValid = /^\d{2}\/\d{2}\/\d{4}$/.test(birthDatePtBr);
-
-    if (!birthDateValid) {
+    const birthDateIso = this.parseBrToIsoDate(birthDatePtBr);
+    if (!birthDateIso) {
       this.isSubmitting = false;
-      this.validationMessage = 'Informe a data de nascimento no formato dd/mm/aaaa.';
+      this.form.get('birthDate')?.setErrors({ ...(this.form.get('birthDate')?.errors ?? {}), invalidDate: true });
+      this.form.get('birthDate')?.markAsTouched();
+      this.validationMessage = 'Informe uma data de nascimento válida.';
       return;
     }
-
-    const birthDateIso = toIsoDateFromPtBr(birthDatePtBr);
 
     const payload: UpdateProfileDTO = {
       fullName: String(this.form.value['fullName'] ?? '').trim(),
@@ -100,5 +126,46 @@ export class ProfileFormComponent implements OnChanges {
         });
       }
     });
+  }
+
+  private parseBrToIsoDate(value: unknown): string | null {
+    if (value == null) {
+      return null;
+    }
+
+    const str = String(value).trim();
+    if (!/^\d{2}\/\d{2}\/\d{4}$/.test(str)) {
+      return null;
+    }
+
+    const [ddStr, mmStr, yyyyStr] = str.split('/');
+    const dd = Number(ddStr);
+    const mm = Number(mmStr);
+    const yyyy = Number(yyyyStr);
+
+    if (!Number.isInteger(dd) || !Number.isInteger(mm) || !Number.isInteger(yyyy)) {
+      return null;
+    }
+
+    if (yyyy < 1900 || yyyy > 2100) {
+      return null;
+    }
+
+    if (mm < 1 || mm > 12) {
+      return null;
+    }
+
+    if (dd < 1 || dd > 31) {
+      return null;
+    }
+
+    const dt = new Date(yyyy, mm - 1, dd);
+    if (dt.getFullYear() !== yyyy || dt.getMonth() !== mm - 1 || dt.getDate() !== dd) {
+      return null;
+    }
+
+    const isoMonth = String(mm).padStart(2, '0');
+    const isoDay = String(dd).padStart(2, '0');
+    return `${yyyy}-${isoMonth}-${isoDay}`;
   }
 }
