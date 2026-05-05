@@ -16,10 +16,6 @@
         [invalid]="!!(form.get('fullName')?.touched && form.get('fullName')?.invalid)"
         formControlName="fullName"
       ></app-input-group>
-
-      <small class="text-danger" *ngIf="form.get('fullName')?.touched && form.get('fullName')?.hasError('required')">
-        O nome é obrigatório
-      </small>
     </div>
 
     <div class="col-12">
@@ -35,13 +31,8 @@
         [maxLength]="10"
         [invalid]="!!(form.get('birthDate')?.touched && form.get('birthDate')?.invalid)"
         formControlName="birthDate"
-        [disabled]="isSubmitting"
         (blurred)="onBirthDateBlur()"
       ></app-input-group>
-
-      <small class="text-danger" *ngIf="form.get('birthDate')?.touched && form.get('birthDate')?.hasError('required')">
-        A data de nascimento é obrigatória
-      </small>
 
       <small class="text-danger" *ngIf="form.get('birthDate')?.touched && form.get('birthDate')?.hasError('invalidDate')">
         Data inválida
@@ -62,10 +53,6 @@
           <span class="form-check-label">Feminino</span>
         </label>
       </div>
-
-      <small class="text-danger" *ngIf="form.get('gender')?.touched && form.get('gender')?.hasError('required')">
-        Selecione um gênero
-      </small>
     </div>
   </div>
 </form>

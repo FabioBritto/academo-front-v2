@@ -35,6 +35,12 @@ export function toIsoDateFromPtBr(value: string): string {
 }
 
 export function toPtBrFromIsoDate(value: string): string {
-  const [year, month, day] = value.split('-');
+  const raw = String(value ?? '').trim();
+  const iso = raw.slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) {
+    return '';
+  }
+
+  const [year, month, day] = iso.split('-');
   return `${day}/${month}/${year}`;
 }

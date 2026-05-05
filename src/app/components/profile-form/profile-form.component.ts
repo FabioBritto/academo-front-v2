@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { ProfileDTO, UpdateProfileDTO } from '../../model/profile.model';
 import { ProfileService } from '../../services/profile.service';
-import { toIsoDateFromPtBr, toPtBrFromIsoDate } from '../../utils/date.util';
+import { toPtBrFromIsoDate } from '../../utils/date.util';
 import { getHttpErrorMessage } from '../../utils/http-error.util';
 
 @Component({
@@ -27,9 +27,9 @@ export class ProfileFormComponent implements OnChanges {
     private readonly profileService: ProfileService
   ) {
     this.form = this.fb.group({
-      fullName: ['', Validators.required],
-      birthDate: ['', Validators.required],
-      gender: ['', Validators.required]
+      fullName: [''],
+      birthDate: [''],
+      gender: ['']
     });
   }
 
@@ -95,32 +95,37 @@ export class ProfileFormComponent implements OnChanges {
     }
 
     this.isSubmitting = true;
+    this.form.disable({ emitEvent: false });
     this.validationMessage = '';
     this.errorMessage = '';
 
     const birthDatePtBr = String(this.form.value['birthDate'] ?? '').trim();
-    const birthDateIso = this.parseBrToIsoDate(birthDatePtBr);
-    if (!birthDateIso) {
+    const birthDateIso = birthDatePtBr ? (this.parseBrToIsoDate(birthDatePtBr) ?? '') : '';
+    if (birthDatePtBr && !birthDateIso) {
       this.isSubmitting = false;
+      this.form.enable({ emitEvent: false });
       this.form.get('birthDate')?.setErrors({ ...(this.form.get('birthDate')?.errors ?? {}), invalidDate: true });
       this.form.get('birthDate')?.markAsTouched();
       this.validationMessage = 'Informe uma data de nascimento válida.';
       return;
     }
 
+    const fullName = String(this.form.value['fullName'] ?? '').trim();
     const payload: UpdateProfileDTO = {
-      fullName: String(this.form.value['fullName'] ?? '').trim(),
+      fullName: fullName,
       birthDate: birthDateIso,
-      gender: this.form.value['gender']
+      gender: this.form.value['gender'] || null
     };
 
     this.profileService.updateProfile(payload).subscribe({
       next: (updated) => {
         this.isSubmitting = false;
+        this.form.enable({ emitEvent: false });
         this.saved.emit(updated);
       },
       error: (err: unknown) => {
         this.isSubmitting = false;
+        this.form.enable({ emitEvent: false });
         this.errorMessage = getHttpErrorMessage(err, {
           fallback: 'Não foi possível salvar o perfil. Tente novamente.'
         });

@@ -5,7 +5,7 @@ export type GenderType = 'M' | 'F';
 export interface UpdateProfileDTO {
   fullName: string;
   birthDate: string;
-  gender: GenderType;
+  gender: GenderType | null;
 }
 
 export interface ProfileDTO {

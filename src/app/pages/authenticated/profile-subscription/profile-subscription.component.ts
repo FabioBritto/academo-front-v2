@@ -110,7 +110,7 @@ export class ProfileSubscriptionComponent implements OnInit {
       size: 'xl'
     });
 
-    modalRef.componentInstance.profile = this.profile;
+    modalRef.componentInstance.profile = this.profile ? { ...this.profile } : null;
 
     modalRef.closed.subscribe((result) => {
       if (result) {
