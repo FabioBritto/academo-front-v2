@@ -280,6 +280,12 @@
   padding-bottom: 60px;
 }
 
+#contato app-input-group .input-group-custom .input-wrapper input,
+#contato app-input-group .input-group-custom .input-wrapper textarea {
+  background: color-mix(in srgb, var(--default-color) 6%, var(--surface-color));
+  border-color: color-mix(in srgb, var(--default-color) 18%, transparent);
+}
+
 #contato .info-panel {
   background: var(--surface-color);
   border-radius: 24px;

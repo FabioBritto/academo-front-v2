@@ -14,9 +14,7 @@ export class UpcomingActivitiesCardComponent implements OnInit {
   activities: ActivityDTO[] = [];
   isLoading = false;
   hasError = false;
-  page = 0;
   pageSize = 5;
-  totalPages = 0;
 
   constructor(private readonly activitiesService: ActivitiesService) {
     this.load();
@@ -32,7 +30,7 @@ export class UpcomingActivitiesCardComponent implements OnInit {
 
   load(): void {
     const request = {
-      page: this.page,
+      page: 0,
       size: this.pageSize,
       sort: ['activityDate,asc']
     };
@@ -44,26 +42,15 @@ export class UpcomingActivitiesCardComponent implements OnInit {
     this.activitiesService.listPaged(request).subscribe({
       next: (page) => {
         console.log('[UpcomingActivitiesCard] /activities response', page);
-        this.activities = page.content;
-        this.totalPages = page.totalPages;
+        this.activities = (page.content ?? []).slice(0, this.pageSize);
         this.isLoading = false;
       },
       error: (err: unknown) => {
         console.error('[UpcomingActivitiesCard] /activities error', err);
         this.activities = [];
-        this.totalPages = 0;
         this.isLoading = false;
         this.hasError = true;
       }
     });
-  }
-
-  onPageChange(nextPage: number): void {
-    if (nextPage === this.page) {
-      return;
-    }
-
-    this.page = nextPage;
-    this.load();
   }
 }
