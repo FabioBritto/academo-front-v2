@@ -1,1 +1,32 @@
+:host {
+  display: block;
+}
 
+.files-page {
+  padding: 32px;
+}
+
+.files-page__breadcrumb {
+  font-size: 12px;
+  margin-bottom: 12px;
+  color: color-mix(in srgb, var(--default-color) 80%, transparent);
+}
+
+.files-page__breadcrumb-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.files-page__breadcrumb-link:hover {
+  text-decoration: underline;
+}
+
+.files-page__breadcrumb-sep {
+  margin: 0 6px;
+}
+
+@media (max-width: 992px) {
+  .files-page {
+    padding: 20px;
+  }
+}

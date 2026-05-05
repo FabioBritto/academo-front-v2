@@ -1,1 +1,32 @@
+<div class="files-page">
+  <div class="files-page__breadcrumb">
+    <ng-container *ngIf="isInSubject; else rootOnly">
+      <a class="files-page__breadcrumb-link" (click)="onBreadcrumbRootClick()" role="button" tabindex="0">Lista de Matérias</a>
+      <span class="files-page__breadcrumb-sep">&gt;</span>
+      <span>{{ subjectName || 'Matéria' }}</span>
+    </ng-container>
 
+    <ng-template #rootOnly>
+      <span>Lista de Matérias</span>
+    </ng-template>
+  </div>
+
+  <app-file-explorer-list
+    [mode]="isInSubject ? 'files' : 'subjects'"
+    [title]="listTitle"
+    [subjects]="isInSubject ? [] : subjects"
+    [files]="isInSubject ? files : []"
+    [isLoading]="isLoading"
+    [errorMessage]="errorMessage"
+    [emptyMessage]="emptyMessage"
+    [page]="isInSubject ? filesPage : subjectsPage"
+    [totalPages]="isInSubject ? filesTotalPages : subjectsTotalPages"
+    [sort]="isInSubject ? filesSort : subjectsSort"
+    [sortOptions]="isInSubject ? filesSortOptions : subjectsSortOptions"
+    (openSubject)="openSubject($event)"
+    (sortChange)="isInSubject ? onFilesSortChange($event) : onSubjectsSortChange($event)"
+    (pageChange)="isInSubject ? onFilesPageChange($event) : onSubjectsPageChange($event)"
+    (downloadFile)="download($event)"
+    (deleteFile)="delete($event)"
+  ></app-file-explorer-list>
+</div>

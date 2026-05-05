@@ -1,0 +1,134 @@
+<section class="file-explorer-list" aria-label="Explorador">
+  <header class="file-explorer-list__header">
+    <h5 class="file-explorer-list__title">{{ title }}</h5>
+
+    <div class="file-explorer-list__sort">
+      <app-sort-filters [value]="sort" [options]="sortOptions" (valueChange)="onSortChange($event)"></app-sort-filters>
+    </div>
+
+    <app-submit-button
+      *ngIf="showPrimaryAction"
+      [label]="primaryActionLabel"
+      [icon]="primaryActionIcon"
+      type="button"
+      [disabled]="primaryActionDisabled || isLoading"
+      (click)="requestPrimaryAction()"
+    ></app-submit-button>
+  </header>
+
+  <div class="file-explorer-list__body">
+    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="isLoading" class="file-explorer-list__loading">Carregando...</div>
+
+    <ng-container *ngIf="!isLoading">
+      <ng-container *ngIf="hasItems; else emptyState">
+        <div class="file-explorer-list__columns" *ngIf="mode === 'subjects'">
+          <div class="file-explorer-list__columns-icon" aria-hidden="true"></div>
+          <div class="file-explorer-list__columns-name">Nome</div>
+          <div class="file-explorer-list__columns-cols">
+            <div class="file-explorer-list__columns-col">Status</div>
+            <div class="file-explorer-list__columns-col">Criado em</div>
+            <div class="file-explorer-list__columns-col">Atualizado em</div>
+          </div>
+          <div class="file-explorer-list__columns-actions" aria-hidden="true"></div>
+        </div>
+
+        <div class="file-explorer-list__columns" *ngIf="mode === 'files'">
+          <div class="file-explorer-list__columns-icon" aria-hidden="true"></div>
+          <div class="file-explorer-list__columns-name">Nome</div>
+          <div class="file-explorer-list__columns-cols">
+            <div class="file-explorer-list__columns-col">Tipo de Arquivo</div>
+            <div class="file-explorer-list__columns-col">Adicionado em</div>
+            <div class="file-explorer-list__columns-col">Tamanho</div>
+          </div>
+          <div class="file-explorer-list__columns-actions" aria-hidden="true"></div>
+        </div>
+
+        <div class="file-explorer-list__items">
+          <ng-container *ngIf="mode === 'subjects'">
+            <article
+              *ngFor="let s of subjects"
+              class="file-explorer-list__item file-explorer-list__item--clickable"
+              (click)="selectSubject(s)"
+              (keydown.enter)="selectSubject(s)"
+              tabindex="0"
+            >
+              <div class="file-explorer-list__item-icon" aria-hidden="true">
+                <i class="bi bi-folder"></i>
+              </div>
+
+              <div class="file-explorer-list__item-main">
+                <div class="file-explorer-list__item-name">
+                  {{ s.name.length > 60 ? ((s.name | slice: 0:57) + '...') : s.name }}
+                </div>
+                <div class="file-explorer-list__item-meta">{{ s.description }}</div>
+              </div>
+
+              <div class="file-explorer-list__item-cols">
+                <div class="file-explorer-list__item-col">{{ s.isActive ? 'Ativo' : 'Inativo' }}</div>
+                <div class="file-explorer-list__item-col">{{ s.createdAt | date: 'dd/MM/yyyy - HH:mm' }}</div>
+                <div class="file-explorer-list__item-col">{{ s.updatedAt | date: 'dd/MM/yyyy - HH:mm' }}</div>
+              </div>
+            </article>
+          </ng-container>
+
+          <ng-container *ngIf="mode === 'files'">
+            <article class="file-explorer-list__item" *ngFor="let f of files">
+              <div class="file-explorer-list__item-icon" aria-hidden="true">
+                <i class="bi bi-file-earmark"></i>
+              </div>
+
+              <div class="file-explorer-list__item-main">
+                <div class="file-explorer-list__item-name">
+                  {{ f.fileName.length > 60 ? ((f.fileName | slice: 0:57) + '...') : f.fileName }}
+                </div>
+                <div class="file-explorer-list__item-meta">{{ f.fileType }}</div>
+              </div>
+
+              <div class="file-explorer-list__item-cols">
+                <div class="file-explorer-list__item-col">{{ getFileTypeLabel(f.fileType) }}</div>
+                <div class="file-explorer-list__item-col">{{ f.createdAt | date: 'dd/MM/yyyy - HH:mm' }}</div>
+                <div class="file-explorer-list__item-col">{{ formatBytes(f.size) }}</div>
+              </div>
+
+              <div class="file-explorer-list__item-actions">
+                <app-submit-button
+                  label="Download"
+                  icon="bi bi-download"
+                  type="button"
+                  [disabled]="isLoading"
+                  (click)="downloadFile.emit(f); $event.stopPropagation()"
+                ></app-submit-button>
+
+                <app-delete-button
+                  label="Excluir"
+                  icon="bi bi-trash-fill"
+                  [disabled]="isLoading"
+                  [isSubmitting]="isLoading"
+                  confirmTitle="Excluir arquivo"
+                  [confirmMessage]="'Tem certeza que deseja excluir o arquivo ' + f.fileName + '?'"
+                  (confirmed)="deleteFile.emit(f)"
+                ></app-delete-button>
+              </div>
+            </article>
+          </ng-container>
+        </div>
+
+        <app-pagination-controls
+          *ngIf="totalPages > 1"
+          [page]="page"
+          [totalPages]="totalPages"
+          [disabled]="isLoading"
+          (pageChange)="onPageChange($event)"
+        ></app-pagination-controls>
+      </ng-container>
+    </ng-container>
+
+    <ng-template #emptyState>
+      <p class="file-explorer-list__empty">{{ emptyMessage }}</p>
+    </ng-template>
+  </div>
+</section>

@@ -74,6 +74,7 @@ import { ActivityTypeDropdownComponent } from './components/activity-type-dropdo
 import { ActivityTypeCreateModalComponent } from './components/activity-type-create-modal/activity-type-create-modal.component';
 import { ActivityTypeFilterModalComponent } from './components/activity-type-filter-modal/activity-type-filter-modal.component';
 import { ActivityUpsertModalComponent } from './components/activity-upsert-modal/activity-upsert-modal.component';
+import { FileExplorerListComponent } from './components/file-explorer-list/file-explorer-list.component';
 
 @NgModule({
   declarations: [
@@ -141,7 +142,8 @@ import { ActivityUpsertModalComponent } from './components/activity-upsert-modal
     ActivityTypeDropdownComponent,
     ActivityTypeCreateModalComponent,
     ActivityTypeFilterModalComponent,
-    ActivityUpsertModalComponent
+    ActivityUpsertModalComponent,
+    FileExplorerListComponent
   ],
   imports: [
     BrowserModule,

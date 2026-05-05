@@ -1,0 +1,177 @@
+:host {
+  display: block;
+}
+
+.file-explorer-list {
+  background: var(--surface-color);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 12px 30px color-mix(in srgb, var(--default-color) 10%, transparent);
+}
+
+.file-explorer-list__header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid color-mix(in srgb, var(--default-color) 12%, transparent);
+}
+
+.file-explorer-list__sort {
+  display: flex;
+  justify-content: center;
+}
+
+.file-explorer-list__title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--heading-color);
+}
+
+.file-explorer-list__loading {
+  padding: 12px;
+  color: color-mix(in srgb, var(--default-color) 75%, transparent);
+}
+
+.file-explorer-list__columns {
+  display: grid;
+  grid-template-columns: 40px 1fr 370px 160px;
+  align-items: center;
+  gap: 12px;
+  padding: 0 12px 10px;
+  color: color-mix(in srgb, var(--default-color) 80%, transparent);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.file-explorer-list__columns-cols {
+  display: grid;
+  grid-template-columns: 110px 120px 140px;
+  gap: 12px;
+  align-items: center;
+  justify-items: start;
+}
+
+.file-explorer-list__columns-col {
+  white-space: nowrap;
+}
+
+.file-explorer-list__columns-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.file-explorer-list__columns-actions {
+  width: 160px;
+}
+
+.file-explorer-list__items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.file-explorer-list__item {
+  display: grid;
+  grid-template-columns: 40px 1fr 370px 160px;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--default-color) 12%, transparent);
+  background: color-mix(in srgb, var(--default-color) 2%, transparent);
+}
+
+.file-explorer-list__item--clickable {
+  cursor: pointer;
+}
+
+.file-explorer-list__item-icon {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--default-color) 18%, transparent);
+  background: color-mix(in srgb, var(--default-color) 3%, transparent);
+  color: var(--heading-color);
+}
+
+.file-explorer-list__item-icon i {
+  font-size: 18px;
+}
+
+.file-explorer-list__item-main {
+  min-width: 0;
+}
+
+.file-explorer-list__item-name {
+  font-weight: 700;
+  color: var(--heading-color);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-explorer-list__item-meta {
+  font-size: 13px;
+  color: color-mix(in srgb, var(--default-color) 75%, transparent);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-explorer-list__item-cols {
+  display: grid;
+  grid-template-columns: 110px 120px 140px;
+  gap: 12px;
+  align-items: center;
+  justify-items: start;
+  color: var(--heading-color);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.file-explorer-list__item-col {
+  color: color-mix(in srgb, var(--default-color) 80%, transparent);
+  white-space: nowrap;
+}
+
+.file-explorer-list__item-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex: 0 0 auto;
+  width: 160px;
+}
+
+.file-explorer-list__item-actions ::ng-deep .btn-submit,
+.file-explorer-list__item-actions ::ng-deep .btn-delete {
+  width: auto;
+  height: 40px;
+  padding: 0 14px;
+  font-size: 13px;
+  border-radius: 12px;
+}
+
+.file-explorer-list__item-actions ::ng-deep .btn-submit i,
+.file-explorer-list__item-actions ::ng-deep .btn-delete i {
+  font-size: 16px;
+}
+
+.file-explorer-list__empty {
+  margin: 0;
+  color: color-mix(in srgb, var(--default-color) 70%, transparent);
+}
+
+.file-explorer-list__header ::ng-deep .btn-submit {
+  width: auto;
+  height: 40px;
+  padding: 0 14px;
+  font-size: 13px;
+  border-radius: 12px;
+}
