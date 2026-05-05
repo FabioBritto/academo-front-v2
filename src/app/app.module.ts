@@ -5,6 +5,8 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -75,6 +77,7 @@ import { ActivityTypeCreateModalComponent } from './components/activity-type-cre
 import { ActivityTypeFilterModalComponent } from './components/activity-type-filter-modal/activity-type-filter-modal.component';
 import { ActivityUpsertModalComponent } from './components/activity-upsert-modal/activity-upsert-modal.component';
 import { FileExplorerListComponent } from './components/file-explorer-list/file-explorer-list.component';
+import { ActivityDetailsModalComponent } from './components/activity-details-modal/activity-details-modal.component';
 
 @NgModule({
   declarations: [
@@ -143,7 +146,8 @@ import { FileExplorerListComponent } from './components/file-explorer-list/file-
     ActivityTypeCreateModalComponent,
     ActivityTypeFilterModalComponent,
     ActivityUpsertModalComponent,
-    FileExplorerListComponent
+    FileExplorerListComponent,
+    ActivityDetailsModalComponent
   ],
   imports: [
     BrowserModule,
@@ -152,6 +156,10 @@ import { FileExplorerListComponent } from './components/file-explorer-list/file-
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory
+    }),
     NgxMaskDirective,
     NgxMaskPipe,
     AppRoutingModule

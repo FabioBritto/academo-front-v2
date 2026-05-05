@@ -1,1 +1,53 @@
 
+<div class="activities-page container-fluid">
+  
+
+  <div class="calendar-nav mb-3" aria-label="Navegação do calendário">
+    <ul class="calendar-nav__list" role="tablist">
+      <li class="calendar-nav__item" role="tab" aria-selected="false">
+        <button
+          type="button"
+          class="calendar-nav__btn"
+          mwlCalendarPreviousView
+          [view]="view"
+          [(viewDate)]="viewDate"
+          (viewDateChange)="onViewDateChange($event)"
+        >
+          {{ prevMonthLabel }}
+        </button>
+      </li>
+
+      <li class="calendar-nav__item calendar-nav__item--active" role="tab" aria-selected="true">
+        {{ currentMonthLabel }}
+      </li>
+
+      <li class="calendar-nav__item" role="tab" aria-selected="false">
+        <button
+          type="button"
+          class="calendar-nav__btn"
+          mwlCalendarNextView
+          [view]="view"
+          [(viewDate)]="viewDate"
+          (viewDateChange)="onViewDateChange($event)"
+        >
+          {{ nextMonthLabel }}
+        </button>
+      </li>
+    </ul>
+
+    <div class="calendar-year" aria-label="Ano do calendário">{{ currentYearLabel }}</div>
+  </div>
+
+  <div *ngIf="loading" class="alert alert-info">Carregando atividades...</div>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <div class="calendar-wrapper" *ngIf="!loading">
+    <mwl-calendar-month-view
+      [viewDate]="viewDate"
+      [events]="events"
+      [locale]="'pt'"
+      (eventClicked)="openDetails($event.event)"
+    ></mwl-calendar-month-view>
+  </div>
+</div>
+

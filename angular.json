@@ -37,7 +37,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/angular-calendar/scss/angular-calendar.scss"
             ],
             "scripts": []
           },
@@ -97,7 +98,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/angular-calendar/scss/angular-calendar.scss"
             ],
             "scripts": []
           }
