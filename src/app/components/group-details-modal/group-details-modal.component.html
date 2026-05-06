@@ -51,9 +51,44 @@
       <div class="group-details-modal__subjects">
         <h5 class="group-details-modal__subjects-title">Lista de matérias</h5>
 
-        <div class="group-details-modal__subjects-placeholder">
-          <div class="text-muted">Tabela de matérias (placeholder)</div>
-        </div>
+        <ng-container *ngIf="group.subjects.length > 0; else emptySubjects">
+          <div class="group-details-modal__subjects-list" role="list">
+            <article class="group-details-modal__subjects-item" *ngFor="let s of group.subjects" role="listitem">
+              <div class="group-details-modal__subjects-item-main">
+                <div class="group-details-modal__subjects-item-name">
+                  {{ s.name.length > 60 ? ((s.name | slice: 0:57) + '...') : s.name }}
+                </div>
+                <div class="group-details-modal__subjects-item-meta">
+                  {{ s.description.length > 90 ? ((s.description | slice: 0:87) + '...') : s.description }}
+                </div>
+              </div>
+
+              <div class="group-details-modal__subjects-item-actions">
+                <app-submit-button
+                  type="button"
+                  label="Acessar Matéria"
+                  icon="bi bi-box-arrow-up-right"
+                  [disabled]="isRemovingSubject"
+                  (click)="accessSubject(s.id)"
+                ></app-submit-button>
+
+                <app-delete-button
+                  label="Remover Matéria"
+                  icon="bi bi-x-circle-fill"
+                  [disabled]="isRemovingSubject"
+                  [isSubmitting]="isRemovingSubject"
+                  confirmTitle="Remover matéria"
+                  [confirmMessage]="'Tem certeza que deseja remover a matéria ' + s.name + ' do grupo?'"
+                  (confirmed)="removeSubject(s.id)"
+                ></app-delete-button>
+              </div>
+            </article>
+          </div>
+        </ng-container>
+
+        <ng-template #emptySubjects>
+          <p class="group-details-modal__subjects-empty">Nenhuma matéria neste grupo.</p>
+        </ng-template>
       </div>
     </ng-container>
 

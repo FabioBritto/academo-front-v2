@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import type { GroupDTO } from '../../model/groups.model';
@@ -20,12 +21,14 @@ export class GroupDetailsModalComponent implements OnInit {
   group: GroupDTO | null = null;
   isLoading = false;
   isDeleting = false;
+  isRemovingSubject = false;
 
   constructor(
     public readonly activeModal: NgbActiveModal,
     private readonly groupsService: GroupsService,
     private readonly modalService: NgbModal,
-    private readonly toastService: ToastService
+    private readonly toastService: ToastService,
+    private readonly router: Router
   ) {}
 
   ngOnInit(): void {
@@ -106,6 +109,45 @@ export class GroupDetailsModalComponent implements OnInit {
     }
 
     this.addSubjects.emit(this.group);
+  }
+
+  accessSubject(subjectId: number): void {
+    if (!Number.isFinite(subjectId)) {
+      return;
+    }
+
+    this.activeModal.close('navigate');
+    this.router.navigate(['/app/materias', subjectId]);
+  }
+
+  removeSubject(subjectId: number): void {
+    if (!this.group || this.isRemovingSubject) {
+      return;
+    }
+
+    this.isRemovingSubject = true;
+
+    this.groupsService.removeSubject(this.groupId, subjectId).subscribe({
+      next: (group) => {
+        this.group = group;
+        this.isRemovingSubject = false;
+        this.toastService.show('Matéria removida do grupo com sucesso.', {
+          classname: 'bg-success text-light',
+          delay: 3500,
+          autohide: true
+        });
+      },
+      error: (err: unknown) => {
+        this.isRemovingSubject = false;
+        this.toastService.show(getHttpErrorMessage(err, {
+          fallback: 'Não foi possível remover a matéria do grupo. Tente novamente.'
+        }), {
+          classname: 'bg-danger text-light',
+          delay: 4500,
+          autohide: true
+        });
+      }
+    });
   }
 
   get statusLabel(): string {
