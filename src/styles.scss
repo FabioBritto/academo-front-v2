@@ -36,5 +36,11 @@ html {
   max-width: 560px;
 }
 
+@media (min-width: 992px) {
+  [class$='__breadcrumb'] {
+    font-size: 18px !important;
+  }
+}
+
 @import "bootstrap/scss/bootstrap";
 @import "bootstrap-icons/font/bootstrap-icons.css";
