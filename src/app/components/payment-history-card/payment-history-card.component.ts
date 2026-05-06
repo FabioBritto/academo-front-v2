@@ -41,7 +41,20 @@ export class PaymentHistoryCardComponent implements OnInit {
       .subscribe({
         next: (page) => {
           this.page = page;
-          this.items = page.content ?? [];
+          const items = page.content ?? [];
+          this.items = [...items].sort((a, b) => {
+            const aWaiting = a.paymentStatus === 'WAITING_PAYMENT' ? 1 : 0;
+            const bWaiting = b.paymentStatus === 'WAITING_PAYMENT' ? 1 : 0;
+            if (aWaiting !== bWaiting) {
+              return bWaiting - aWaiting;
+            }
+
+            const aTime = new Date(a.createdAt).getTime();
+            const bTime = new Date(b.createdAt).getTime();
+            const aSafe = Number.isNaN(aTime) ? 0 : aTime;
+            const bSafe = Number.isNaN(bTime) ? 0 : bTime;
+            return bSafe - aSafe;
+          });
           this.totalPages = page.totalPages ?? 0;
           this.isLoading = false;
         },
@@ -102,6 +115,25 @@ export class PaymentHistoryCardComponent implements OnInit {
       return formatLocalDateTime(parseLocalDateTime(value)).split(' ')[0];
     } catch {
       return value;
+    }
+  }
+
+  chargeDueDate(createdAt: string | null | undefined): string {
+    if (!createdAt) {
+      return '-';
+    }
+
+    try {
+      const date = new Date(createdAt);
+      if (Number.isNaN(date.getTime())) {
+        return '-';
+      }
+
+      const dueDate = new Date(date);
+      dueDate.setDate(dueDate.getDate() + 2);
+      return formatLocalDate(dueDate);
+    } catch {
+      return '-';
     }
   }
 

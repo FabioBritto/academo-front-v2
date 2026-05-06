@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import type { PlanType } from '../../../model/auth.model';
 import type { ProfileDTO } from '../../../model/profile.model';
+import type { PaymentHistoryDTO } from '../../../model/payment.model';
 import { ConfirmActionModalComponent } from '../../../components/confirm-action-modal/confirm-action-modal.component';
 import { ProfileUpsertModalComponent } from '../../../components/profile-upsert-modal/profile-upsert-modal.component';
 import { PaymentService } from '../../../services/payment.service';
@@ -24,6 +25,8 @@ export class ProfileSubscriptionComponent implements OnInit {
   isCreatingPaymentLink = false;
   createPaymentErrorMessage = '';
 
+  hasWaitingPayment = false;
+
   private readonly monthlyPrice = 17.9;
   private readonly yearlyPrice = 149.9;
 
@@ -42,6 +45,19 @@ export class ProfileSubscriptionComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadProfile();
+    this.loadWaitingPaymentFlag();
+  }
+
+  private loadWaitingPaymentFlag(): void {
+    this.paymentService.listHistoryPaged({ page: 0, size: 50 }).subscribe({
+      next: (page) => {
+        const items: PaymentHistoryDTO[] = page.content ?? [];
+        this.hasWaitingPayment = items.some((item) => item.paymentStatus === 'WAITING_PAYMENT');
+      },
+      error: () => {
+        this.hasWaitingPayment = false;
+      }
+    });
   }
 
   get yearlyDiscountPercent(): number {
@@ -173,7 +189,7 @@ export class ProfileSubscriptionComponent implements OnInit {
   }
 
   private openSubscribeConfirm(plan: PlanType): void {
-    if (this.isCreatingPaymentLink) {
+    if (this.isCreatingPaymentLink || this.hasWaitingPayment) {
       return;
     }
 

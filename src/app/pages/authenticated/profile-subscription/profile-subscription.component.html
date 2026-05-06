@@ -93,7 +93,7 @@
                     type="button"
                     label="MENSAL"
                     icon=""
-                    [disabled]="isCreatingPaymentLink"
+                    [disabled]="isCreatingPaymentLink || hasWaitingPayment"
                     (click)="onSubscribeMonthly()"
                   ></app-submit-button>
 
@@ -101,7 +101,7 @@
                     type="button"
                     label="ANUAL"
                     icon=""
-                    [disabled]="isCreatingPaymentLink"
+                    [disabled]="isCreatingPaymentLink || hasWaitingPayment"
                     (click)="onSubscribeYearly()"
                   ></app-submit-button>
                 </div>

@@ -34,13 +34,17 @@
           </div>
 
           <div class="payment-history-card__meta">
-            <div class="payment-history-card__meta-label">Vencimento</div>
-            <div class="payment-history-card__meta-value">{{ formatDate(item.planDueDate) }}</div>
+            <div class="payment-history-card__meta-label">
+              {{ item.paymentStatus === 'PAID' ? 'Vencimento do Plano' : 'Vencimento da Cobrança' }}
+            </div>
+            <div class="payment-history-card__meta-value">
+              {{ item.paymentStatus === 'PAID' ? formatDate(item.planDueDate) : chargeDueDate(item.createdAt) }}
+            </div>
           </div>
 
           <div class="payment-history-card__meta payment-history-card__meta--action">
             <app-submit-button
-              *ngIf="item.paymentStatus !== 'PAID' && item.url"
+              *ngIf="item.paymentStatus === 'WAITING_PAYMENT' && item.url"
               type="button"
               label="Abrir"
               icon=""
