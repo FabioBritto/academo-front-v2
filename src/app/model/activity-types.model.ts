@@ -12,6 +12,15 @@ export interface UpdateActivityTypeDTO {
   periodId: number;
 }
 
+export interface ActivityTypeWeightDTO {
+  activityTypeId: number;
+  weight: number;
+}
+
+export interface UpdateActivityTypeWeightDTO {
+  weights: ActivityTypeWeightDTO[];
+}
+
 export interface ActivityTypeDTO {
   id: number;
   name: string;

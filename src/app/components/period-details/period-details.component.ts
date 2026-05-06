@@ -8,6 +8,7 @@ import { ToastService } from '../../services/toast.service';
 import { getHttpErrorMessage } from '../../utils/http-error.util';
 import { ActivityUpsertModalComponent } from '../activity-upsert-modal/activity-upsert-modal.component';
 import { ActivityTypeFilterModalComponent } from '../activity-type-filter-modal/activity-type-filter-modal.component';
+import { ActivityTypeWeightsModalComponent } from '../activity-type-weights-modal/activity-type-weights-modal.component';
 
 @Component({
   selector: 'app-period-details',
@@ -226,6 +227,29 @@ export class PeriodDetailsComponent {
 
       this.activityTypeFilterNames = names.length > 0 ? names : null;
       this.loadActivities(0);
+    });
+  }
+
+  openEditActivityTypeWeightsModal(): void {
+    const periodId = this.period?.id;
+    if (!periodId) {
+      return;
+    }
+
+    const modalRef = this.modalService.open(ActivityTypeWeightsModalComponent, {
+      centered: true,
+      size: 'lg'
+    });
+
+    modalRef.componentInstance.periodId = periodId;
+
+    modalRef.closed.subscribe(() => {
+      this.toastService.show('Pesos atualizados com sucesso.', {
+        classname: 'bg-success text-light',
+        delay: 3500,
+        autohide: true
+      });
+      this.changed.emit();
     });
   }
 }

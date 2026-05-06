@@ -13,6 +13,8 @@ export interface ActivityDTO {
   name: string;
   grade: number;
   description: string;
+  subjectId?: number;
+  periodId?: number;
   subjectName: string;
   activityTypeName: string;
   createdAt: string;

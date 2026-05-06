@@ -1,1 +1,97 @@
 
+<div class="activities-page container-fluid">
+  
+
+  <div class="calendar-nav mb-3" aria-label="Navegação do calendário">
+    <ul class="calendar-nav__list" role="tablist">
+      <li class="calendar-nav__item" role="tab" aria-selected="false">
+        <button
+          type="button"
+          class="calendar-nav__btn"
+          mwlCalendarPreviousView
+          [view]="view"
+          [(viewDate)]="viewDate"
+          (viewDateChange)="onViewDateChange($event)"
+        >
+          {{ prevMonthLabel }}
+        </button>
+      </li>
+
+      <li class="calendar-nav__item calendar-nav__item--active" role="tab" aria-selected="true">
+        {{ currentMonthLabel }}
+      </li>
+
+      <li class="calendar-nav__item" role="tab" aria-selected="false">
+        <button
+          type="button"
+          class="calendar-nav__btn"
+          mwlCalendarNextView
+          [view]="view"
+          [(viewDate)]="viewDate"
+          (viewDateChange)="onViewDateChange($event)"
+        >
+          {{ nextMonthLabel }}
+        </button>
+      </li>
+    </ul>
+
+    <div class="calendar-year" aria-label="Ano do calendário">
+      <button type="button" class="calendar-year__btn" (click)="changeYear(-1)">-</button>
+      <span class="calendar-year__label">{{ currentYearLabel }}</span>
+      <button type="button" class="calendar-year__btn" (click)="changeYear(1)">+</button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="alert alert-info">Carregando atividades...</div>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <div class="calendar-wrapper" *ngIf="!loading">
+    <mwl-calendar-month-view
+      [viewDate]="viewDate"
+      [events]="events"
+      [locale]="'pt'"
+      (eventClicked)="openDetails($event.event)"
+      (dayClicked)="onDayClicked($event.day.date)"
+    ></mwl-calendar-month-view>
+  </div>
+
+  <div class="day-activities" *ngIf="selectedDate">
+    <div class="day-activities__header">
+      <h6 class="m-0 fw-semibold">Atividades de {{ selectedDate | date: 'dd/MM/yyyy' }}</h6>
+    </div>
+
+    <div *ngIf="selectedActivities.length === 0" class="alert alert-light mt-3">
+      Nenhuma atividade para este dia.
+    </div>
+
+    <div class="day-activities__list mt-3" *ngIf="selectedActivities.length > 0">
+      <div class="day-activities__item" *ngFor="let a of selectedActivities">
+        <div class="day-activities__main" (click)="openActivityDetails(a)">
+          <div class="day-activities__title">{{ a.name }}</div>
+          <div class="day-activities__subtitle">{{ a.subjectName }} • {{ a.activityTypeName }} • Nota: {{ a.grade }}</div>
+        </div>
+
+        <div class="day-activities__actions">
+          <app-submit-button
+            label="Editar"
+            icon="bi bi-pencil-fill"
+            type="button"
+            [disabled]="!a.subjectId || !a.periodId"
+            (click)="editActivity(a)"
+          ></app-submit-button>
+
+          <app-delete-button
+            label="Excluir"
+            icon="bi bi-trash-fill"
+            [disabled]="isDeletingActivityId !== null"
+            [isSubmitting]="isDeletingActivityId === a.id"
+            confirmTitle="Excluir atividade"
+            [confirmMessage]="'Tem certeza que deseja excluir a atividade ' + a.name + '?'"
+            (confirmed)="deleteActivity(a)"
+          ></app-delete-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
