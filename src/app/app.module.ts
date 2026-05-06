@@ -73,6 +73,7 @@ import { WeightedAverageConfigModalComponent } from './components/weighted-avera
 import { ActivityTypeDropdownComponent } from './components/activity-type-dropdown/activity-type-dropdown.component';
 import { ActivityTypeCreateModalComponent } from './components/activity-type-create-modal/activity-type-create-modal.component';
 import { ActivityTypeFilterModalComponent } from './components/activity-type-filter-modal/activity-type-filter-modal.component';
+import { ActivityTypeWeightsModalComponent } from './components/activity-type-weights-modal/activity-type-weights-modal.component';
 import { ActivityUpsertModalComponent } from './components/activity-upsert-modal/activity-upsert-modal.component';
 import { FileExplorerListComponent } from './components/file-explorer-list/file-explorer-list.component';
 
@@ -142,6 +143,7 @@ import { FileExplorerListComponent } from './components/file-explorer-list/file-
     ActivityTypeDropdownComponent,
     ActivityTypeCreateModalComponent,
     ActivityTypeFilterModalComponent,
+    ActivityTypeWeightsModalComponent,
     ActivityUpsertModalComponent,
     FileExplorerListComponent
   ],

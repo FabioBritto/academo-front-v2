@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import type { Page } from '../model/common.model';
-import type { ActivityTypeDTO, SaveActivityTypeDTO, UpdateActivityTypeDTO } from '../model/activity-types.model';
+import type { ActivityTypeDTO, SaveActivityTypeDTO, UpdateActivityTypeDTO, UpdateActivityTypeWeightDTO } from '../model/activity-types.model';
 import { API_BASE_URL } from './api.config';
 import type { PageRequest } from '../utils/pagination.util';
 import { withPageParams } from '../utils/pagination.util';
@@ -29,6 +29,10 @@ export class ActivityTypesService {
 
   update(id: number, body: UpdateActivityTypeDTO): Observable<ActivityTypeDTO> {
     return this.http.put<ActivityTypeDTO>(`${API_BASE_URL}/activity-types/${id}`, body);
+  }
+
+  updatePeriodWeights(periodId: number, body: UpdateActivityTypeWeightDTO): Observable<void> {
+    return this.http.patch<void>(`${API_BASE_URL}/activity-types/${periodId}`, body);
   }
 
   delete(activityTypeId: number): Observable<void> {

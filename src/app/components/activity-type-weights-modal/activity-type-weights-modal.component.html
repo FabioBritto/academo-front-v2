@@ -1,0 +1,106 @@
+<div class="modal-header">
+  <div>
+    <h5 class="modal-title">Atualização de pesos dos tipos de atividade</h5>
+    <div class="activity-type-weights__subtitle">
+      Defina os pesos (%) de cada tipo de atividade. A soma total deve ser menor ou igual a 100.
+    </div>
+  </div>
+
+  <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
+</div>
+
+<div class="modal-body">
+  <div class="alert alert-danger" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <ng-container *ngIf="items.length > 0; else emptyState">
+    <div class="activity-type-weights__table">
+      <div class="activity-type-weights__table-head">
+        <div class="activity-type-weights__th">Tipo de atividade</div>
+        <div class="activity-type-weights__th activity-type-weights__th--right">Peso (%)</div>
+      </div>
+
+      <div class="activity-type-weights__table-body">
+        <div class="activity-type-weights__tr" *ngFor="let item of items">
+          <div class="activity-type-weights__td activity-type-weights__td--name">{{ item.name }}</div>
+
+          <div class="activity-type-weights__td activity-type-weights__td--weight">
+            <input
+              class="form-control activity-type-weights__input"
+              type="number"
+              inputmode="numeric"
+              min="0"
+              max="100"
+              step="1"
+              [value]="item.weight"
+              [disabled]="isLoading || isSubmitting"
+              (change)="onWeightChange(item, ($any($event.target)).value)"
+            />
+            <span class="activity-type-weights__suffix">%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="activity-type-weights__resume" [class.activity-type-weights__resume--danger]="isOverLimit">
+      <div class="activity-type-weights__resume-item">
+        <div class="activity-type-weights__resume-label">Total utilizado</div>
+        <div class="activity-type-weights__resume-value">
+          {{ total }}% <span class="activity-type-weights__resume-muted">/ 100%</span>
+        </div>
+      </div>
+
+      <div class="activity-type-weights__resume-item">
+        <div class="activity-type-weights__resume-label">Restante disponível</div>
+        <div class="activity-type-weights__resume-value">
+          {{ remaining }}%
+        </div>
+      </div>
+
+      <div class="activity-type-weights__resume-progress">
+        <div class="progress activity-type-weights__progress" role="progressbar" aria-label="Total de pesos">
+          <div class="progress-bar" [style.width.%]="progressValue"></div>
+        </div>
+      </div>
+
+      <div class="activity-type-weights__hint" *ngIf="isIncreaseLocked">
+        Total atingiu 100. Aumentos estão bloqueados.
+      </div>
+
+      <div class="activity-type-weights__hint activity-type-weights__hint--danger" *ngIf="isOverLimit">
+        A soma total deve ser menor ou igual a 100.
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #emptyState>
+    <p class="activity-type-weights__empty">{{ isLoading ? 'Carregando...' : 'Nenhum tipo cadastrado.' }}</p>
+  </ng-template>
+
+  <div class="activity-type-weights__actions mt-4" appEqualizeModalButtons>
+    <app-submit-button
+      type="button"
+      label="Zerar tudo"
+      icon=""
+      [disabled]="isLoading || isSubmitting"
+      (click)="resetAll()"
+    ></app-submit-button>
+
+    <app-submit-button
+      type="button"
+      label="Cancelar"
+      icon=""
+      [disabled]="isLoading || isSubmitting"
+      (click)="close()"
+    ></app-submit-button>
+
+    <app-submit-button
+      type="button"
+      label="Salvar pesos"
+      icon=""
+      [disabled]="isSaveDisabled"
+      (click)="save()"
+    ></app-submit-button>
+  </div>
+</div>
