@@ -22,15 +22,21 @@ export class ProfileFormComponent implements OnChanges {
   validationMessage = '';
   errorMessage = '';
 
+  readonly maxTextLen = 255;
+
   constructor(
     private readonly fb: FormBuilder,
     private readonly profileService: ProfileService
   ) {
     this.form = this.fb.group({
-      fullName: [''],
+      fullName: ['', [Validators.maxLength(255)]],
       birthDate: [''],
       gender: ['']
     });
+  }
+
+  get fullNameLength(): number {
+    return String(this.form.get('fullName')?.value ?? '').length;
   }
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -3,6 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import type { Page } from '../../model/common.model';
 import type { PaymentHistoryDTO, PaymentStatus, PlanType } from '../../model/payment.model';
 import { PaymentService } from '../../services/payment.service';
+import { ToastService } from '../../services/toast.service';
 import { formatLocalDate, formatLocalDateTime, parseIsoDate, parseLocalDateTime } from '../../utils/date.util';
 import { getHttpErrorMessage } from '../../utils/http-error.util';
 
@@ -24,7 +25,12 @@ export class PaymentHistoryCardComponent implements OnInit {
   page: Page<PaymentHistoryDTO> | null = null;
   items: PaymentHistoryDTO[] = [];
 
-  constructor(private readonly paymentService: PaymentService) {}
+  cancelingPaymentId: string | null = null;
+
+  constructor(
+    private readonly paymentService: PaymentService,
+    private readonly toastService: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.loadHistory();
@@ -143,5 +149,35 @@ export class PaymentHistoryCardComponent implements OnInit {
     }
 
     window.open(url, '_blank', 'noopener');
+  }
+
+  cancelPayment(item: PaymentHistoryDTO): void {
+    if (this.isLoading || this.cancelingPaymentId) {
+      return;
+    }
+
+    if (!item?.paymentId || item.paymentStatus !== 'WAITING_PAYMENT') {
+      return;
+    }
+
+    this.cancelingPaymentId = item.paymentId;
+
+    this.paymentService.cancelPaymentLink(item.paymentId).subscribe({
+      next: () => {
+        this.cancelingPaymentId = null;
+        this.toastService.show('Cobrança cancelada com sucesso.', {
+          classname: 'bg-success text-light',
+          delay: 3500,
+          autohide: true
+        });
+        this.loadHistory(this.pageIndex);
+      },
+      error: (err: unknown) => {
+        this.cancelingPaymentId = null;
+        this.errorMessage = getHttpErrorMessage(err, {
+          fallback: 'Não foi possível cancelar a cobrança.'
+        });
+      }
+    });
   }
 }

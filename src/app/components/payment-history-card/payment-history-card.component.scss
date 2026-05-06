@@ -122,9 +122,18 @@
 .payment-history-card__meta--action {
   display: flex;
   justify-content: flex-end;
+  gap: 10px;
 }
 
 .payment-history-card__meta--action ::ng-deep .btn-submit {
+  width: auto;
+  height: 36px;
+  padding: 0 14px;
+  font-size: 13px;
+  border-radius: 12px;
+}
+
+.payment-history-card__meta--action ::ng-deep .btn-delete {
   width: auto;
   height: 36px;
   padding: 0 14px;

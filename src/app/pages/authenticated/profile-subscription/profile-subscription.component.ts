@@ -9,6 +9,7 @@ import { PaymentService } from '../../../services/payment.service';
 import { ProfileService } from '../../../services/profile.service';
 import { formatLocalDate, formatLocalDateTime, parseIsoDate, parseLocalDateTime } from '../../../utils/date.util';
 import { getHttpErrorMessage } from '../../../utils/http-error.util';
+import { formatBytes } from '../../../utils/storage.util';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -29,6 +30,21 @@ export class ProfileSubscriptionComponent implements OnInit {
 
   private readonly monthlyPrice = 17.9;
   private readonly yearlyPrice = 149.9;
+
+  get displayFullName(): string {
+    const name = this.profile?.fullName ?? '';
+    const maxLen = 40;
+
+    if (name.length <= maxLen) {
+      return name;
+    }
+
+    return `${name.slice(0, maxLen).trimEnd()}...`;
+  }
+
+  get displayUserUseStorage(): string {
+    return formatBytes(this.profile?.userUseStorage);
+  }
 
   formatBrl(value: number): string {
     return value.toLocaleString('pt-BR', {

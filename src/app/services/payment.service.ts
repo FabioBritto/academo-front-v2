@@ -23,7 +23,7 @@ export class PaymentService {
     return this.http.get<Page<PaymentHistoryDTO>>(`${API_BASE_URL}/payment`, { params });
   }
 
-  cancel(): Observable<void> {
-    return this.http.post<void>(`${API_BASE_URL}/payment/cancel`, null);
+  cancelPaymentLink(paymentId: string): Observable<void> {
+    return this.http.post<void>(`${API_BASE_URL}/payment/cancel/${paymentId}`, null);
   }
 }

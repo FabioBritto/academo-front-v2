@@ -28,10 +28,6 @@
         </div>
 
         <div class="payment-history-card__item-meta">
-          <div class="payment-history-card__meta">
-            <div class="payment-history-card__meta-label">Link gerado em</div>
-            <div class="payment-history-card__meta-value">{{ formatDateTime(item.createdAt) }}</div>
-          </div>
 
           <div class="payment-history-card__meta">
             <div class="payment-history-card__meta-label">
@@ -43,10 +39,24 @@
           </div>
 
           <div class="payment-history-card__meta payment-history-card__meta--action">
+            
+            <app-delete-button
+              *ngIf="item.paymentStatus === 'WAITING_PAYMENT'"
+              label="Cancelar Cobrança"
+              icon=""
+              confirmTitle="Cancelar cobrança"
+              confirmMessage="Tem certeza que deseja cancelar esta cobrança?"
+              confirmLabel="Cancelar cobrança"
+              cancelLabel="Voltar"
+              [disabled]="item.paymentStatus !== 'WAITING_PAYMENT'"
+              [isSubmitting]="cancelingPaymentId === item.paymentId"
+              (confirmed)="cancelPayment(item)"
+            ></app-delete-button>
+
             <app-submit-button
               *ngIf="item.paymentStatus === 'WAITING_PAYMENT' && item.url"
               type="button"
-              label="Abrir"
+              label="Realizar Pagamento"
               icon=""
               (click)="openUrl(item.url)"
             ></app-submit-button>
