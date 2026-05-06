@@ -25,6 +25,10 @@ export class GroupUpsertModalComponent {
     return this.groupForm?.isSubmitting ?? false;
   }
 
+  get isSaveDisabled(): boolean {
+    return this.isSubmitting || (this.groupForm?.form?.invalid ?? true);
+  }
+
   constructor(public readonly activeModal: NgbActiveModal) {}
 
   close(): void {

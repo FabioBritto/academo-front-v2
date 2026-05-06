@@ -22,15 +22,25 @@ export class GroupFormComponent implements OnChanges {
   validationMessage = '';
   errorMessage = '';
 
+  readonly maxTextLen = 255;
+
   constructor(
     private readonly fb: FormBuilder,
     private readonly groupsService: GroupsService
   ) {
     this.form = this.fb.group({
-      name: ['', Validators.required],
-      description: [''],
+      name: ['', [Validators.required, Validators.maxLength(this.maxTextLen)]],
+      description: ['', [Validators.maxLength(this.maxTextLen)]],
       isActive: [true]
     });
+  }
+
+  get nameLength(): number {
+    return String(this.form.get('name')?.value ?? '').length;
+  }
+
+  get descriptionLength(): number {
+    return String(this.form.get('description')?.value ?? '').length;
   }
 
   ngOnChanges(changes: SimpleChanges): void {

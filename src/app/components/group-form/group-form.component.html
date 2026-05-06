@@ -17,9 +17,23 @@
         formControlName="name"
       ></app-input-group>
 
-      <small class="text-danger" *ngIf="form.get('name')?.touched && form.get('name')?.hasError('required')">
-        O nome é obrigatório
-      </small>
+      <div class="d-flex justify-content-between align-items-center">
+        <small class="text-danger" *ngIf="form.get('name')?.touched && form.get('name')?.hasError('required')">
+          O nome é obrigatório
+        </small>
+
+        <small class="text-danger" *ngIf="form.get('name')?.touched && form.get('name')?.hasError('maxlength')">
+          Máximo de 255 caracteres
+        </small>
+
+        <small
+          class="ms-auto"
+          [class.text-danger]="nameLength > maxTextLen"
+          [class.text-muted]="nameLength <= maxTextLen"
+        >
+          {{ nameLength }}/{{ maxTextLen }}
+        </small>
+      </div>
     </div>
 
     <div class="col-12">
@@ -32,6 +46,20 @@
         [invalid]="!!(form.get('description')?.touched && form.get('description')?.invalid)"
         formControlName="description"
       ></app-input-group>
+
+      <div class="d-flex justify-content-between align-items-center">
+        <small class="text-danger" *ngIf="form.get('description')?.touched && form.get('description')?.hasError('maxlength')">
+          Máximo de 255 caracteres
+        </small>
+
+        <small
+          class="ms-auto"
+          [class.text-danger]="descriptionLength > maxTextLen"
+          [class.text-muted]="descriptionLength <= maxTextLen"
+        >
+          {{ descriptionLength }}/{{ maxTextLen }}
+        </small>
+      </div>
     </div>
 
     <div class="col-12" *ngIf="group">
