@@ -12,6 +12,17 @@ export class FlashcardReadonlyModalComponent {
   @Input({ required: true }) flashcard!: FlashcardDTO;
   @Input() subjectName = '';
 
+  get displaySubjectName(): string {
+    const name = this.subjectName ?? '';
+    const maxLen = 80;
+
+    if (name.length <= maxLen) {
+      return name;
+    }
+
+    return `${name.slice(0, maxLen).trimEnd()}...`;
+  }
+
   constructor(public readonly activeModal: NgbActiveModal) {}
 
   close(): void {

@@ -60,6 +60,10 @@
   white-space: pre-line;
 }
 
+.flashcard-readonly-modal__subject {
+  overflow-wrap: anywhere;
+}
+
 @media (max-width: 768px) {
   .flashcard-readonly-modal__meta-row {
     grid-template-columns: 1fr;

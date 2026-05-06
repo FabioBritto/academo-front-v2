@@ -13,6 +13,17 @@ export class FlashcardCardComponent {
 
   @Output() selected = new EventEmitter<FlashcardDTO>();
 
+  get displaySubjectName(): string {
+    const name = this.subjectName ?? '';
+    const maxLen = 80;
+
+    if (name.length <= maxLen) {
+      return name;
+    }
+
+    return `${name.slice(0, maxLen).trimEnd()}...`;
+  }
+
   onSelect(): void {
     this.selected.emit(this.flashcard);
   }

@@ -17,7 +17,9 @@
     <div class="flashcard-readonly-modal__meta">
       <div class="flashcard-readonly-modal__meta-item">
         <span class="flashcard-readonly-modal__meta-label">Matéria:</span>
-        <span class="flashcard-readonly-modal__meta-value">{{ subjectName }}</span>
+        <span class="flashcard-readonly-modal__meta-value flashcard-readonly-modal__subject" [attr.title]="subjectName">
+          {{ displaySubjectName }}
+        </span>
       </div>
 
       <div class="flashcard-readonly-modal__meta-row">
