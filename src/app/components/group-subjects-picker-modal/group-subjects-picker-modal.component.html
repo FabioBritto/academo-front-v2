@@ -19,7 +19,9 @@
         [disabled]="isLoading"
         (click)="toggle(s)"
       >
-        <span class="activity-type-filter__item-name">{{ s.name }}</span>
+        <span class="activity-type-filter__item-name" [attr.title]="s.name">
+          {{ s.name.length > 60 ? ((s.name | slice: 0:57) + '...') : s.name }}
+        </span>
       </button>
     </div>
 

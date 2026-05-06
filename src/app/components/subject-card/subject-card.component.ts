@@ -13,6 +13,21 @@ export class SubjectCardComponent {
 
   @Input() iconClass = 'bi bi-book-fill';
 
+  get displayName(): string {
+    const name = this.subject?.name ?? '';
+    const maxLen = 60;
+
+    if (name.length <= maxLen) {
+      return name;
+    }
+
+    const ellipsis = '...';
+    const sliceLen = Math.max(0, maxLen - ellipsis.length);
+    const sliced = name.slice(0, sliceLen).trimEnd();
+
+    return `${sliced}${ellipsis}`;
+  }
+
   constructor(private readonly router: Router) {}
 
   @HostListener('click')

@@ -44,6 +44,21 @@ export class SubjectDetailsComponent implements OnInit {
     private readonly toastService: ToastService
   ) {}
 
+  get displayName(): string {
+    const name = this.subject?.name ?? '';
+    const maxLen = 60;
+
+    if (name.length <= maxLen) {
+      return name;
+    }
+
+    const ellipsis = '...';
+    const sliceLen = Math.max(0, maxLen - ellipsis.length);
+    const sliced = name.slice(0, sliceLen).trimEnd();
+
+    return `${sliced}${ellipsis}`;
+  }
+
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
     const id = idParam ? Number(idParam) : NaN;
@@ -287,7 +302,7 @@ export class SubjectDetailsComponent implements OnInit {
   }
 
   get breadcrumbLabel(): string {
-    return this.subject?.name ?? 'Carregando...';
+    return this.displayName || 'Carregando...';
   }
 
   get calculationTypeLabel(): string {

@@ -5,15 +5,11 @@
   </div>
 
   <div class="activity-notification__content">
-    <h5 class="activity-notification__title">{{ name }}</h5>
+    <h5 class="activity-notification__title" [attr.title]="name || null">{{ displayName }}</h5>
 
     <div *ngIf="subjectName" class="activity-notification__meta">
       <i class="bi bi-book" aria-hidden="true"></i>
-      <span>{{ subjectName }}</span>
+      <span class="activity-notification__meta-text" [attr.title]="subjectName || null">{{ displaySubjectName }}</span>
     </div>
-
-    <p *ngIf="description" class="activity-notification__description">
-      {{ description }}
-    </p>
   </div>
 </article>

@@ -7,9 +7,30 @@ import { Component, Input } from '@angular/core';
 })
 export class ActivityNotificationComponent {
   @Input({ required: true }) name!: string;
-  @Input() description?: string | null;
   @Input() subjectName?: string | null;
   @Input({ required: true }) activityDate!: string;
+
+  get displayName(): string {
+    const name = this.name ?? '';
+    const maxLen = 40;
+
+    if (name.length <= maxLen) {
+      return name;
+    }
+
+    return `${name.slice(0, maxLen).trimEnd()}...`;
+  }
+
+  get displaySubjectName(): string {
+    const name = this.subjectName ?? '';
+    const maxLen = 40;
+
+    if (name.length <= maxLen) {
+      return name;
+    }
+
+    return `${name.slice(0, maxLen).trimEnd()}...`;
+  }
 
   get dayLabel(): string {
     const date = this.asDate(this.activityDate);

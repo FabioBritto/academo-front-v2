@@ -7,7 +7,7 @@
 
   <section class="subject-details__header">
     <div class="subject-details__header-main">
-      <h2 class="subject-details__title">{{ subject?.name }}</h2>
+      <h2 class="subject-details__title" [attr.title]="subject?.name || null">{{ displayName }}</h2>
       <p class="subject-details__description">{{ subject?.description }}</p>
 
       <div class="subject-details__meta">
