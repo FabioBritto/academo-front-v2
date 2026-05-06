@@ -6,6 +6,7 @@ import type { GroupDTO } from '../../model/groups.model';
 import { GroupsService } from '../../services/groups.service';
 import { ToastService } from '../../services/toast.service';
 import { getHttpErrorMessage } from '../../utils/http-error.util';
+import { GroupSubjectsPickerModalComponent } from '../group-subjects-picker-modal/group-subjects-picker-modal.component';
 import { GroupUpsertModalComponent } from '../group-upsert-modal/group-upsert-modal.component';
 
 @Component({
@@ -108,7 +109,18 @@ export class GroupDetailsModalComponent implements OnInit {
       return;
     }
 
-    this.addSubjects.emit(this.group);
+    const modalRef = this.modalService.open(GroupSubjectsPickerModalComponent, {
+      centered: true,
+      size: 'lg'
+    });
+
+    modalRef.componentInstance.groupId = this.groupId;
+
+    modalRef.closed.subscribe((result: GroupDTO | null) => {
+      if (result) {
+        this.group = result;
+      }
+    });
   }
 
   accessSubject(subjectId: number): void {

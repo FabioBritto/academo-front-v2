@@ -23,6 +23,15 @@ export class SubjectsService {
     return this.http.get<Page<SubjectDTO>>(`${API_BASE_URL}/subjects`, { params });
   }
 
+  listPagedWithGroupFilter(groupId: number, pageRequest?: PageRequest): Observable<Page<SubjectDTO>> {
+    const id = Number(groupId);
+    let params = withPageParams(new HttpParams(), pageRequest);
+    if (Number.isFinite(id) && id > 0) {
+      params = params.set('groupId', String(id));
+    }
+    return this.http.get<Page<SubjectDTO>>(`${API_BASE_URL}/subjects`, { params });
+  }
+
   listWithFlashcards(): Observable<SubjectWithFlashcardDTO[]> {
     return this.http.get<SubjectWithFlashcardDTO[]>(`${API_BASE_URL}/subjects/with-flashcards`);
   }

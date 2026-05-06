@@ -75,6 +75,7 @@ import { ActivityTypeCreateModalComponent } from './components/activity-type-cre
 import { ActivityTypeFilterModalComponent } from './components/activity-type-filter-modal/activity-type-filter-modal.component';
 import { ActivityUpsertModalComponent } from './components/activity-upsert-modal/activity-upsert-modal.component';
 import { FileExplorerListComponent } from './components/file-explorer-list/file-explorer-list.component';
+import { GroupSubjectsPickerModalComponent } from './components/group-subjects-picker-modal/group-subjects-picker-modal.component';
 
 @NgModule({
   declarations: [
@@ -143,7 +144,8 @@ import { FileExplorerListComponent } from './components/file-explorer-list/file-
     ActivityTypeCreateModalComponent,
     ActivityTypeFilterModalComponent,
     ActivityUpsertModalComponent,
-    FileExplorerListComponent
+    FileExplorerListComponent,
+    GroupSubjectsPickerModalComponent
   ],
   imports: [
     BrowserModule,
