@@ -24,6 +24,17 @@ export class GroupDetailsModalComponent implements OnInit {
   isDeleting = false;
   isRemovingSubject = false;
 
+  get displayName(): string {
+    const name = this.group?.name ?? '';
+    const maxLen = 40;
+
+    if (name.length <= maxLen) {
+      return name;
+    }
+
+    return `${name.slice(0, maxLen).trimEnd()}...`;
+  }
+
   constructor(
     public readonly activeModal: NgbActiveModal,
     private readonly groupsService: GroupsService,

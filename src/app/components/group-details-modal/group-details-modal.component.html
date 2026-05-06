@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h3 class="group-details-modal__name">{{ group?.name || 'Grupo' }}</h3>
+  <h3 class="group-details-modal__name" [attr.title]="group?.name || null">{{ displayName || 'Grupo' }}</h3>
 
   <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
 </div>
