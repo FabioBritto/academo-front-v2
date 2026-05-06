@@ -59,6 +59,8 @@ export class InputGroupComponent implements ControlValueAccessor {
 
   @Input() invalid = false;
 
+  @Input() readOnly = false;
+
   @Output() blurred = new EventEmitter<void>();
 
   isPasswordVisible = false;

@@ -2,3 +2,7 @@
   font-weight: 600;
   color: var(--heading-color);
 }
+
+:host ::ng-deep app-input-group textarea {
+  resize: none !important;
+}

@@ -23,11 +23,52 @@
   white-space: pre-line;
 }
 
+.group-details-modal__description-field {
+  height: 156px;
+}
+
+.group-details-modal__description-field ::ng-deep label {
+  display: none;
+  margin: 0;
+}
+
+.group-details-modal__description-field ::ng-deep textarea {
+  height: 156px;
+  resize: none !important;
+  overflow: auto;
+}
+
 .group-details-modal__actions {
   display: flex;
   flex-direction: column;
   gap: 12px;
   align-items: stretch;
+}
+
+.group-details-modal__actions .group-details-modal__status {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 4px;
+}
+
+.group-details-modal__actions .group-details-modal__status .badge {
+  background: color-mix(in srgb, var(--default-color) 6%, transparent) !important;
+  border: 1px solid color-mix(in srgb, var(--default-color) 22%, transparent);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.group-details-modal__actions .group-details-modal__status .badge.text-bg-success {
+  border-color: color-mix(in srgb, #198754 55%, transparent);
+  color: #198754 !important;
+}
+
+.group-details-modal__actions .group-details-modal__status .badge.text-bg-secondary {
+  border-color: color-mix(in srgb, #6c757d 55%, transparent);
+  color: #6c757d !important;
 }
 
 .group-details-modal__actions ::ng-deep .btn-submit {
