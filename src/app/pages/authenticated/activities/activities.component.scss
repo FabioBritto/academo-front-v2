@@ -1,1 +1,195 @@
+.calendar-year {
+  grid-column: 3;
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding-right: 8px;
+}
+
+.calendar-year__btn,
+.calendar-year__label {
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 50px;
+  color: var(--default-color);
+  background: var(--surface-color);
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--default-color) 8%, transparent);
+  line-height: 1;
+}
+
+.calendar-year__btn {
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.calendar-year__btn:hover {
+  color: var(--accent-color);
+  background: color-mix(in srgb, var(--accent-color) 10%, transparent);
+}
+
+.calendar-year__label {
+  background: var(--accent-color);
+  color: var(--contrast-color);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--accent-color) 40%, transparent);
+}
+
+.calendar-nav {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}
+
+.calendar-nav__list {
+  grid-column: 2;
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px;
+  margin: 0;
+  list-style: none;
+  background: var(--surface-color);
+  border-radius: 50px;
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--default-color) 8%, transparent);
+}
+
+.calendar-nav__item {
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  color: var(--default-color);
+  background: transparent;
+  user-select: none;
+  display: flex;
+  align-items: center;
+}
+
+.calendar-nav__btn {
+  background: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  font-weight: inherit;
+  padding: 0;
+  cursor: pointer;
+}
+
+.calendar-nav__item:hover {
+  color: var(--accent-color);
+  background: color-mix(in srgb, var(--accent-color) 10%, transparent);
+}
+
+.calendar-nav__item--active {
+  background: var(--accent-color);
+  color: var(--contrast-color);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--accent-color) 40%, transparent);
+  text-transform: lowercase;
+}
+
+.calendar-nav__item--active:hover {
+  color: var(--contrast-color);
+  background: var(--accent-color);
+}
+
+.calendar-wrapper {
+  background: var(--surface-color);
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+
+:host ::ng-deep .cal-month-view .cal-event {
+  background: transparent;
+  border: 0;
+  color: var(--default-color);
+  font-weight: 500;
+}
+
+:host ::ng-deep .cal-month-view .cal-event-title {
+  white-space: pre-line;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  font-size: 12px;
+  line-height: 1.15;
+  max-width: 100%;
+}
+
+:host ::ng-deep .cal-month-view .cal-event-container {
+  margin-bottom: 2px;
+}
+
+.day-activities {
+  background: var(--surface-color);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.day-activities__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--default-color) 12%, transparent);
+}
+
+.day-activities__item + .day-activities__item {
+  margin-top: 10px;
+}
+
+.day-activities__main {
+  min-width: 0;
+  cursor: pointer;
+}
+
+.day-activities__title {
+  font-weight: 700;
+  color: var(--default-color);
+}
+
+.day-activities__subtitle {
+  font-size: 0.9rem;
+  opacity: 0.85;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.day-activities__actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.day-activities__actions ::ng-deep .btn-submit,
+.day-activities__actions ::ng-deep .btn-delete {
+  width: auto;
+  height: 40px;
+  padding: 0 14px;
+  font-size: 13px;
+  border-radius: 12px;
+}
+
+.day-activities__actions ::ng-deep .btn-submit i,
+.day-activities__actions ::ng-deep .btn-delete i {
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  .day-activities__item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .day-activities__actions {
+    justify-content: flex-end;
+  }
+}
 
