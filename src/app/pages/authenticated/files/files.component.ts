@@ -203,14 +203,21 @@ export class FilesComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.errorMessage = '';
 
+    const shouldNavigateToFirstPage = this.filesPage !== 0;
+
     this.filesService.deleteFile(file.uuid).subscribe({
       next: () => {
-        this.isLoading = false;
-        this.router.navigate([], {
-          relativeTo: this.route,
-          queryParams: { filesPage: 0 },
-          queryParamsHandling: 'merge'
-        });
+        if (shouldNavigateToFirstPage) {
+          this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: { filesPage: 0 },
+            queryParamsHandling: 'merge'
+          });
+          return;
+        }
+
+        this.filesPage = 0;
+        this.loadFiles();
       },
       error: (err: unknown) => {
         this.isLoading = false;
