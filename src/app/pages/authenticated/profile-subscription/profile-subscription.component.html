@@ -100,7 +100,7 @@
                         type="button"
                         label="Escolher plano mensal"
                         icon=""
-                        [disabled]="isCreatingPaymentLink || hasWaitingPayment"
+                        [disabled]="isCreatingPaymentLink || hasWaitingPayment || hasActivePremium"
                         (click)="onSubscribeMonthly()"
                       ></app-submit-button>
                     </div>
@@ -128,7 +128,7 @@
                         type="button"
                         label="Escolher plano anual"
                         icon=""
-                        [disabled]="isCreatingPaymentLink || hasWaitingPayment"
+                        [disabled]="isCreatingPaymentLink || hasWaitingPayment || hasActivePremium"
                         (click)="onSubscribeYearly()"
                       ></app-submit-button>
                     </div>

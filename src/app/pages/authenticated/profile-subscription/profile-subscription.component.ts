@@ -28,6 +28,8 @@ export class ProfileSubscriptionComponent implements OnInit {
 
   hasWaitingPayment = false;
 
+  hasActivePremium = false;
+
   private readonly monthlyPrice = 17.9;
   private readonly yearlyPrice = 149.9;
 
@@ -74,9 +76,32 @@ export class ProfileSubscriptionComponent implements OnInit {
       next: (page) => {
         const items: PaymentHistoryDTO[] = page.content ?? [];
         this.hasWaitingPayment = items.some((item) => item.paymentStatus === 'WAITING_PAYMENT');
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        this.hasActivePremium = items.some((item) => {
+          if (item.paymentStatus !== 'PAID') {
+            return false;
+          }
+
+          const dueDateRaw = String(item.planDueDate ?? '').trim();
+          if (!dueDateRaw) {
+            return false;
+          }
+
+          try {
+            const dueDate = parseIsoDate(dueDateRaw);
+            dueDate.setHours(0, 0, 0, 0);
+            return dueDate.getTime() >= today.getTime();
+          } catch {
+            return false;
+          }
+        });
       },
       error: () => {
         this.hasWaitingPayment = false;
+        this.hasActivePremium = false;
       }
     });
   }
@@ -210,7 +235,7 @@ export class ProfileSubscriptionComponent implements OnInit {
   }
 
   private openSubscribeConfirm(plan: PlanType): void {
-    if (this.isCreatingPaymentLink || this.hasWaitingPayment) {
+    if (this.isCreatingPaymentLink || this.hasWaitingPayment || this.hasActivePremium) {
       return;
     }
 
