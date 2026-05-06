@@ -31,6 +31,11 @@ export class ProfileSubscriptionComponent implements OnInit {
   private readonly monthlyPrice = 17.9;
   private readonly yearlyPrice = 149.9;
 
+  get yearlySavingsValue(): number {
+    const savings = this.monthlyPrice * 12 - this.yearlyPrice;
+    return savings > 0 ? savings : 0;
+  }
+
   get displayFullName(): string {
     const name = this.profile?.fullName ?? '';
     const maxLen = 40;

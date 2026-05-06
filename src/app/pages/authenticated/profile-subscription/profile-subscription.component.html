@@ -73,34 +73,66 @@
                 {{ createPaymentErrorMessage }}
               </div>
 
-              <div class="profile-subscription__subscribe-content">
-                <p class="text-muted mb-3">Escolha um plano para gerar o link de pagamento.</p>
-
-                <div class="profile-subscription__subscribe-actions" appEqualizeModalButtons>
-                  <app-submit-button
-                    type="button"
-                    label="MENSAL"
-                    icon=""
-                    [disabled]="isCreatingPaymentLink || hasWaitingPayment"
-                    (click)="onSubscribeMonthly()"
-                  ></app-submit-button>
-
-                  <app-submit-button
-                    type="button"
-                    label="ANUAL"
-                    icon=""
-                    [disabled]="isCreatingPaymentLink || hasWaitingPayment"
-                    (click)="onSubscribeYearly()"
-                  ></app-submit-button>
+              <div class="profile-subscription__subscribe">
+                <div class="profile-subscription__subscribe-header">
+                  <h5 class="profile-subscription__subscribe-title">Escolha seu plano Premium</h5>
+                  <p class="profile-subscription__subscribe-subtitle text-muted">
+                    Mais recursos para turbinar seus estudos e alcançar seus objetivos.
+                  </p>
                 </div>
 
-                <div class="profile-subscription__subscribe-prices text-muted small mt-3">
-                  <div><strong>{{ formatBrl(17.9) }}</strong> por mês (assinatura mensal)</div>
-                  <div><strong>{{ formatBrl(149.9) }}</strong> por ano (pagamento único anual)</div>
-                </div>
+                <div class="profile-subscription__plans" appEqualizeModalButtons>
+                  <article class="profile-subscription__plan">
+                    <div class="profile-subscription__plan-title">Plano mensal</div>
+                    <div class="profile-subscription__plan-divider"></div>
 
-                <div class="text-muted small mt-3">
-                  Economize {{ yearlyDiscountPercent }}% no plano anual
+                    <div class="profile-subscription__plan-description text-muted">
+                      Ideal para quem busca flexibilidade e mais controle.
+                    </div>
+
+                    <div class="profile-subscription__plan-price">
+                      <span class="profile-subscription__plan-price-value">{{ formatBrl(17.9) }}</span>
+                      <span class="profile-subscription__plan-price-period text-muted">por mês</span>
+                    </div>
+
+                    <div class="profile-subscription__plan-cta">
+                      <app-submit-button
+                        type="button"
+                        label="Escolher plano mensal"
+                        icon=""
+                        [disabled]="isCreatingPaymentLink || hasWaitingPayment"
+                        (click)="onSubscribeMonthly()"
+                      ></app-submit-button>
+                    </div>
+                  </article>
+
+                  <article class="profile-subscription__plan">
+                    <div class="profile-subscription__plan-title">Plano anual</div>
+                    <div class="profile-subscription__plan-divider"></div>
+
+                    <div class="profile-subscription__plan-description text-muted">
+                      Mais economia para quem acessa o ano todo.
+                    </div>
+
+                    <div class="profile-subscription__plan-price">
+                      <span class="profile-subscription__plan-price-value">{{ formatBrl(149.9) }}</span>
+                      <span class="profile-subscription__plan-price-period text-muted">por ano</span>
+                    </div>
+
+                    <div class="profile-subscription__plan-badge" *ngIf="yearlySavingsValue > 0">
+                      Economize {{ yearlyDiscountPercent }}% ({{ formatBrl(yearlySavingsValue) }})
+                    </div>
+
+                    <div class="profile-subscription__plan-cta">
+                      <app-submit-button
+                        type="button"
+                        label="Escolher plano anual"
+                        icon=""
+                        [disabled]="isCreatingPaymentLink || hasWaitingPayment"
+                        (click)="onSubscribeYearly()"
+                      ></app-submit-button>
+                    </div>
+                  </article>
                 </div>
               </div>
             </div>
