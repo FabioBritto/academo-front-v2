@@ -46,7 +46,7 @@
     <div class="activity-type-weights__resume" [class.activity-type-weights__resume--danger]="isOverLimit">
       <div class="activity-type-weights__resume-item">
         <div class="activity-type-weights__resume-label">Total utilizado</div>
-        <div class="activity-type-weights__resume-value">
+        <div class="activity-type-weights__resume-value" [class.activity-type-weights__resume-value--danger]="isOverLimit">
           {{ total }}% <span class="activity-type-weights__resume-muted">/ 100%</span>
         </div>
       </div>

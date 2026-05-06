@@ -120,22 +120,6 @@ export class ActivityTypeWeightsModalComponent implements OnInit {
 
   onWeightChange(item: ActivityTypeWeightItem, rawValue: unknown): void {
     const next = this.sanitizeWeight(rawValue);
-    const current = Number(item?.weight) || 0;
-
-    const totalWithoutCurrent = this.total - current;
-
-    const isIncrease = next > current;
-    if (isIncrease && this.isIncreaseLocked) {
-      item.weight = current;
-      return;
-    }
-
-    if (isIncrease) {
-      const maxAllowed = Math.max(0, 100 - totalWithoutCurrent);
-      item.weight = Math.min(next, maxAllowed);
-      return;
-    }
-
     item.weight = next;
   }
 
