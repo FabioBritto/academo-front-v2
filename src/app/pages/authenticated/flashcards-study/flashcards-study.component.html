@@ -61,8 +61,8 @@
         <div class="subject-study__levels">
           <button
             type="button"
-            class="subject-study__level-btn subject-study__level-btn--easy"
-            [class.subject-study__level-btn--active]="selectedNextLevel === 'FACIL'"
+            class="subject-study__level-btn aa-difficulty-btn aa-difficulty-btn--easy"
+            [ngClass]="[selectedNextLevel === 'FACIL' ? 'aa-difficulty-btn--active' : '']"
             [disabled]="isLoading || isPatching || !hasFlashcards"
             (click)="selectNextLevel('FACIL')"
           >
@@ -71,8 +71,8 @@
 
           <button
             type="button"
-            class="subject-study__level-btn subject-study__level-btn--medium"
-            [class.subject-study__level-btn--active]="selectedNextLevel === 'MEDIO'"
+            class="subject-study__level-btn aa-difficulty-btn aa-difficulty-btn--medium"
+            [ngClass]="[selectedNextLevel === 'MEDIO' ? 'aa-difficulty-btn--active' : '']"
             [disabled]="isLoading || isPatching || !hasFlashcards"
             (click)="selectNextLevel('MEDIO')"
           >
@@ -81,8 +81,8 @@
 
           <button
             type="button"
-            class="subject-study__level-btn subject-study__level-btn--hard"
-            [class.subject-study__level-btn--active]="selectedNextLevel === 'DIFICIL'"
+            class="subject-study__level-btn aa-difficulty-btn aa-difficulty-btn--hard"
+            [ngClass]="[selectedNextLevel === 'DIFICIL' ? 'aa-difficulty-btn--active' : '']"
             [disabled]="isLoading || isPatching || !hasFlashcards"
             (click)="selectNextLevel('DIFICIL')"
           >
@@ -91,8 +91,8 @@
 
           <button
             type="button"
-            class="subject-study__level-btn subject-study__level-btn--very-hard"
-            [class.subject-study__level-btn--active]="selectedNextLevel === 'MUITO_DIFICIL'"
+            class="subject-study__level-btn aa-difficulty-btn aa-difficulty-btn--very-hard"
+            [ngClass]="[selectedNextLevel === 'MUITO_DIFICIL' ? 'aa-difficulty-btn--active' : '']"
             [disabled]="isLoading || isPatching || !hasFlashcards"
             (click)="selectNextLevel('MUITO_DIFICIL')"
           >

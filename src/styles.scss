@@ -44,3 +44,43 @@ html {
 
 @import "bootstrap/scss/bootstrap";
 @import "bootstrap-icons/font/bootstrap-icons.css";
+
+.aa-difficulty-btn {
+  border-radius: 8px;
+  font-weight: 600;
+  border: 1px solid transparent;
+  transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+
+.aa-difficulty-btn:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--aa-difficulty-bg) 92%, #000);
+}
+
+.aa-difficulty-btn--active {
+  border-color: color-mix(in srgb, currentColor 35%, transparent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, currentColor 20%, transparent);
+}
+
+.aa-difficulty-btn--easy {
+  --aa-difficulty-bg: #D1FAE5;
+  background-color: #D1FAE5;
+  color: #065F46;
+}
+
+.aa-difficulty-btn--medium {
+  --aa-difficulty-bg: #DBEAFE;
+  background-color: #DBEAFE;
+  color: #1E40AF;
+}
+
+.aa-difficulty-btn--hard {
+  --aa-difficulty-bg: #FEF3C7;
+  background-color: #FEF3C7;
+  color: #92400E;
+}
+
+.aa-difficulty-btn--very-hard {
+  --aa-difficulty-bg: #FEE2E2;
+  background-color: #FEE2E2;
+  color: #991B1B;
+}

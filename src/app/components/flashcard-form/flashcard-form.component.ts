@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import type { CreateFlashcardDTO, FlashcardDTO, UpdateFlashcardDTO } from '../../model/flashcards.model';
+import type { CardLevel, CreateFlashcardDTO, FlashcardDTO, UpdateFlashcardDTO } from '../../model/flashcards.model';
 import { FlashcardsService } from '../../services/flashcards.service';
 import { ToastService } from '../../services/toast.service';
 import { getHttpErrorMessage } from '../../utils/http-error.util';
@@ -164,6 +164,21 @@ export class FlashcardFormComponent implements OnChanges {
 
     this.form.get('level')?.setValue(nextLevel);
     this.form.get('level')?.markAsDirty();
+  }
+
+  levelBtnClass(level: CardLevel): string {
+    switch (level) {
+      case 'FACIL':
+        return 'aa-difficulty-btn--easy';
+      case 'MEDIO':
+        return 'aa-difficulty-btn--medium';
+      case 'DIFICIL':
+        return 'aa-difficulty-btn--hard';
+      case 'MUITO_DIFICIL':
+        return 'aa-difficulty-btn--very-hard';
+      default:
+        return '';
+    }
   }
 
   private handleError(err: unknown, fallback: string): void {

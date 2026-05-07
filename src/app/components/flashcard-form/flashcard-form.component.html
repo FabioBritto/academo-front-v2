@@ -55,8 +55,8 @@
         <button
           *ngFor="let opt of levelOptions"
           type="button"
-          class="flashcard-form__level"
-          [class.flashcard-form__level--active]="form.get('level')?.value === opt.value"
+          class="flashcard-form__level aa-difficulty-btn"
+          [ngClass]="[levelBtnClass(opt.value), form.get('level')?.value === opt.value ? 'aa-difficulty-btn--active' : '']"
           [attr.data-level]="opt.value"
           [disabled]="isSubmitting"
           (click)="setLevel(opt.value)"
