@@ -138,6 +138,10 @@
   min-width: 0;
 }
 
+:host ::ng-deep .cal-month-view .cal-day-cell.cal-out-month {
+  opacity: 0.45;
+}
+
 :host ::ng-deep .cal-month-view .cal-cell-top {
   min-height: unset;
   flex: 0 0 auto;
