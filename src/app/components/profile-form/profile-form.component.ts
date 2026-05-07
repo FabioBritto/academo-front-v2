@@ -44,17 +44,22 @@ export class ProfileFormComponent implements OnChanges {
       const profile = this.profile;
 
       if (profile) {
+        const birthDatePtBr = profile.birthDate ? toPtBrFromIsoDate(profile.birthDate) : '';
         this.form.patchValue({
           fullName: profile.fullName ?? '',
-          birthDate: profile.birthDate ? toPtBrFromIsoDate(profile.birthDate) : '',
+          birthDate: birthDatePtBr,
           gender: profile.gender ?? ''
         });
+
+        this.form.get('birthDate')?.setValue(birthDatePtBr, { emitEvent: false });
       } else {
         this.form.reset({
           fullName: '',
           birthDate: '',
           gender: ''
         });
+
+        this.form.get('birthDate')?.setValue('', { emitEvent: false });
       }
 
       this.validationMessage = '';
@@ -107,12 +112,13 @@ export class ProfileFormComponent implements OnChanges {
 
     const birthDatePtBr = String(this.form.value['birthDate'] ?? '').trim();
     const birthDateIso = birthDatePtBr ? (this.parseBrToIsoDate(birthDatePtBr) ?? '') : '';
+
     if (birthDatePtBr && !birthDateIso) {
       this.isSubmitting = false;
       this.form.enable({ emitEvent: false });
       this.form.get('birthDate')?.setErrors({ ...(this.form.get('birthDate')?.errors ?? {}), invalidDate: true });
       this.form.get('birthDate')?.markAsTouched();
-      this.validationMessage = 'Informe uma data de nascimento válida.';
+      this.validationMessage = 'Confira os campos do formulário e tente novamente.';
       return;
     }
 

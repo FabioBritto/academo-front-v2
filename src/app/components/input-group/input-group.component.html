@@ -24,8 +24,9 @@
           [attr.step]="step ?? null"
           [attr.maxlength]="maxLength ?? null"
           [disabled]="isDisabled"
-          [value]="value"
-          (input)="handleInput(($any($event.target)).value)"
+          [ngModel]="value"
+          [ngModelOptions]="{ standalone: true }"
+          (ngModelChange)="handleInput($event)"
           (blur)="handleBlur()"
         />
       </ng-container>
@@ -44,8 +45,9 @@
           [attr.step]="step ?? null"
           [attr.maxlength]="maxLength ?? null"
           [disabled]="isDisabled"
-          [value]="value"
-          (input)="handleInput(($any($event.target)).value)"
+          [ngModel]="value"
+          [ngModelOptions]="{ standalone: true }"
+          (ngModelChange)="handleInput($event)"
           (blur)="handleBlur()"
         />
       </ng-template>
@@ -73,8 +75,9 @@
         [attr.placeholder]="placeholder"
         [attr.readonly]="readOnly ? '' : null"
         [disabled]="isDisabled"
-        [value]="value"
-        (input)="handleInput(($any($event.target)).value)"
+        [ngModel]="value"
+        [ngModelOptions]="{ standalone: true }"
+        (ngModelChange)="handleInput($event)"
         (blur)="handleBlur()"
       ></textarea>
     </ng-template>
