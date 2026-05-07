@@ -56,7 +56,12 @@
     ></mwl-calendar-month-view>
 
     <ng-template #monthCellTemplate let-day="day" let-locale="locale">
-      <div class="aa-month-cell" (click)="onDayClicked(day.date)">
+      <div
+        class="aa-month-cell"
+        [class.is-today]="$any(day).isToday"
+        [class.is-selected]="isSelectedDay(day.date)"
+        (click)="onDayClicked(day.date)"
+      >
         <div class="aa-month-cell__date">
           {{ day.date | calendarDate: 'monthViewDayNumber': locale }}
         </div>
@@ -102,11 +107,11 @@
 
         <div class="day-activities__actions">
           <app-submit-button
-            label="Editar"
-            icon="bi bi-pencil-fill"
+            label="Acessar Atividade"
+            icon="bi bi-box-arrow-up-right"
             type="button"
             [disabled]="!a.subjectId || !a.periodId"
-            (click)="editActivity(a)"
+            (click)="accessActivity(a)"
           ></app-submit-button>
 
           <app-delete-button

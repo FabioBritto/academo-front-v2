@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CalendarEvent, CalendarView } from 'angular-calendar';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 
 import type { ActivityDTO } from '../../../model/activities.model';
 import { ActivitiesService } from '../../../services/activities.service';
@@ -32,8 +33,25 @@ export class ActivitiesComponent implements OnInit {
 
   constructor(
     private readonly activitiesService: ActivitiesService,
-    private readonly modalService: NgbModal
+    private readonly modalService: NgbModal,
+    private readonly router: Router
   ) {}
+
+  accessActivity(activity: ActivityDTO): void {
+    const activityId = activity?.id;
+    const subjectId = activity?.subjectId;
+    const periodId = activity?.periodId;
+    if (!activityId || !subjectId || !periodId) {
+      return;
+    }
+
+    this.router.navigate([`/app/materias/${subjectId}`], {
+      queryParams: {
+        editActivityId: activityId,
+        periodId
+      }
+    });
+  }
 
   formatBannerLabel(event: CalendarEvent | null | undefined): string {
     if (!event) {
@@ -66,8 +84,25 @@ export class ActivitiesComponent implements OnInit {
   }
 
   onDayClicked(date: Date): void {
-    this.selectedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
+    const clicked = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
+
+    const shouldNavigateMonth =
+      clicked.getFullYear() !== this.viewDate.getFullYear() || clicked.getMonth() !== this.viewDate.getMonth();
+    if (shouldNavigateMonth) {
+      this.onViewDateChange(new Date(clicked.getFullYear(), clicked.getMonth(), 1, 0, 0, 0, 0));
+    }
+
+    this.selectedDate = clicked;
     this.refreshSelectedDay();
+  }
+
+  isSelectedDay(date: Date): boolean {
+    const selected = this.selectedDate;
+    if (!selected) {
+      return false;
+    }
+
+    return this.dateKey(selected) === this.dateKey(date);
   }
 
   get prevMonthLabel(): string {

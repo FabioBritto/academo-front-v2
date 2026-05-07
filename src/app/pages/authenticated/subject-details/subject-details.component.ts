@@ -10,6 +10,7 @@ import type { TabOption } from '../../../components/tabs/tabs.component';
 import { SubjectUpsertModalComponent } from '../../../components/subject-upsert-modal/subject-upsert-modal.component';
 import { StudyConfigModalComponent } from '../../../components/study-config-modal/study-config-modal.component';
 import { WeightedAverageConfigModalComponent } from '../../../components/weighted-average-config-modal/weighted-average-config-modal.component';
+import { ActivityUpsertModalComponent } from '../../../components/activity-upsert-modal/activity-upsert-modal.component';
 import { getHttpErrorMessage } from '../../../utils/http-error.util';
 import type { CardLevel } from '../../../model/flashcards.model';
 import type { PeriodDTO } from '../../../model/periods.model';
@@ -30,6 +31,8 @@ export class SubjectDetailsComponent implements OnInit {
   contentTab = 'files';
 
   periodOptions: TabOption[] = [];
+
+  private hasOpenedEditActivityModal = false;
 
   readonly contentOptions: TabOption[] = [
     { label: 'Flashcards', value: 'flashcards' },
@@ -119,12 +122,66 @@ export class SubjectDetailsComponent implements OnInit {
             this.periodTab = this.periodOptions[0].value;
           }
         }
+
+        this.tryOpenEditActivityModal();
       },
       error: () => {
         this.subject = null;
         this.periods = [];
         this.periodOptions = [];
       }
+    });
+  }
+
+  private tryOpenEditActivityModal(): void {
+    if (this.hasOpenedEditActivityModal || !this.subject) {
+      return;
+    }
+
+    const editActivityIdParam = this.route.snapshot.queryParamMap.get('editActivityId');
+    const periodIdParam = this.route.snapshot.queryParamMap.get('periodId');
+
+    const editActivityId = editActivityIdParam ? Number(editActivityIdParam) : NaN;
+    const periodId = periodIdParam ? Number(periodIdParam) : NaN;
+
+    if (!Number.isFinite(editActivityId) || editActivityId <= 0) {
+      return;
+    }
+
+    if (!Number.isFinite(periodId) || periodId <= 0) {
+      return;
+    }
+
+    this.hasOpenedEditActivityModal = true;
+
+    const modalRef = this.modalService.open(ActivityUpsertModalComponent, {
+      centered: true,
+      size: 'xl'
+    });
+
+    modalRef.componentInstance.subjectId = this.subject.id;
+    modalRef.componentInstance.periodId = periodId;
+    modalRef.componentInstance.activityId = editActivityId;
+
+    const clearParams = () => {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: {
+          editActivityId: null,
+          periodId: null
+        },
+        queryParamsHandling: 'merge',
+        replaceUrl: true
+      });
+    };
+
+    modalRef.closed.subscribe(() => {
+      clearParams();
+      this.onActivitiesChanged();
+    });
+
+    modalRef.dismissed.subscribe(() => {
+      clearParams();
     });
   }
 
