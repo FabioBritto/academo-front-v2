@@ -24,11 +24,19 @@ export class PeriodDetailsComponent {
 
   @Input() period: PeriodDTO | null = null;
 
+  @Input() isExam = false;
+
+  @Input() examDeleteDisabled = false;
+
+  @Input() examDeleteSubmitting = false;
+
   @Input() pageSize = 6;
 
   @Input() emptyMessage = 'Nenhuma atividade por enquanto.';
 
   @Output() changed = new EventEmitter<void>();
+
+  @Output() deleteExam = new EventEmitter<void>();
 
   page = 0;
 
@@ -51,6 +59,14 @@ export class PeriodDetailsComponent {
   ngOnChanges(changes: SimpleChanges): void {
     if ('period' in changes) {
       this.page = 0;
+      if (this.isExam) {
+        this.activities = [];
+        this.totalPages = 0;
+        this.errorMessage = '';
+        this.isLoading = false;
+        return;
+      }
+
       this.loadActivities(0);
     }
   }
@@ -107,6 +123,10 @@ export class PeriodDetailsComponent {
   }
 
   openNewActivityModal(): void {
+    if (this.isExam) {
+      return;
+    }
+
     const subjectId = this.subjectId;
     const periodId = this.period?.id;
     if (!subjectId || !periodId) {
@@ -149,6 +169,10 @@ export class PeriodDetailsComponent {
   }
 
   openEditActivityModal(activity: ActivityDTO): void {
+    if (this.isExam) {
+      return;
+    }
+
     const subjectId = this.subjectId;
     const periodId = this.period?.id;
     if (!subjectId || !periodId || !activity?.id) {
@@ -176,6 +200,10 @@ export class PeriodDetailsComponent {
   }
 
   deleteActivity(activity: ActivityDTO): void {
+    if (this.isExam) {
+      return;
+    }
+
     if (this.isLoading) {
       return;
     }
@@ -207,6 +235,10 @@ export class PeriodDetailsComponent {
   }
 
   openFilterByTypeModal(): void {
+    if (this.isExam) {
+      return;
+    }
+
     const periodId = this.period?.id;
     if (!periodId) {
       return;
@@ -231,6 +263,10 @@ export class PeriodDetailsComponent {
   }
 
   openEditActivityTypeWeightsModal(): void {
+    if (this.isExam) {
+      return;
+    }
+
     const periodId = this.period?.id;
     if (!periodId) {
       return;
@@ -251,5 +287,13 @@ export class PeriodDetailsComponent {
       });
       this.changed.emit();
     });
+  }
+
+  onDeleteExam(): void {
+    if (this.examDeleteDisabled || this.examDeleteSubmitting) {
+      return;
+    }
+
+    this.deleteExam.emit();
   }
 }

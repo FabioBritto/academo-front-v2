@@ -5,6 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import type { SubjectDTO } from '../../../model/subjects.model';
 import { SubjectsService } from '../../../services/subjects.service';
+import { PeriodsService } from '../../../services/periods.service';
 import { ToastService } from '../../../services/toast.service';
 import type { TabOption } from '../../../components/tabs/tabs.component';
 import { SubjectUpsertModalComponent } from '../../../components/subject-upsert-modal/subject-upsert-modal.component';
@@ -27,10 +28,14 @@ export class SubjectDetailsComponent implements OnInit {
 
   isDeleting = false;
 
+  isDeletingExam = false;
+
   periodTab = 'period1';
   contentTab = 'files';
 
   periodOptions: TabOption[] = [];
+
+  isCreatingExam = false;
 
   private hasOpenedEditActivityModal = false;
 
@@ -44,6 +49,7 @@ export class SubjectDetailsComponent implements OnInit {
     private readonly router: Router,
     private readonly modalService: NgbModal,
     private readonly subjectsService: SubjectsService,
+    private readonly periodsService: PeriodsService,
     private readonly toastService: ToastService
   ) {}
 
@@ -206,7 +212,13 @@ export class SubjectDetailsComponent implements OnInit {
     if (periods.length === 2) {
       return [
         { label: 'Período 1', value: 'period1' },
-        { label: 'Período 2', value: 'period2' }
+        { label: 'Período 2', value: 'period2' },
+        {
+          label: '',
+          value: 'addExam',
+          iconClass: 'bi bi-plus-lg',
+          ariaLabel: 'Adicionar exame'
+        }
       ];
     }
 
@@ -215,6 +227,39 @@ export class SubjectDetailsComponent implements OnInit {
       { label: 'Período 2', value: 'period2' },
       { label: 'Exame', value: 'exam' }
     ];
+  }
+
+  private hasExamPeriod(): boolean {
+    return (this.periods?.length ?? 0) >= 3;
+  }
+
+  onDeleteExam(): void {
+    const subjectId = this.subject?.id;
+    const examPeriodId = this.periods?.[2]?.id;
+    if (!subjectId || !examPeriodId || this.isDeletingExam) {
+      return;
+    }
+
+    this.isDeletingExam = true;
+    this.periodsService.delete(subjectId, examPeriodId).subscribe({
+      next: () => {
+        this.isDeletingExam = false;
+        this.toastService.show('Exame excluído com sucesso.', {
+          classname: 'bg-success text-light',
+          delay: 3500,
+          autohide: true
+        });
+        this.periodTab = 'period1';
+        this.loadSubject(subjectId);
+      },
+      error: (err: unknown) => {
+        this.isDeletingExam = false;
+        this.toastService.show(
+          getHttpErrorMessage(err, { fallback: 'Não foi possível excluir o exame. Tente novamente.' }),
+          { classname: 'bg-danger text-light', delay: 4500, autohide: true }
+        );
+      }
+    });
   }
 
   get selectedPeriod(): PeriodDTO | null {
@@ -316,6 +361,35 @@ export class SubjectDetailsComponent implements OnInit {
   }
 
   onPeriodTabChange(nextValue: string): void {
+    if (nextValue === 'addExam') {
+      const subjectId = this.subject?.id;
+      if (!subjectId || this.isCreatingExam) {
+        return;
+      }
+
+      if (this.hasExamPeriod()) {
+        this.periodTab = 'exam';
+        return;
+      }
+
+      this.isCreatingExam = true;
+      this.periodsService.createExam({ subjectId }).subscribe({
+        next: () => {
+          this.isCreatingExam = false;
+          this.periodTab = 'exam';
+          this.loadSubject(subjectId);
+        },
+        error: (err: unknown) => {
+          this.isCreatingExam = false;
+          this.toastService.show(
+            getHttpErrorMessage(err, { fallback: 'Não foi possível criar o exame. Tente novamente.' }),
+            { classname: 'bg-danger text-light', delay: 4500, autohide: true }
+          );
+        }
+      });
+      return;
+    }
+
     this.periodTab = nextValue;
   }
 

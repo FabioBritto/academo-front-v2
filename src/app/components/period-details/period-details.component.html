@@ -2,7 +2,7 @@
   <header class="period-details__header">
     <h5 class="period-details__title">Lista de atividades</h5>
 
-    <div class="period-details__actions">
+    <div class="period-details__actions" *ngIf="!isExam">
       <app-submit-button
         label="Editar Pesos dos Tipos de Atividade"
         icon=""
@@ -24,13 +24,25 @@
         (click)="openNewActivityModal()"
       ></app-submit-button>
     </div>
+
+    <div class="period-details__actions" *ngIf="isExam">
+      <app-delete-button
+        label="Excluir Exame"
+        icon="bi bi-trash-fill"
+        [disabled]="examDeleteDisabled"
+        [isSubmitting]="examDeleteSubmitting"
+        confirmTitle="Excluir exame"
+        confirmMessage="Tem certeza que deseja excluir o exame?"
+        (confirmed)="onDeleteExam()"
+      ></app-delete-button>
+    </div>
   </header>
 
   <div class="period-details__summary">
     <ng-content></ng-content>
   </div>
 
-  <div class="period-details__body">
+  <div class="period-details__body" *ngIf="!isExam">
     <div class="alert alert-danger" *ngIf="errorMessage">
       {{ errorMessage }}
     </div>

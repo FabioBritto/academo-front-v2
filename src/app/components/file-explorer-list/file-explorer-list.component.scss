@@ -7,6 +7,11 @@
   border-radius: 18px;
   padding: 20px;
   box-shadow: 0 12px 30px color-mix(in srgb, var(--default-color) 10%, transparent);
+  box-sizing: border-box;
+}
+
+.file-explorer-list--subjects {
+  padding-right: 24px;
 }
 
 .file-explorer-list__header {
@@ -45,6 +50,7 @@
   color: color-mix(in srgb, var(--default-color) 80%, transparent);
   font-size: 13px;
   font-weight: 700;
+  box-sizing: border-box;
 }
 
 .file-explorer-list__columns-name {
@@ -60,6 +66,7 @@
   width: min(370px, 100%);
   justify-self: center;
   min-width: 0;
+  box-sizing: border-box;
 }
 
 .file-explorer-list__columns-col {
@@ -78,6 +85,19 @@
   width: 160px;
 }
 
+.file-explorer-list--subjects .file-explorer-list__columns {
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+}
+
+.file-explorer-list--subjects .file-explorer-list__columns-actions {
+  display: none;
+}
+
+.file-explorer-list--subjects .file-explorer-list__columns-cols {
+  justify-self: end;
+  padding-right: 8px;
+}
+
 .file-explorer-list__items {
   display: flex;
   flex-direction: column;
@@ -93,6 +113,16 @@
   border-radius: 14px;
   border: 1px solid color-mix(in srgb, var(--default-color) 12%, transparent);
   background: color-mix(in srgb, var(--default-color) 2%, transparent);
+  box-sizing: border-box;
+}
+
+.file-explorer-list--subjects .file-explorer-list__item--subject {
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+}
+
+.file-explorer-list--subjects .file-explorer-list__item--subject .file-explorer-list__item-cols {
+  justify-self: end;
+  padding-right: 8px;
 }
 
 .file-explorer-list__item--clickable {
@@ -147,6 +177,7 @@
   width: min(370px, 100%);
   justify-self: center;
   min-width: 0;
+  box-sizing: border-box;
 }
 
 .file-explorer-list__item-col {

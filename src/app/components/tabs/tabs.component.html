@@ -3,14 +3,19 @@
     <li
       *ngFor="let option of options"
       class="tabs__item"
+      [class.tabs__item--icon]="!!option.iconClass && !option.label"
       [class.tabs__item--active]="isActive(option)"
       (click)="select(option.value)"
       role="tab"
       [attr.aria-selected]="isActive(option)"
+      [attr.aria-label]="option.ariaLabel || option.label"
       tabindex="0"
       (keydown.enter)="select(option.value)"
     >
-      {{ option.label }}
+      <ng-container *ngIf="option.iconClass; else textLabel">
+        <i [class]="option.iconClass" aria-hidden="true"></i>
+      </ng-container>
+      <ng-template #textLabel>{{ option.label }}</ng-template>
     </li>
   </ul>
 </div>

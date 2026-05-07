@@ -7,6 +7,10 @@ export interface SavePeriodDTO {
   weight: number;
 }
 
+export interface CreateExamDTO {
+  subjectId: number;
+}
+
 export interface UpdatePeriodDTO {
   subjectId: number;
   name: string;

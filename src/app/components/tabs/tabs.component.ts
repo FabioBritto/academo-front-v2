@@ -3,6 +3,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export interface TabOption {
   label: string;
   value: string;
+  iconClass?: string;
+  ariaLabel?: string;
 }
 
 @Component({
