@@ -1,5 +1,8 @@
 <div class="input-group-custom">
-  <label>{{ label }}</label>
+  <label>
+    {{ label }}
+    <span *ngIf="isRequired" class="text-danger">*</span>
+  </label>
 
   <div class="input-wrapper" [class.textarea-wrapper]="textarea" [class.is-invalid]="invalid">
     <i [class]="icon" aria-hidden="true"></i>

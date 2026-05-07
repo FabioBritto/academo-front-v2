@@ -1,13 +1,18 @@
 import {
+  Attribute,
   Component,
   EventEmitter,
   forwardRef,
+  Host,
   Input,
+  Optional,
   Output
 } from '@angular/core';
 import {
   ControlValueAccessor,
-  NG_VALUE_ACCESSOR
+  ControlContainer,
+  NG_VALUE_ACCESSOR,
+  Validators
 } from '@angular/forms';
 
 @Component({
@@ -64,6 +69,32 @@ export class InputGroupComponent implements ControlValueAccessor {
   @Output() blurred = new EventEmitter<void>();
 
   isPasswordVisible = false;
+
+  constructor(
+    @Optional() @Host() private readonly controlContainer: ControlContainer | null,
+    @Optional() @Attribute('formControlName') private readonly formControlName: string | null
+  ) {}
+
+  get isRequired(): boolean {
+    const form = this.controlContainer?.control;
+    const controlName = this.formControlName;
+
+    if (!form || !controlName) {
+      return false;
+    }
+
+    const control = form.get(controlName);
+    if (!control) {
+      return false;
+    }
+
+    const hasValidator = (control as unknown as { hasValidator?: (v: unknown) => boolean }).hasValidator;
+    if (typeof hasValidator !== 'function') {
+      return false;
+    }
+
+    return control.hasValidator(Validators.required);
+  }
 
   get resolvedType(): string {
     if (this.type !== 'password') {

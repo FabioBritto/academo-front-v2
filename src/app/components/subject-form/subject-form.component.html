@@ -65,7 +65,10 @@
     <div class="col-12" *ngIf="subject">
       <div class="row g-3">
         <div class="col-12 col-md-6">
-          <label class="subject-form__label" for="subjectPassingGrade">Nota mínima</label>
+          <label class="subject-form__label" for="subjectPassingGrade">
+            Nota mínima
+            <span *ngIf="isControlRequired('passingGrade')" class="text-danger">*</span>
+          </label>
           <input
             id="subjectPassingGrade"
             class="form-control subject-form__control"
@@ -86,7 +89,10 @@
 
         <div class="col-12 col-md-6">
           <div class="subject-form__advanced-field">
-            <label class="subject-form__label" for="subjectCalculationType">Tipo de cálculo</label>
+            <label class="subject-form__label" for="subjectCalculationType">
+              Tipo de cálculo
+              <span *ngIf="isControlRequired('calculationType')" class="text-danger">*</span>
+            </label>
             <app-calculation-type-dropdown
               [value]="form.get('calculationType')?.value"
               [disabled]="isSubmitting"

@@ -42,6 +42,20 @@ export class SubjectFormComponent implements OnChanges {
     });
   }
 
+  isControlRequired(controlName: string): boolean {
+    const control = this.form.get(controlName);
+    if (!control) {
+      return false;
+    }
+
+    const hasValidator = (control as unknown as { hasValidator?: (v: unknown) => boolean }).hasValidator;
+    if (typeof hasValidator !== 'function') {
+      return false;
+    }
+
+    return control.hasValidator(Validators.required);
+  }
+
   onCalculationTypeChange(value: CalculationType): void {
     if (this.isSubmitting) {
       return;
