@@ -15,7 +15,6 @@
         placeholder="Digite o texto da frente"
         [textarea]="true"
         [rows]="4"
-        [maxLength]="maxLength"
         [invalid]="!!(form.get('frontPart')?.touched && form.get('frontPart')?.invalid)"
         formControlName="frontPart"
       ></app-input-group>
@@ -27,6 +26,15 @@
       <small class="text-danger" *ngIf="form.get('frontPart')?.touched && form.get('frontPart')?.hasError('maxlength')">
         Limite de {{ maxLength }} caracteres
       </small>
+
+      <div class="d-flex justify-content-end">
+        <small
+          [class.text-danger]="frontPartLength > maxLength"
+          [class.text-muted]="frontPartLength <= maxLength"
+        >
+          {{ frontPartLength }}/{{ maxLength }}
+        </small>
+      </div>
     </div>
 
     <div class="col-12">
@@ -36,7 +44,6 @@
         placeholder="Digite o texto do verso"
         [textarea]="true"
         [rows]="7"
-        [maxLength]="maxLength"
         [invalid]="!!(form.get('backPart')?.touched && form.get('backPart')?.invalid)"
         formControlName="backPart"
       ></app-input-group>
@@ -48,6 +55,15 @@
       <small class="text-danger" *ngIf="form.get('backPart')?.touched && form.get('backPart')?.hasError('maxlength')">
         Limite de {{ maxLength }} caracteres
       </small>
+
+      <div class="d-flex justify-content-end">
+        <small
+          [class.text-danger]="backPartLength > maxLength"
+          [class.text-muted]="backPartLength <= maxLength"
+        >
+          {{ backPartLength }}/{{ maxLength }}
+        </small>
+      </div>
     </div>
 
     <div class="col-12" *ngIf="flashcard">

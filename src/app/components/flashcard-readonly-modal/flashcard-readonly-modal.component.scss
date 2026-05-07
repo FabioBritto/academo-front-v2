@@ -12,21 +12,45 @@
   border: 1px solid color-mix(in srgb, var(--default-color) 12%, transparent);
   border-radius: 14px;
   padding: 14px;
-  background: color-mix(in srgb, var(--default-color) 2%, transparent);
+  background: #ffffff;
 }
 
 .flashcard-readonly-modal__label {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 800;
-  color: color-mix(in srgb, var(--default-color) 75%, transparent);
+  color: var(--default-color, var(--bs-primary));
   margin-bottom: 6px;
 }
 
 .flashcard-readonly-modal__value {
   white-space: pre-line;
-  font-size: 15px;
+  font-size: 1.25rem;
   font-weight: 650;
-  color: var(--heading-color);
+  color: var(--default-color, var(--bs-primary));
+  line-height: 1.5;
+  max-height: calc(8 * 1.5em);
+  overflow-y: auto;
+  padding-right: 4px;
+
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--default-color, var(--bs-primary)) 35%, transparent) transparent;
+}
+
+.flashcard-readonly-modal__value::-webkit-scrollbar {
+  width: 8px;
+}
+
+.flashcard-readonly-modal__value::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.flashcard-readonly-modal__value::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--default-color, var(--bs-primary)) 22%, transparent);
+  border-radius: 999px;
+}
+
+.flashcard-readonly-modal__value::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--default-color, var(--bs-primary)) 32%, transparent);
 }
 
 .flashcard-readonly-modal__meta {
@@ -48,15 +72,15 @@
 }
 
 .flashcard-readonly-modal__meta-label {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 800;
-  color: color-mix(in srgb, var(--default-color) 75%, transparent);
+  color: var(--default-color, var(--bs-primary));
 }
 
 .flashcard-readonly-modal__meta-value {
-  font-size: 14px;
+  font-size: 1.05rem;
   font-weight: 650;
-  color: var(--heading-color);
+  color: var(--default-color, var(--bs-primary));
   white-space: pre-line;
 }
 

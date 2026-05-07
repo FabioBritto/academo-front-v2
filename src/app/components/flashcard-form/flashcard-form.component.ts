@@ -80,6 +80,14 @@ export class FlashcardFormComponent implements OnChanges {
     this.errorMessage = '';
   }
 
+  get frontPartLength(): number {
+    return String(this.form.get('frontPart')?.value ?? '').length;
+  }
+
+  get backPartLength(): number {
+    return String(this.form.get('backPart')?.value ?? '').length;
+  }
+
   submit(): void {
     if (this.isSubmitting) {
       return;
