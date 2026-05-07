@@ -53,6 +53,20 @@ export class ProfileSubscriptionComponent implements OnInit {
     return formatBytes(this.profile?.userUseStorage);
   }
 
+  get displayGenderLabel(): string {
+    const gender = String(this.profile?.gender ?? '').trim();
+
+    if (gender === 'M') {
+      return 'Masculino';
+    }
+
+    if (gender === 'F') {
+      return 'Feminino';
+    }
+
+    return 'Não informado';
+  }
+
   formatBrl(value: number): string {
     return value.toLocaleString('pt-BR', {
       style: 'currency',
