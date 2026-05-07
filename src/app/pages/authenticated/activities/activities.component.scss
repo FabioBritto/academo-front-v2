@@ -109,8 +109,12 @@
   font-weight: 500;
 }
 
+:host ::ng-deep .cal-month-view .cal-day-badge {
+  display: none;
+}
+
 :host ::ng-deep .cal-month-view .cal-event-title {
-  white-space: pre-line;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   display: inline-block;
@@ -121,6 +125,75 @@
 
 :host ::ng-deep .cal-month-view .cal-event-container {
   margin-bottom: 2px;
+}
+
+:host ::ng-deep .cal-month-view .cal-cell-row {
+  display: flex;
+  width: 100%;
+}
+
+:host ::ng-deep .cal-month-view .cal-cell-row .cal-day-cell {
+  flex: 0 0 calc(100% / 7);
+  max-width: calc(100% / 7);
+  min-width: 0;
+}
+
+:host ::ng-deep .cal-month-view .cal-cell-top {
+  min-height: unset;
+  flex: 0 0 auto;
+}
+
+.aa-month-cell {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 4px;
+  gap: 4px;
+}
+
+.aa-month-cell__date {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--default-color);
+  line-height: 1;
+}
+
+.aa-month-cell__events {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-height: 0;
+}
+
+.aa-month-cell__event {
+  background: color-mix(in srgb, #1e90ff 22%, transparent);
+  border: 1px solid color-mix(in srgb, #1e90ff 32%, transparent);
+  color: #0b3a6a;
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.aa-month-cell__event:hover {
+  background: color-mix(in srgb, #1e90ff 30%, transparent);
+}
+
+.aa-month-cell__more {
+  align-self: flex-start;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent-color);
+  line-height: 1.2;
+  cursor: pointer;
 }
 
 .day-activities {

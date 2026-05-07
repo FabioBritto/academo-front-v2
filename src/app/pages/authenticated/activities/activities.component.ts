@@ -16,6 +16,7 @@ import { ConfirmActionModalComponent } from '../../../components/confirm-action-
 export class ActivitiesComponent implements OnInit {
   readonly view = CalendarView.Month;
   readonly CalendarView = CalendarView;
+  readonly maxBannerFieldLength = 20;
 
   viewDate = new Date();
   loading = false;
@@ -33,6 +34,32 @@ export class ActivitiesComponent implements OnInit {
     private readonly activitiesService: ActivitiesService,
     private readonly modalService: NgbModal
   ) {}
+
+  formatBannerLabel(event: CalendarEvent | null | undefined): string {
+    if (!event) {
+      return '';
+    }
+
+    const meta = (event as CalendarEvent<any>).meta;
+    const name = this.truncateField(String(meta?.name ?? event.title ?? ''), this.maxBannerFieldLength);
+    const subjectName = this.truncateField(String(meta?.subjectName ?? ''), this.maxBannerFieldLength);
+    return `${name} - ${subjectName}`.trim();
+  }
+
+  formatBannerTitle(event: CalendarEvent | null | undefined): string {
+    if (!event) {
+      return '';
+    }
+
+    const meta = (event as CalendarEvent<any>).meta;
+    const name = String(meta?.name ?? event.title ?? '').trim();
+    const subjectName = String(meta?.subjectName ?? '').trim();
+    if (!subjectName) {
+      return name;
+    }
+
+    return `${name} - ${subjectName}`;
+  }
 
   ngOnInit(): void {
     this.loadActivities();
@@ -201,6 +228,16 @@ export class ActivitiesComponent implements OnInit {
     return /^\d{4}-\d{2}-\d{2}$/.test(iso) ? iso : null;
   }
 
+  private truncateField(value: string, maxLen: number): string {
+    const str = String(value ?? '');
+    if (str.length <= maxLen) {
+      return str;
+    }
+
+    const cut = Math.max(0, maxLen - 1);
+    return `${str.slice(0, cut)}…`;
+  }
+
   private refreshEvents(): void {
     const { start, end } = this.monthRange(this.viewDate);
 
@@ -215,7 +252,7 @@ export class ActivitiesComponent implements OnInit {
         const date = x.date as Date;
 
         return {
-          title: `${activity.name}\n${activity.subjectName}`,
+          title: `${activity.name} - ${activity.subjectName}`,
           start: date,
           allDay: true,
           color: {

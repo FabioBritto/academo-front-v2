@@ -50,9 +50,38 @@
       [viewDate]="viewDate"
       [events]="events"
       [locale]="'pt'"
+      [cellTemplate]="monthCellTemplate"
       (eventClicked)="openDetails($event.event)"
       (dayClicked)="onDayClicked($event.day.date)"
     ></mwl-calendar-month-view>
+
+    <ng-template #monthCellTemplate let-day="day" let-locale="locale">
+      <div class="aa-month-cell" (click)="onDayClicked(day.date)">
+        <div class="aa-month-cell__date">
+          {{ day.date | calendarDate: 'monthViewDayNumber': locale }}
+        </div>
+
+        <div class="aa-month-cell__events" *ngIf="$any(day).events?.length">
+          <div
+            class="aa-month-cell__event"
+            *ngFor="let ev of $any(day).events | slice: 0: 3"
+            (click)="$event.stopPropagation(); openDetails($any(ev))"
+            [title]="formatBannerTitle($any(ev))"
+          >
+            {{ formatBannerLabel($any(ev)) }}
+          </div>
+
+          <button
+            type="button"
+            class="aa-month-cell__more"
+            *ngIf="$any(day).events.length > 3"
+            (click)="$event.stopPropagation(); onDayClicked(day.date)"
+          >
+            + {{ $any(day).events.length - 3 }} mais
+          </button>
+        </div>
+      </div>
+    </ng-template>
   </div>
 
   <div class="day-activities" *ngIf="selectedDate">
