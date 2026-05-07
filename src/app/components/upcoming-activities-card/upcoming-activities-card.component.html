@@ -19,6 +19,10 @@
           [name]="activity.name"
           [subjectName]="activity.subjectName"
           [activityDate]="activity.activityDate"
+          [activityId]="activity.id"
+          [subjectId]="activity.subjectId"
+          [periodId]="activity.periodId"
+          (access)="accessActivity(activity)"
         ></app-activity-notification>
       </div>
     </ng-container>

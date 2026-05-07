@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import type { ActivityDTO } from '../../model/activities.model';
 import { ActivitiesService } from '../../services/activities.service';
@@ -16,7 +17,10 @@ export class UpcomingActivitiesCardComponent implements OnInit {
   hasError = false;
   pageSize = 5;
 
-  constructor(private readonly activitiesService: ActivitiesService) {
+  constructor(
+    private readonly activitiesService: ActivitiesService,
+    private readonly router: Router
+  ) {
     this.load();
   }
 
@@ -50,6 +54,22 @@ export class UpcomingActivitiesCardComponent implements OnInit {
         this.activities = [];
         this.isLoading = false;
         this.hasError = true;
+      }
+    });
+  }
+
+  accessActivity(activity: ActivityDTO): void {
+    const activityId = activity?.id;
+    const subjectId = activity?.subjectId;
+    const periodId = activity?.periodId;
+    if (!activityId || !subjectId || !periodId) {
+      return;
+    }
+
+    this.router.navigate([`/app/materias/${subjectId}`], {
+      queryParams: {
+        editActivityId: activityId,
+        periodId
       }
     });
   }

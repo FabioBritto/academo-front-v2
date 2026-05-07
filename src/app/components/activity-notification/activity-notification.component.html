@@ -1,4 +1,11 @@
-<article class="activity-notification">
+<article
+  class="activity-notification"
+  role="button"
+  tabindex="0"
+  (click)="onAccess()"
+  (keydown.enter)="onAccess()"
+  (keydown.space)="$event.preventDefault(); onAccess()"
+>
   <div class="activity-notification__date" aria-hidden="true">
     <div class="activity-notification__day">{{ dayLabel }}</div>
     <div class="activity-notification__month">{{ monthLabel }}</div>

@@ -10,6 +10,18 @@
   border-radius: 16px;
   background: color-mix(in srgb, var(--surface-color) 90%, white);
   border: 1px solid color-mix(in srgb, var(--default-color) 10%, transparent);
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 160ms ease;
+}
+
+.activity-notification:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--default-color) 10%, transparent);
+}
+
+.activity-notification:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-color) 18%, transparent);
 }
 
 .activity-notification__date {
