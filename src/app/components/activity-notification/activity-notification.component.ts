@@ -65,6 +65,15 @@ export class ActivityNotificationComponent {
     return formatted.replace('.', '').toUpperCase();
   }
 
+  get yearLabel(): string {
+    const date = this.asDate(this.activityDate);
+    if (!date) {
+      return '';
+    }
+
+    return String(date.getFullYear());
+  }
+
   onAccess(): void {
     const activityId = this.activityId == null ? NaN : Number(this.activityId);
     const subjectId = this.subjectId == null ? NaN : Number(this.subjectId);
