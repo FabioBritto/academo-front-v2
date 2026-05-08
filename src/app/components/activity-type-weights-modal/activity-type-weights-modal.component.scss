@@ -14,7 +14,7 @@
 
 .activity-type-weights__table-head {
   display: grid;
-  grid-template-columns: 1fr 160px;
+  grid-template-columns: 52px 1fr 160px;
   gap: 12px;
   padding: 12px 14px;
   background: color-mix(in srgb, var(--default-color) 3%, transparent);
@@ -38,11 +38,17 @@
 
 .activity-type-weights__tr {
   display: grid;
-  grid-template-columns: 1fr 160px;
+  grid-template-columns: 52px 1fr 160px;
   gap: 12px;
   padding: 12px 14px;
   border-bottom: 1px solid color-mix(in srgb, var(--default-color) 8%, transparent);
   align-items: center;
+}
+
+.activity-type-weights__td--delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .activity-type-weights__tr:last-child {

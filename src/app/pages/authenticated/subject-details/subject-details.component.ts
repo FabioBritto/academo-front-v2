@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subject, takeUntil } from 'rxjs';
 
 import type { SubjectDTO } from '../../../model/subjects.model';
 import { SubjectsService } from '../../../services/subjects.service';
 import { PeriodsService } from '../../../services/periods.service';
 import { ToastService } from '../../../services/toast.service';
 import { FlashcardsService } from '../../../services/flashcards.service';
+import { SubjectDetailsRefreshService } from '../../../services/subject-details-refresh.service';
 import type { TabOption } from '../../../components/tabs/tabs.component';
 import { SubjectUpsertModalComponent } from '../../../components/subject-upsert-modal/subject-upsert-modal.component';
 import { StudyConfigModalComponent } from '../../../components/study-config-modal/study-config-modal.component';
@@ -42,6 +44,8 @@ export class SubjectDetailsComponent implements OnInit {
   private hasOpenedEditActivityModal = false;
   private hasOpenedEditFlashcardModal = false;
 
+  private readonly destroy$ = new Subject<void>();
+
   readonly contentOptions: TabOption[] = [
     { label: 'Flashcards', value: 'flashcards' },
     { label: 'Arquivos', value: 'files' }
@@ -54,6 +58,7 @@ export class SubjectDetailsComponent implements OnInit {
     private readonly subjectsService: SubjectsService,
     private readonly periodsService: PeriodsService,
     private readonly flashcardsService: FlashcardsService,
+    private readonly subjectDetailsRefreshService: SubjectDetailsRefreshService,
     private readonly toastService: ToastService
   ) {}
 
@@ -87,6 +92,22 @@ export class SubjectDetailsComponent implements OnInit {
     }
 
     this.loadSubject(id);
+
+    this.subjectDetailsRefreshService.activitiesChanged$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        const subjectId = this.subject?.id;
+        if (!subjectId) {
+          return;
+        }
+
+        this.loadSubject(subjectId);
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   openWeightedAverageConfigModal(): void {

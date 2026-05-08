@@ -5,6 +5,8 @@ import { finalize } from 'rxjs';
 import type { ActivityTypeDTO, UpdateActivityTypeWeightDTO } from '../../model/activity-types.model';
 import type { Page } from '../../model/common.model';
 import { ActivityTypesService } from '../../services/activity-types.service';
+import { SubjectDetailsRefreshService } from '../../services/subject-details-refresh.service';
+import { ToastService } from '../../services/toast.service';
 import { getHttpErrorMessage } from '../../utils/http-error.util';
 import { ActivityTypeCreateModalComponent } from '../activity-type-create-modal/activity-type-create-modal.component';
 
@@ -26,6 +28,7 @@ export class ActivityTypeWeightsModalComponent implements OnInit {
 
   isLoading = false;
   isSubmitting = false;
+  isDeletingId: number | null = null;
   errorMessage = '';
 
   items: ActivityTypeWeightItem[] = [];
@@ -33,7 +36,9 @@ export class ActivityTypeWeightsModalComponent implements OnInit {
   constructor(
     public readonly activeModal: NgbActiveModal,
     private readonly modalService: NgbModal,
-    private readonly activityTypesService: ActivityTypesService
+    private readonly activityTypesService: ActivityTypesService,
+    private readonly subjectDetailsRefreshService: SubjectDetailsRefreshService,
+    private readonly toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -125,6 +130,50 @@ export class ActivityTypeWeightsModalComponent implements OnInit {
       }
 
       this.loadAll();
+    });
+  }
+
+  deleteActivityType(item: ActivityTypeWeightItem): void {
+    if (this.isLoading || this.isSubmitting) {
+      return;
+    }
+
+    const activityTypeId = Number(item?.id);
+    if (!Number.isFinite(activityTypeId) || activityTypeId <= 0) {
+      return;
+    }
+
+    if (this.isDeletingId) {
+      return;
+    }
+
+    this.isDeletingId = activityTypeId;
+    this.errorMessage = '';
+
+    this.activityTypesService.delete(activityTypeId).subscribe({
+      next: () => {
+        this.isDeletingId = null;
+        this.toastService.show('Tipo de atividade excluído com sucesso.', {
+          classname: 'bg-success text-light',
+          delay: 3500,
+          autohide: true
+        });
+        this.subjectDetailsRefreshService.notifyActivitiesChanged();
+        this.loadAll();
+      },
+      error: (err: unknown) => {
+        this.isDeletingId = null;
+        this.toastService.show(
+          getHttpErrorMessage(err, {
+            fallback: 'Não foi possível excluir o tipo de atividade.'
+          }),
+          {
+            classname: 'bg-danger text-light',
+            delay: 4500,
+            autohide: true
+          }
+        );
+      }
     });
   }
 

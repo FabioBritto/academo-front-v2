@@ -30,6 +30,27 @@
   transform: translateX(4px);
 }
 
+.btn-delete.btn-delete--icon-only {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 12px;
+  gap: 0;
+}
+
+.btn-delete.btn-delete--icon-only:hover:not(:disabled) {
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-delete.btn-delete--icon-only i {
+  font-size: 18px;
+}
+
+.btn-delete.btn-delete--icon-only:hover:not(:disabled) i {
+  transform: none;
+}
+
 .btn-delete:disabled {
   cursor: not-allowed;
   opacity: 0.7;

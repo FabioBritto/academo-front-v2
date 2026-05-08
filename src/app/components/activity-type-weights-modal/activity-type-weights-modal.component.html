@@ -17,12 +17,26 @@
   <ng-container *ngIf="items.length > 0; else emptyState">
     <div class="activity-type-weights__table">
       <div class="activity-type-weights__table-head">
+        <div class="activity-type-weights__th"></div>
         <div class="activity-type-weights__th">Tipo de atividade</div>
         <div class="activity-type-weights__th activity-type-weights__th--right">Peso (%)</div>
       </div>
 
       <div class="activity-type-weights__table-body">
         <div class="activity-type-weights__tr" *ngFor="let item of items">
+          <div class="activity-type-weights__td activity-type-weights__td--delete">
+            <app-delete-button
+              label=""
+              icon="bi bi-trash-fill"
+              [disabled]="isLoading || isSubmitting || isDeletingId === item.id"
+              [isSubmitting]="isDeletingId === item.id"
+              confirmTitle="Confirmar exclusão"
+              confirmMessage="Ao excluir este tipo, todas as atividades associadas também serão deletadas. Deseja continuar?"
+              confirmLabel="Excluir"
+              (confirmed)="deleteActivityType(item)"
+            ></app-delete-button>
+          </div>
+
           <div class="activity-type-weights__td activity-type-weights__td--name">{{ item.name }}</div>
 
           <div class="activity-type-weights__td activity-type-weights__td--weight">
