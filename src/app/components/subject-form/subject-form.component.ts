@@ -75,6 +75,21 @@ export class SubjectFormComponent implements OnChanges {
     return String(this.form.get('description')?.value ?? '').length;
   }
 
+  setActiveStatus(isActive: boolean): void {
+    if (this.isSubmitting) {
+      return;
+    }
+
+    const control = this.form.get('isActive');
+    if (!control) {
+      return;
+    }
+
+    control.setValue(isActive);
+    control.markAsTouched();
+    control.updateValueAndValidity();
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (!('subject' in changes)) {
       return;
