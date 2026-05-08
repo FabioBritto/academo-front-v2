@@ -12,6 +12,7 @@
   border: 1px solid color-mix(in srgb, var(--default-color) 10%, transparent);
   cursor: pointer;
   transition: transform 120ms ease, box-shadow 160ms ease;
+  align-items: center;
 }
 
 .activity-notification:hover {
