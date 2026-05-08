@@ -102,7 +102,7 @@
       <div class="day-activities__item" *ngFor="let a of selectedActivities">
         <div class="day-activities__main" (click)="openActivityDetails(a)">
           <div class="day-activities__title">{{ a.name }}</div>
-          <div class="day-activities__subtitle">{{ a.subjectName }} • {{ a.activityTypeName }} • Nota: {{ a.grade }}</div>
+          <div class="day-activities__subtitle">{{ a.subjectName }} • {{ a.activityTypeName }} • <strong>Nota: {{ a.grade }}</strong></div>
         </div>
 
         <div class="day-activities__actions">

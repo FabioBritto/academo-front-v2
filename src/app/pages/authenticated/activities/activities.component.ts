@@ -132,13 +132,12 @@ export class ActivitiesComponent implements OnInit {
   }
 
   openDetails(event: CalendarEvent<{ activity: ActivityDTO; name: string; subjectName: string }>): void {
-    const activity = event.meta?.activity;
-    if (!activity) {
+    const start = event?.start;
+    if (!start) {
       return;
     }
 
-    const ref = this.modalService.open(ActivityDetailsModalComponent, { size: 'lg' });
-    ref.componentInstance.activity = activity;
+    this.onDayClicked(start);
   }
 
   openActivityDetails(activity: ActivityDTO): void {

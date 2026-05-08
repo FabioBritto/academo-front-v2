@@ -262,7 +262,7 @@ export class FlashcardViewCardComponent implements OnInit {
   openFlashcardReadonlyModal(flashcard: FlashcardDTO): void {
     const modalRef = this.modalService.open(FlashcardReadonlyModalComponent, {
       centered: true,
-      size: 'lg'
+      size: 'xl'
     });
 
     modalRef.componentInstance.flashcard = flashcard;
