@@ -26,17 +26,27 @@
           <ng-template #calculationTypeText>
             <span class="subject-details__meta-value">{{ calculationTypeLabel }}</span>
           </ng-template>
-        </div>
 
-        <div class="subject-details__meta-item subject-details__meta-item--right">
+          <div class="subject-details__meta-item subject-details__meta-item--right">
           <span class="subject-details__meta-label">Nota mínima:</span>
           <span class="subject-details__meta-value">{{ passingGradeDisplay }}</span>
         </div>
 
         <div class="subject-details__meta-item subject-details__meta-item--right">
-          <span class="subject-details__meta-label">Média Final:</span>
-          <span class="subject-details__meta-value">{{ finalGradeDisplay }}</span>
+          <span class="subject-details__meta-label">Nota Final:</span>
+          <span
+            class="subject-details__meta-value"
+            [ngClass]="{
+              'subject-details__meta-value--grade-ok': isPassingGradeDefined && isFinalGradeAboveOrEqualPassing,
+              'subject-details__meta-value--grade-bad': isPassingGradeDefined && isFinalGradeBelowPassing
+            }"
+          >
+            {{ finalGradeDisplay }}
+          </span>
         </div>
+        </div>
+
+        
       </div>
     </div>
 

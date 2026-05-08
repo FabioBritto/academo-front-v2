@@ -539,6 +539,31 @@ export class SubjectDetailsComponent implements OnInit {
     return g === null || g === undefined ? '-' : String(g);
   }
 
+  get isPassingGradeDefined(): boolean {
+    const passing = this.subject?.passingGrade;
+    return typeof passing === 'number' && passing > 0;
+  }
+
+  get isFinalGradeAboveOrEqualPassing(): boolean {
+    if (!this.isPassingGradeDefined) {
+      return false;
+    }
+
+    const finalGrade = Number(this.subject?.finalGrade ?? 0);
+    const passing = Number(this.subject?.passingGrade ?? 0);
+    return finalGrade >= passing;
+  }
+
+  get isFinalGradeBelowPassing(): boolean {
+    if (!this.isPassingGradeDefined) {
+      return false;
+    }
+
+    const finalGrade = Number(this.subject?.finalGrade ?? 0);
+    const passing = Number(this.subject?.passingGrade ?? 0);
+    return finalGrade < passing;
+  }
+
   get isActiveLabel(): string {
     return this.subject?.isActive ? 'Ativa' : 'Inativa';
   }
