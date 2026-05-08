@@ -341,6 +341,11 @@
   display: block;
 }
 
+:host ::ng-deep #contato .contact-form-solid-border app-input-group .input-group-custom .input-wrapper:not(.is-invalid) input,
+:host ::ng-deep #contato .contact-form-solid-border app-input-group .input-group-custom .input-wrapper:not(.is-invalid) textarea {
+  border-color: color-mix(in srgb, var(--default-color) 24%, transparent);
+}
+
 #contato .method-item {
   display: flex;
   align-items: center;
