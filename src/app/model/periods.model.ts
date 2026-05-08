@@ -28,6 +28,6 @@ export interface PeriodDTO {
 }
 
 export interface UpdatePeriodsWeight {
-  firstPeriodWeigth: number;
-  secondPeriodWeigth: number;
+  firstPeriodWeight: number;
+  secondPeriodWeight: number;
 }

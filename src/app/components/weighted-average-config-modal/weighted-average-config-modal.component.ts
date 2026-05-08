@@ -85,8 +85,8 @@ export class WeightedAverageConfigModalComponent implements OnInit {
     }
 
     const payload: UpdatePeriodsWeight = {
-      firstPeriodWeigth: this.leftPercent,
-      secondPeriodWeigth: this.rightPercent
+      firstPeriodWeight: this.leftPercent,
+      secondPeriodWeight: this.rightPercent
     };
 
     this.isSubmitting = true;
