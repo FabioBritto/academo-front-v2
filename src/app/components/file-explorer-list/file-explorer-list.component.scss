@@ -94,8 +94,12 @@
 }
 
 .file-explorer-list--subjects .file-explorer-list__columns-cols {
-  justify-self: end;
-  padding-right: 8px;
+  justify-self: center;
+  padding-right: 0;
+}
+
+.file-explorer-list--subjects .file-explorer-list__columns-cols .file-explorer-list__columns-col:nth-child(2) {
+  justify-self: start;
 }
 
 .file-explorer-list__items {
