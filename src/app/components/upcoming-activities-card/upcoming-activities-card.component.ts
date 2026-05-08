@@ -39,18 +39,15 @@ export class UpcomingActivitiesCardComponent implements OnInit {
       sort: ['activityDate,asc']
     };
 
-    console.log('[UpcomingActivitiesCard] requesting /activities', request);
     this.isLoading = true;
     this.hasError = false;
 
     this.activitiesService.listPaged(request, true).subscribe({
       next: (page) => {
-        console.log('[UpcomingActivitiesCard] /activities response', page);
         this.activities = (page.content ?? []).slice(0, this.pageSize);
         this.isLoading = false;
       },
       error: (err: unknown) => {
-        console.error('[UpcomingActivitiesCard] /activities error', err);
         this.activities = [];
         this.isLoading = false;
         this.hasError = true;
