@@ -1,0 +1,32 @@
+<div class="app-flashcards">
+  <div class="free-mock">
+    <div class="free-mock__blur">
+      <div class="free-mock__header">
+        <div class="free-mock__title">Flashcards</div>
+        <div class="free-mock__subtitle">Escolha um conjunto para estudar</div>
+      </div>
+
+      <div class="free-mock__grid">
+        <div class="free-mock__card" *ngFor="let d of decks">
+          <div class="free-mock__card-title">{{ d.title }}</div>
+          <div class="free-mock__card-meta">{{ d.count }} cards</div>
+          <div class="free-mock__card-level">{{ d.levelHint }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="free-mock__overlay">
+      <div class="free-mock__overlay-card">
+        <div class="free-mock__overlay-title">Recurso PREMIUM</div>
+        <div class="free-mock__overlay-text">Assine o Plano PREMIUM para acessar Flashcards.</div>
+
+        <app-submit-button
+          type="button"
+          label="Ver planos PREMIUM"
+          icon="bi bi-star-fill"
+          (click)="goToPremium()"
+        ></app-submit-button>
+      </div>
+    </div>
+  </div>
+</div>

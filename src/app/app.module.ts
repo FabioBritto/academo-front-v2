@@ -81,6 +81,8 @@ import { ActivityUpsertModalComponent } from './components/activity-upsert-modal
 import { FileExplorerListComponent } from './components/file-explorer-list/file-explorer-list.component';
 import { GroupSubjectsPickerModalComponent } from './components/group-subjects-picker-modal/group-subjects-picker-modal.component';
 import { ActivityDetailsModalComponent } from './components/activity-details-modal/activity-details-modal.component';
+import { FilesFreeMockComponent } from './pages/authenticated/files-free-mock/files-free-mock.component';
+import { FlashcardsFreeMockComponent } from './pages/authenticated/flashcards-free-mock/flashcards-free-mock.component';
 
 @NgModule({
   declarations: [
@@ -152,7 +154,9 @@ import { ActivityDetailsModalComponent } from './components/activity-details-mod
     ActivityUpsertModalComponent,
     FileExplorerListComponent,
     GroupSubjectsPickerModalComponent,
-    ActivityDetailsModalComponent
+    ActivityDetailsModalComponent,
+    FilesFreeMockComponent,
+    FlashcardsFreeMockComponent
   ],
   imports: [
     BrowserModule,

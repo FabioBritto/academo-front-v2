@@ -1,3 +1,9 @@
-<div class="app-flashcards">
-  <app-flashcard-view-card></app-flashcard-view-card>
-</div>
+<ng-container *ngIf="isPremium; else freeMock">
+  <div class="app-flashcards">
+    <app-flashcard-view-card></app-flashcard-view-card>
+  </div>
+</ng-container>
+
+<ng-template #freeMock>
+  <app-flashcards-free-mock></app-flashcards-free-mock>
+</ng-template>

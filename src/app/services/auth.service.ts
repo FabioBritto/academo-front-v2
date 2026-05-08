@@ -11,6 +11,7 @@ import type {
   UserDTO
 } from '../model/auth.model';
 import { API_BASE_URL } from './api.config';
+import { AuthSessionService } from './auth-session.service';
 import { AuthTokenService } from './auth-token.service';
 
 @Injectable({
@@ -19,13 +20,23 @@ import { AuthTokenService } from './auth-token.service';
 export class AuthService {
   constructor(
     private readonly http: HttpClient,
-    private readonly tokenService: AuthTokenService
+    private readonly tokenService: AuthTokenService,
+    private readonly sessionService: AuthSessionService
   ) {}
 
   login(body: UserAuthDTO): Observable<LoginResponseDTO> {
     return this.http
       .post<LoginResponseDTO>(`${API_BASE_URL}/auth/login`, body)
-      .pipe(tap((res) => this.tokenService.setToken(res.token)));
+      .pipe(
+        tap((res) => {
+          this.tokenService.setToken(res.token);
+          this.sessionService.setSession({
+            userRole: res.userRole,
+            userId: res.userId,
+            username: res.username
+          });
+        })
+      );
   }
 
   register(body: RegisterDTO): Observable<void> {
@@ -48,5 +59,6 @@ export class AuthService {
 
   logout(): void {
     this.tokenService.clearToken();
+    this.sessionService.clearSession();
   }
 }
