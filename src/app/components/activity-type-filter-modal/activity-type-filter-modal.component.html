@@ -33,10 +33,19 @@
   </ng-container>
 
   <ng-template #emptyState>
-    <p class="activity-type-filter__empty">{{ isLoading ? 'Carregando...' : 'Nenhum tipo cadastrado.' }}</p>
+    <p class="activity-type-filter__empty">{{ isLoading ? 'Carregando...' : 'Nenhum tipo de atividade cadastrado.' }}</p>
+
+    <div class="d-flex justify-content-center mt-3" *ngIf="!isLoading">
+      <app-submit-button
+        type="button"
+        label="Cadastrar tipo de atividade"
+        icon=""
+        (click)="openCreateActivityTypeModal()"
+      ></app-submit-button>
+    </div>
   </ng-template>
 
-  <div class="activity-type-filter__actions mt-4" appEqualizeModalButtons>
+  <div class="activity-type-filter__actions mt-4" appEqualizeModalButtons *ngIf="activityTypes.length > 0">
     <app-submit-button
       type="button"
       label="Cancelar"

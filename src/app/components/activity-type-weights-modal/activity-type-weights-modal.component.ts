@@ -1,11 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { finalize } from 'rxjs';
 
 import type { ActivityTypeDTO, UpdateActivityTypeWeightDTO } from '../../model/activity-types.model';
 import type { Page } from '../../model/common.model';
 import { ActivityTypesService } from '../../services/activity-types.service';
 import { getHttpErrorMessage } from '../../utils/http-error.util';
+import { ActivityTypeCreateModalComponent } from '../activity-type-create-modal/activity-type-create-modal.component';
 
 type ActivityTypeWeightItem = {
   id: number;
@@ -31,6 +32,7 @@ export class ActivityTypeWeightsModalComponent implements OnInit {
 
   constructor(
     public readonly activeModal: NgbActiveModal,
+    private readonly modalService: NgbModal,
     private readonly activityTypesService: ActivityTypesService
   ) {}
 
@@ -97,6 +99,33 @@ export class ActivityTypeWeightsModalComponent implements OnInit {
     }
 
     this.items = (this.items ?? []).map((i) => ({ ...i, weight: 0 }));
+  }
+
+  openCreateActivityTypeModal(): void {
+    if (this.isLoading || this.isSubmitting) {
+      return;
+    }
+
+    const periodId = Number(this.periodId);
+    if (!Number.isFinite(periodId) || periodId <= 0) {
+      return;
+    }
+
+    const modalRef = this.modalService.open(ActivityTypeCreateModalComponent, {
+      centered: true,
+      size: 'lg'
+    });
+
+    modalRef.componentInstance.periodId = periodId;
+
+    modalRef.closed.subscribe((created: unknown) => {
+      const activityType = created as ActivityTypeDTO;
+      if (!activityType?.id) {
+        return;
+      }
+
+      this.loadAll();
+    });
   }
 
   get total(): number {

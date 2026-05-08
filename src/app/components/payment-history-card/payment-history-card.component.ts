@@ -15,7 +15,7 @@ import { getHttpErrorMessage } from '../../utils/http-error.util';
 export class PaymentHistoryCardComponent implements OnInit {
   @Input() emptyMessage = 'Em breve você verá seu histórico de pagamentos aqui.';
 
-  readonly pageSize = 6;
+  readonly pageSize = 8;
   pageIndex = 0;
   totalPages = 0;
 

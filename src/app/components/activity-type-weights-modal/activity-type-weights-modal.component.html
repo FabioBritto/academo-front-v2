@@ -75,24 +75,33 @@
   </ng-container>
 
   <ng-template #emptyState>
-    <p class="activity-type-weights__empty">{{ isLoading ? 'Carregando...' : 'Nenhum tipo cadastrado.' }}</p>
+    <p class="activity-type-weights__empty">{{ isLoading ? 'Carregando...' : 'Nenhum tipo de atividade cadastrado.' }}</p>
+
+    <div class="d-flex justify-content-center mt-3" *ngIf="!isLoading && !isSubmitting">
+      <app-submit-button
+        type="button"
+        label="Cadastrar tipo de atividade"
+        icon=""
+        (click)="openCreateActivityTypeModal()"
+      ></app-submit-button>
+    </div>
   </ng-template>
 
-  <div class="activity-type-weights__actions mt-4" appEqualizeModalButtons>
-    <app-submit-button
-      type="button"
-      label="Zerar tudo"
-      icon=""
-      [disabled]="isLoading || isSubmitting"
-      (click)="resetAll()"
-    ></app-submit-button>
-
+  <div class="activity-type-weights__actions mt-4" appEqualizeModalButtons *ngIf="items.length > 0">
     <app-submit-button
       type="button"
       label="Cancelar"
       icon=""
       [disabled]="isLoading || isSubmitting"
       (click)="close()"
+    ></app-submit-button>
+
+    <app-submit-button
+      type="button"
+      label="Zerar tudo"
+      icon=""
+      [disabled]="isLoading || isSubmitting"
+      (click)="resetAll()"
     ></app-submit-button>
 
     <app-submit-button
