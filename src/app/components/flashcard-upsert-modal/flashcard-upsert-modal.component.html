@@ -25,7 +25,7 @@
         type="button"
         [label]="flashcard ? 'Salvar Alterações' : 'Criar Flashcard'"
         icon=""
-        [disabled]="isSubmitting"
+        [disabled]="isSaveDisabled"
         (click)="onSaveClick()"
       ></app-submit-button>
     </div>

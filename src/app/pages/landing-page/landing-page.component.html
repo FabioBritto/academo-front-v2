@@ -113,6 +113,7 @@
             submitLabel="Enviar mensagem"
             submitIcon="bi bi-arrow-right-circle-fill"
             secureNote="Seus dados são usados apenas para contato"
+            [submitDisabled]="contactForm.invalid"
             (formSubmit)="onContactSubmit($event)"
           >
             <div class="row g-4">
@@ -151,8 +152,26 @@
                   placeholder="Escreva sua mensagem..."
                   [textarea]="true"
                   [rows]="5"
+                  [invalid]="!!(contactForm.get('message')?.touched && contactForm.get('message')?.invalid)"
                   formControlName="message"
                 ></app-input-group>
+
+                <small class="text-danger" *ngIf="contactForm.get('message')?.touched && contactForm.get('message')?.hasError('required')">
+                  A mensagem é obrigatória
+                </small>
+
+                <small class="text-danger" *ngIf="contactForm.get('message')?.touched && contactForm.get('message')?.hasError('maxlength')">
+                  Máximo de {{ maxMessageLength }} caracteres
+                </small>
+
+                <div class="d-flex justify-content-end">
+                  <small
+                    [class.text-danger]="messageLength > maxMessageLength"
+                    [class.text-muted]="messageLength <= maxMessageLength"
+                  >
+                    {{ messageLength }}/{{ maxMessageLength }}
+                  </small>
+                </div>
               </div>
             </div>
           </app-form-card>

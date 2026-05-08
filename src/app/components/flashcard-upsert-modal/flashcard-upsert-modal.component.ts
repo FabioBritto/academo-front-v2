@@ -24,6 +24,26 @@ export class FlashcardUpsertModalComponent {
     return this.flashcardForm?.isSubmitting ?? false;
   }
 
+  get isSaveDisabled(): boolean {
+    const form = this.flashcardForm;
+    if (!form) {
+      return true;
+    }
+
+    const maxLength = form.maxLength;
+    const frontLen = form.frontPartLength;
+    const backLen = form.backPartLength;
+
+    return (
+      this.isSubmitting ||
+      frontLen === 0 ||
+      backLen === 0 ||
+      frontLen >= maxLength ||
+      backLen >= maxLength ||
+      (form.form?.invalid ?? false)
+    );
+  }
+
   constructor(public readonly activeModal: NgbActiveModal) {}
 
   close(): void {

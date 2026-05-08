@@ -90,7 +90,8 @@
 .input-group-custom .input-wrapper.textarea-wrapper textarea {
   height: auto;
   min-height: 140px;
-  resize: vertical;
+  resize: none;
+  overflow: auto;
 }
 
 .input-group-custom .input-wrapper.is-invalid input,

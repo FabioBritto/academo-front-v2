@@ -14,6 +14,8 @@ import { LoginModalComponent } from '../../components/login-modal/login-modal.co
 export class LandingPageComponent {
   contactForm: FormGroup;
 
+  readonly maxMessageLength = 1500;
+
   constructor(
     private fb: FormBuilder,
     private readonly modalService: NgbModal,
@@ -23,8 +25,12 @@ export class LandingPageComponent {
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       subject: ['', Validators.required],
-      message: ['', Validators.required]
+      message: ['', [Validators.required, Validators.maxLength(this.maxMessageLength)]]
     });
+  }
+
+  get messageLength(): number {
+    return String(this.contactForm.get('message')?.value ?? '').length;
   }
 
   openRegisterModal(): void {
