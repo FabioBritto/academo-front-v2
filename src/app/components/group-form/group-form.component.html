@@ -63,9 +63,41 @@
     </div>
 
     <div class="col-12" *ngIf="group">
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="groupIsActive" formControlName="isActive" />
-        <label class="form-check-label" for="groupIsActive">Ativo</label>
+      <div class="group-form__status">
+        <input
+          class="group-form__status-input"
+          type="checkbox"
+          id="groupIsActive"
+          formControlName="isActive"
+        />
+
+        <div class="group-form__status-switch" role="group" aria-label="Status do grupo">
+          <button
+            type="button"
+            class="group-form__status-option"
+            [class.group-form__status-option--selected]="form.get('isActive')?.value === true"
+            [class.group-form__status-option--active]="form.get('isActive')?.value === true"
+            (click)="setActiveStatus(true)"
+            (keydown.enter)="$event.preventDefault(); setActiveStatus(true)"
+            (keydown.space)="$event.preventDefault(); setActiveStatus(true)"
+          >
+            <span class="group-form__status-dot" aria-hidden="true"></span>
+            <span class="group-form__status-text">ATIVO</span>
+          </button>
+
+          <button
+            type="button"
+            class="group-form__status-option"
+            [class.group-form__status-option--selected]="form.get('isActive')?.value === false"
+            [class.group-form__status-option--inactive]="form.get('isActive')?.value === false"
+            (click)="setActiveStatus(false)"
+            (keydown.enter)="$event.preventDefault(); setActiveStatus(false)"
+            (keydown.space)="$event.preventDefault(); setActiveStatus(false)"
+          >
+            <span class="group-form__status-dot" aria-hidden="true"></span>
+            <span class="group-form__status-text">INATIVO</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
