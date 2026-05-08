@@ -9,6 +9,7 @@
 
   <div class="modal-actions mt-4" appEqualizeModalButtons>
     <app-submit-button
+      *ngIf="showCancel"
       type="button"
       [label]="cancelLabel"
       icon=""

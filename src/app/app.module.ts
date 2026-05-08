@@ -12,6 +12,7 @@ import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthInterceptor } from './services/auth.interceptor';
+import { UnauthorizedInterceptor } from './services/unauthorized.interceptor';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
@@ -172,6 +173,11 @@ import { ActivityDetailsModalComponent } from './components/activity-details-mod
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: UnauthorizedInterceptor,
       multi: true
     },
     provideNgxMask()
