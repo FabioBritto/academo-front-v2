@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { finalize } from 'rxjs';
 
 import type { CardLevel, CreateFlashcardDTO, FlashcardDTO, UpdateFlashcardDTO } from '../../model/flashcards.model';
 import { FlashcardsService } from '../../services/flashcards.service';
@@ -121,21 +122,30 @@ export class FlashcardFormComponent implements OnChanges {
         backPart
       };
 
-      this.flashcardsService.create(payload).subscribe({
-        next: (created) => {
-          this.isSubmitting = false;
-          this.toastService.show('Flashcard criado com sucesso.', {
-            classname: 'bg-success text-light',
-            delay: 3500,
-            autohide: true
-          });
-          this.saved.emit(created);
-        },
-        error: (err: unknown) => {
-          this.isSubmitting = false;
-          this.handleError(err, 'Não foi possível criar o flashcard. Tente novamente.');
-        }
-      });
+      let didSucceed = false;
+      this.flashcardsService
+        .create(payload)
+        .pipe(
+          finalize(() => {
+            if (!didSucceed) {
+              this.isSubmitting = false;
+            }
+          })
+        )
+        .subscribe({
+          next: (created) => {
+            didSucceed = true;
+            this.toastService.show('Flashcard criado com sucesso.', {
+              classname: 'bg-success text-light',
+              delay: 3500,
+              autohide: true
+            });
+            this.saved.emit(created);
+          },
+          error: (err: unknown) => {
+            this.handleError(err, 'Não foi possível criar o flashcard. Tente novamente.');
+          }
+        });
 
       return;
     }
@@ -148,21 +158,30 @@ export class FlashcardFormComponent implements OnChanges {
       backPart
     };
 
-    this.flashcardsService.update(this.flashcard.id, updatePayload).subscribe({
-      next: (updated) => {
-        this.isSubmitting = false;
-        this.toastService.show('Flashcard atualizado com sucesso.', {
-          classname: 'bg-success text-light',
-          delay: 3500,
-          autohide: true
-        });
-        this.saved.emit(updated);
-      },
-      error: (err: unknown) => {
-        this.isSubmitting = false;
-        this.handleError(err, 'Não foi possível atualizar o flashcard. Tente novamente.');
-      }
-    });
+    let didSucceed = false;
+    this.flashcardsService
+      .update(this.flashcard.id, updatePayload)
+      .pipe(
+        finalize(() => {
+          if (!didSucceed) {
+            this.isSubmitting = false;
+          }
+        })
+      )
+      .subscribe({
+        next: (updated) => {
+          didSucceed = true;
+          this.toastService.show('Flashcard atualizado com sucesso.', {
+            classname: 'bg-success text-light',
+            delay: 3500,
+            autohide: true
+          });
+          this.saved.emit(updated);
+        },
+        error: (err: unknown) => {
+          this.handleError(err, 'Não foi possível atualizar o flashcard. Tente novamente.');
+        }
+      });
   }
 
   setLevel(nextLevel: UpdateFlashcardDTO['level']): void {

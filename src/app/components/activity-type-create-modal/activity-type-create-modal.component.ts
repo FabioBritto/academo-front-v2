@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { finalize } from 'rxjs';
 
 import type { ActivityTypeDTO, SaveActivityTypeDTO, UpdateActivityTypeDTO } from '../../model/activity-types.model';
 import { ActivityTypesService } from '../../services/activity-types.service';
@@ -87,18 +88,27 @@ export class ActivityTypeCreateModalComponent implements OnInit {
         periodId: current?.periodId ?? this.periodId
       };
 
-      this.activityTypesService.update(this.activityTypeId as number, body).subscribe({
-        next: (updated: ActivityTypeDTO) => {
-          this.isSubmitting = false;
-          this.activeModal.close(updated);
-        },
-        error: (err: unknown) => {
-          this.isSubmitting = false;
-          this.errorMessage = getHttpErrorMessage(err, {
-            fallback: 'Não foi possível atualizar o tipo de atividade.'
-          });
-        }
-      });
+      let didSucceed = false;
+      this.activityTypesService
+        .update(this.activityTypeId as number, body)
+        .pipe(
+          finalize(() => {
+            if (!didSucceed) {
+              this.isSubmitting = false;
+            }
+          })
+        )
+        .subscribe({
+          next: (updated: ActivityTypeDTO) => {
+            didSucceed = true;
+            this.activeModal.close(updated);
+          },
+          error: (err: unknown) => {
+            this.errorMessage = getHttpErrorMessage(err, {
+              fallback: 'Não foi possível atualizar o tipo de atividade.'
+            });
+          }
+        });
 
       return;
     }
@@ -109,17 +119,26 @@ export class ActivityTypeCreateModalComponent implements OnInit {
       periodId: this.periodId
     };
 
-    this.activityTypesService.create(body).subscribe({
-      next: (created: ActivityTypeDTO) => {
-        this.isSubmitting = false;
-        this.activeModal.close(created);
-      },
-      error: (err: unknown) => {
-        this.isSubmitting = false;
-        this.errorMessage = getHttpErrorMessage(err, {
-          fallback: 'Não foi possível criar o tipo de atividade.'
-        });
-      }
-    });
+    let didSucceed = false;
+    this.activityTypesService
+      .create(body)
+      .pipe(
+        finalize(() => {
+          if (!didSucceed) {
+            this.isSubmitting = false;
+          }
+        })
+      )
+      .subscribe({
+        next: (created: ActivityTypeDTO) => {
+          didSucceed = true;
+          this.activeModal.close(created);
+        },
+        error: (err: unknown) => {
+          this.errorMessage = getHttpErrorMessage(err, {
+            fallback: 'Não foi possível criar o tipo de atividade.'
+          });
+        }
+      });
   }
 }

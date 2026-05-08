@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { finalize } from 'rxjs';
 
 import { ALLOWED_FILE_TYPES, ALLOWED_FILE_TYPES_SET } from '../../model/files.model';
 import { FilesService } from '../../services/files.service';
@@ -80,16 +81,25 @@ export class SubjectFileUploadModalComponent {
     this.validationMessage = '';
     this.errorMessage = '';
 
-    this.filesService.uploadFile(this.subjectId, this.selectedFile).subscribe({
-      next: () => {
-        this.isSubmitting = false;
-        this.activeModal.close('uploaded');
-      },
-      error: (err: unknown) => {
-        this.isSubmitting = false;
-        this.errorMessage = getHttpErrorMessage(err, { fallback: 'Não foi possível fazer upload do arquivo.' });
-      }
-    });
+    let didSucceed = false;
+    this.filesService
+      .uploadFile(this.subjectId, this.selectedFile)
+      .pipe(
+        finalize(() => {
+          if (!didSucceed) {
+            this.isSubmitting = false;
+          }
+        })
+      )
+      .subscribe({
+        next: () => {
+          didSucceed = true;
+          this.activeModal.close('uploaded');
+        },
+        error: (err: unknown) => {
+          this.errorMessage = getHttpErrorMessage(err, { fallback: 'Não foi possível fazer upload do arquivo.' });
+        }
+      });
   }
 
   private validateFile(file: File): boolean {

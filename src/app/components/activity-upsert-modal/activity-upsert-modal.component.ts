@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { distinctUntilChanged } from 'rxjs';
+import { distinctUntilChanged, finalize } from 'rxjs';
 
 import type { ActivityTypeDTO } from '../../model/activity-types.model';
 import type { ActivityDTO, SaveActivityDTO } from '../../model/activities.model';
@@ -430,15 +430,23 @@ export class ActivityUpsertModalComponent implements OnInit, AfterViewInit {
       ? this.activitiesService.update(this.activityId, body)
       : this.activitiesService.create(body);
 
-    request$.subscribe({
-      next: (saved) => {
-        this.isSubmitting = false;
-        this.activeModal.close(saved);
-      },
-      error: (err: unknown) => {
-        this.isSubmitting = false;
-        this.errorMessage = getHttpErrorMessage(err);
-      }
-    });
+    let didSucceed = false;
+    request$
+      .pipe(
+        finalize(() => {
+          if (!didSucceed) {
+            this.isSubmitting = false;
+          }
+        })
+      )
+      .subscribe({
+        next: (saved) => {
+          didSucceed = true;
+          this.activeModal.close(saved);
+        },
+        error: (err: unknown) => {
+          this.errorMessage = getHttpErrorMessage(err);
+        }
+      });
   }
 }

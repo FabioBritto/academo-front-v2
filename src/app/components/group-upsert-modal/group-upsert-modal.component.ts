@@ -40,6 +40,10 @@ export class GroupUpsertModalComponent {
   }
 
   onSaveClick(): void {
+    if (this.isSubmitting) {
+      return;
+    }
+
     this.groupForm?.submit();
   }
 

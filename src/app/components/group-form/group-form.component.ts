@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { finalize } from 'rxjs';
 
 import type { CreateGroupDTO, GroupDTO, UpdateGroupDTO } from '../../model/groups.model';
 import { GroupsService } from '../../services/groups.service';
@@ -90,16 +91,25 @@ export class GroupFormComponent implements OnChanges {
         description
       };
 
-      this.groupsService.create(payload).subscribe({
-        next: (created) => {
-          this.isSubmitting = false;
-          this.saved.emit(created);
-        },
-        error: (err: unknown) => {
-          this.isSubmitting = false;
-          this.handleError(err);
-        }
-      });
+      let didSucceed = false;
+      this.groupsService
+        .create(payload)
+        .pipe(
+          finalize(() => {
+            if (!didSucceed) {
+              this.isSubmitting = false;
+            }
+          })
+        )
+        .subscribe({
+          next: (created) => {
+            didSucceed = true;
+            this.saved.emit(created);
+          },
+          error: (err: unknown) => {
+            this.handleError(err);
+          }
+        });
 
       return;
     }
@@ -112,16 +122,25 @@ export class GroupFormComponent implements OnChanges {
       isActive
     };
 
-    this.groupsService.update(this.group.id, updatePayload).subscribe({
-      next: (updated) => {
-        this.isSubmitting = false;
-        this.saved.emit(updated);
-      },
-      error: (err: unknown) => {
-        this.isSubmitting = false;
-        this.handleError(err);
-      }
-    });
+    let didSucceed = false;
+    this.groupsService
+      .update(this.group.id, updatePayload)
+      .pipe(
+        finalize(() => {
+          if (!didSucceed) {
+            this.isSubmitting = false;
+          }
+        })
+      )
+      .subscribe({
+        next: (updated) => {
+          didSucceed = true;
+          this.saved.emit(updated);
+        },
+        error: (err: unknown) => {
+          this.handleError(err);
+        }
+      });
   }
 
   private handleError(err: unknown): void {

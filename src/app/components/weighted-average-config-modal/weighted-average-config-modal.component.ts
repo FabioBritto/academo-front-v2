@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { finalize } from 'rxjs';
 
 import type { UpdatePeriodsWeight } from '../../model/periods.model';
 import { PeriodsService } from '../../services/periods.service';
@@ -92,15 +93,24 @@ export class WeightedAverageConfigModalComponent implements OnInit {
     this.isSubmitting = true;
     this.errorMessage = '';
 
-    this.periodsService.updatePeriodsWeight(subjectId, payload).subscribe({
-      next: () => {
-        this.isSubmitting = false;
-        this.activeModal.close(payload);
-      },
-      error: (err: unknown) => {
-        this.isSubmitting = false;
-        this.errorMessage = getHttpErrorMessage(err, { fallback: 'Não foi possível salvar os pesos. Tente novamente.' });
-      }
-    });
+    let didSucceed = false;
+    this.periodsService
+      .updatePeriodsWeight(subjectId, payload)
+      .pipe(
+        finalize(() => {
+          if (!didSucceed) {
+            this.isSubmitting = false;
+          }
+        })
+      )
+      .subscribe({
+        next: () => {
+          didSucceed = true;
+          this.activeModal.close(payload);
+        },
+        error: (err: unknown) => {
+          this.errorMessage = getHttpErrorMessage(err, { fallback: 'Não foi possível salvar os pesos. Tente novamente.' });
+        }
+      });
   }
 }
