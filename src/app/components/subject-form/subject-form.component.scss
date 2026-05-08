@@ -25,6 +25,10 @@
   display: block;
 }
 
+.subject-form__calculation-type ::ng-deep .calculation-type-dropdown__toggle {
+  height: 56px;
+}
+
 .form-check-label {
   font-weight: 600;
   color: var(--heading-color);
