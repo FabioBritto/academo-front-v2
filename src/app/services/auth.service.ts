@@ -30,8 +30,14 @@ export class AuthService {
       .pipe(
         tap((res) => {
           this.tokenService.setToken(res.token);
+
+          const userRole = res.userRole ?? res.role;
+          if (!userRole) {
+            return;
+          }
+
           this.sessionService.setSession({
-            userRole: res.userRole,
+            userRole,
             userId: res.userId,
             username: res.username
           });

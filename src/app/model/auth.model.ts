@@ -10,7 +10,8 @@ export interface LoginResponseDTO {
   token: string;
   userId: number;
   username: string;
-  userRole: UserRole;
+  userRole?: UserRole;
+  role?: UserRole;
 }
 
 export interface RegisterDTO {

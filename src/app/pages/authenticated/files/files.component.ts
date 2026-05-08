@@ -19,7 +19,9 @@ import type { SortFilterOption } from '../../../components/sort-filters/sort-fil
 export class FilesComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
-  readonly isPremium: boolean;
+  get isPremium(): boolean {
+    return this.sessionService.isPremium();
+  }
 
   subjects: SubjectDTO[] = [];
   files: FileDTO[] = [];
@@ -66,9 +68,7 @@ export class FilesComponent implements OnInit, OnDestroy {
     private readonly subjectsService: SubjectsService,
     private readonly filesService: FilesService,
     private readonly sessionService: AuthSessionService
-  ) {
-    this.isPremium = this.sessionService.isPremium();
-  }
+  ) {}
 
   get isInSubject(): boolean {
     return this.subjectId !== null;

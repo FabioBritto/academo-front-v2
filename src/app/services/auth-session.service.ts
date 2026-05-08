@@ -11,8 +11,22 @@ const USERNAME_KEY = 'academo.username';
 })
 export class AuthSessionService {
   getUserRole(): UserRole | null {
-    const raw = localStorage.getItem(USER_ROLE_KEY);
-    return raw === 'ROLE_FREE' || raw === 'ROLE_PREMIUM' ? raw : null;
+    const raw = String(localStorage.getItem(USER_ROLE_KEY) ?? '').trim();
+    if (!raw) {
+      return null;
+    }
+
+    const normalized = raw.toUpperCase();
+
+    if (normalized === 'ROLE_FREE' || normalized === 'FREE') {
+      return 'ROLE_FREE';
+    }
+
+    if (normalized === 'ROLE_PREMIUM' || normalized === 'PREMIUM') {
+      return 'ROLE_PREMIUM';
+    }
+
+    return null;
   }
 
   setSession(data: { userRole: UserRole; userId: number; username: string }): void {
