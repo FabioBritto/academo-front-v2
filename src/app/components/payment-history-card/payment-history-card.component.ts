@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 
 import type { Page } from '../../model/common.model';
 import type { PaymentHistoryDTO, PaymentStatus, PlanType } from '../../model/payment.model';
@@ -12,8 +13,10 @@ import { getHttpErrorMessage } from '../../utils/http-error.util';
   templateUrl: './payment-history-card.component.html',
   styleUrls: ['./payment-history-card.component.scss']
 })
-export class PaymentHistoryCardComponent implements OnInit {
+export class PaymentHistoryCardComponent implements OnInit, OnDestroy {
   @Input() emptyMessage = 'Em breve você verá seu histórico de pagamentos aqui.';
+
+  private readonly destroy$ = new Subject<void>();
 
   readonly pageSize = 8;
   pageIndex = 0;
@@ -27,6 +30,10 @@ export class PaymentHistoryCardComponent implements OnInit {
 
   cancelingPaymentId: string | null = null;
 
+  isPremiumActivatedHelpOpen = false;
+
+  @ViewChild('premiumActivatedHelpWrapper', { static: false }) premiumActivatedHelpWrapper?: ElementRef<HTMLElement>;
+
   constructor(
     private readonly paymentService: PaymentService,
     private readonly toastService: ToastService
@@ -34,11 +41,81 @@ export class PaymentHistoryCardComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadHistory();
+
+    this.paymentService.historyRefresh$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.loadHistory(this.pageIndex);
+    });
+  }
+
+  togglePremiumActivatedHelp(): void {
+    this.isPremiumActivatedHelpOpen = !this.isPremiumActivatedHelpOpen;
+  }
+
+  closePremiumActivatedHelp(): void {
+    this.isPremiumActivatedHelpOpen = false;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (!this.isPremiumActivatedHelpOpen) {
+      return;
+    }
+
+    const wrapperEl = this.premiumActivatedHelpWrapper?.nativeElement;
+    const target = event.target as Node | null;
+    if (!wrapperEl || !target) {
+      return;
+    }
+
+    if (!wrapperEl.contains(target)) {
+      this.closePremiumActivatedHelp();
+    }
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  onDocumentKeydown(event: KeyboardEvent): void {
+    if (!this.isPremiumActivatedHelpOpen) {
+      return;
+    }
+
+    if (event.key === 'Escape') {
+      this.closePremiumActivatedHelp();
+    }
+  }
+
+  isEligibleForPremiumActivatedTooltip(item: PaymentHistoryDTO): boolean {
+    if (!item || item.paymentStatus !== 'PAID') {
+      return false;
+    }
+
+    const dueDateRaw = String(item.planDueDate ?? '').trim();
+    if (!dueDateRaw) {
+      return false;
+    }
+
+    try {
+      const dueDate = parseIsoDate(dueDateRaw);
+      dueDate.setHours(0, 0, 0, 0);
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      return dueDate.getTime() >= today.getTime();
+    } catch {
+      return false;
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   loadHistory(pageIndex: number = 0): void {
     this.isLoading = true;
     this.errorMessage = '';
+
+    this.closePremiumActivatedHelp();
 
     this.pageIndex = pageIndex;
 

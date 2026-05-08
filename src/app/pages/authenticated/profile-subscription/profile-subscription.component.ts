@@ -226,10 +226,14 @@ export class ProfileSubscriptionComponent implements OnInit {
       .subscribe({
         next: (link) => {
           this.isCreatingPaymentLink = false;
-          // eslint-disable-next-line no-console
-          console.log('Payment link:', link);
-          // eslint-disable-next-line no-console
-          console.log('Payment URL:', link.url);
+
+          if (link?.url) {
+            window.open(link.url, '_blank', 'noopener');
+          }
+
+          this.paymentService.notifyHistoryRefresh();
+          this.loadWaitingPaymentFlag();
+          this.selectedPlan = null;
         },
         error: (err: unknown) => {
           this.isCreatingPaymentLink = false;

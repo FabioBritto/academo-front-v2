@@ -38,6 +38,36 @@
             </div>
           </div>
 
+          <div
+            class="payment-history-card__premium-activated-help"
+            *ngIf="isEligibleForPremiumActivatedTooltip(item)"
+            #premiumActivatedHelpWrapper
+          >
+            <button
+              type="button"
+              class="payment-history-card__premium-activated-help-trigger"
+              aria-label="Ajuda sobre ativação do Premium"
+              (click)="togglePremiumActivatedHelp()"
+            >
+              <i class="bi bi-question-circle-fill" aria-hidden="true"></i>
+            </button>
+
+            <div
+              class="payment-history-card__premium-activated-help-tooltip"
+              *ngIf="isPremiumActivatedHelpOpen"
+              role="dialog"
+              aria-label="Ajuda sobre ativação do Premium"
+            >
+              <div class="payment-history-card__premium-activated-help-tooltip-content">
+                <div class="payment-history-card__premium-activated-help-text">
+                  Sua assinatura Premium foi ativada com sucesso!
+                  <br />
+                  Caso tenha realizado o pagamento nesta sessão, será neceessário liberar e fazer login novamente na sua conta para acessar as novas funcionalidades da plataforma.
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="payment-history-card__meta payment-history-card__meta--action">
             
             <app-delete-button
