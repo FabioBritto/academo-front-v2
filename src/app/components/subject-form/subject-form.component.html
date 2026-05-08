@@ -65,19 +65,20 @@
     <div class="col-12" *ngIf="subject">
       <div class="row g-3">
         <div class="col-12 col-md-6">
-          <label class="subject-form__label" for="subjectPassingGrade">
-            Nota mínima
-            <span *ngIf="isControlRequired('passingGrade')" class="text-danger">*</span>
-          </label>
-          <input
+          <app-input-group
+            label="Nota mínima"
             id="subjectPassingGrade"
-            class="form-control subject-form__control"
             type="number"
+            inputMode="decimal"
+            pattern="[0-9]*[.,]?[0-9]?"
+            step="0.1"
             min="0.1"
             max="10"
-            step="0.1"
+            placeholder="0"
+            [invalid]="!!(form.get('passingGrade')?.touched && form.get('passingGrade')?.invalid)"
             formControlName="passingGrade"
-          />
+            [disabled]="isSubmitting"
+          ></app-input-group>
 
           <small
             class="text-danger"
