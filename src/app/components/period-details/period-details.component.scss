@@ -101,13 +101,9 @@
   width: 240px;
 }
 
-.period-details__exam-grade ::ng-deep .form-control {
-  border: 1px solid color-mix(in srgb, var(--default-color) 28%, transparent);
-}
-
-.period-details__exam-grade ::ng-deep .form-control:focus {
-  border: 1px solid color-mix(in srgb, var(--default-color) 45%, transparent);
-  box-shadow: none;
+.period-details__exam-grade ::ng-deep .input-group-custom .input-wrapper:not(.is-invalid) input,
+.period-details__exam-grade ::ng-deep .input-group-custom .input-wrapper:not(.is-invalid) textarea {
+  border: 2px solid color-mix(in srgb, var(--default-color) 24%, transparent) !important;
 }
 
 .period-details__exam-editor-actions {
