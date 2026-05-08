@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { distinctUntilChanged } from 'rxjs';
@@ -52,6 +52,10 @@ export class PeriodDetailsComponent {
   isEditingExamGrade = false;
   isSavingExamGrade = false;
   examGradeErrorMessage = '';
+
+  isExamHelpOpen = false;
+
+  @ViewChild('examHelpWrapper', { static: false }) examHelpWrapper?: ElementRef<HTMLElement>;
 
   examGradeForm: FormGroup;
 
@@ -112,10 +116,52 @@ export class PeriodDetailsComponent {
       return;
     }
 
+    this.closeExamHelp();
+
     const currentGrade = Number(this.period?.grade ?? 0);
     this.examGradeForm.patchValue({ grade: Number.isFinite(currentGrade) ? currentGrade : 0 }, { emitEvent: false });
     this.examGradeErrorMessage = '';
     this.isEditingExamGrade = true;
+  }
+
+  toggleExamHelp(): void {
+    if (!this.isExam) {
+      return;
+    }
+
+    this.isExamHelpOpen = !this.isExamHelpOpen;
+  }
+
+  closeExamHelp(): void {
+    this.isExamHelpOpen = false;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (!this.isExamHelpOpen) {
+      return;
+    }
+
+    const wrapperEl = this.examHelpWrapper?.nativeElement;
+    const target = event.target as Node | null;
+    if (!wrapperEl || !target) {
+      return;
+    }
+
+    if (!wrapperEl.contains(target)) {
+      this.closeExamHelp();
+    }
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  onDocumentKeydown(event: KeyboardEvent): void {
+    if (!this.isExamHelpOpen) {
+      return;
+    }
+
+    if (event.key === 'Escape') {
+      this.closeExamHelp();
+    }
   }
 
   cancelEditExamGrade(): void {

@@ -12,6 +12,37 @@
       >
         <i class="bi bi-pencil-square" aria-hidden="true"></i>
       </button>
+
+      <div class="period-details__exam-help" #examHelpWrapper>
+        <button
+          type="button"
+          class="period-details__exam-help-trigger"
+          aria-label="Ajuda sobre cálculo da média com exame"
+          (click)="toggleExamHelp()"
+        >
+          <i class="bi bi-question-circle-fill" aria-hidden="true"></i>
+        </button>
+
+        <div class="period-details__exam-help-tooltip" *ngIf="isExamHelpOpen" role="dialog" aria-label="Ajuda sobre média com exame">
+          <div class="period-details__exam-help-tooltip-content">
+            <div class="period-details__exam-help-section">
+              <div class="period-details__exam-help-title">Média Aritmética com Exame</div>
+              <div class="period-details__exam-help-text">
+                Quando a disciplina utiliza média aritmética, a média final é calculada com base nas notas dos períodos da matéria. Caso o estudante realize o exame, a menor nota obtida anteriormente é desconsiderada no cálculo da média final.
+              </div>
+            </div>
+
+            <div class="period-details__exam-help-divider"></div>
+
+            <div class="period-details__exam-help-section">
+              <div class="period-details__exam-help-title">Média Ponderada com Exame</div>
+              <div class="period-details__exam-help-text">
+                Quando a disciplina utiliza média ponderada, a média final é calculada considerando os pesos de cada período. Caso o estudante realize o exame, a nota do exame é combinada com a média obtida anteriormente, gerando uma nova média final.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="period-details__actions" *ngIf="!isExam">
