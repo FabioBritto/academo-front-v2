@@ -86,7 +86,7 @@
         (deleteExam)="onDeleteExam()"
       >
         <div class="subject-details__period-summary">
-          <div class="subject-details__period-metric">
+          <div class="subject-details__period-metric" *ngIf="periodTab !== 'exam'">
             <span class="subject-details__period-metric-label">Nota:</span>
             <span class="subject-details__period-metric-value">{{ selectedPeriod?.grade ?? '-' }}</span>
           </div>

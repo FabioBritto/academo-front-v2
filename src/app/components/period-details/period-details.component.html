@@ -1,6 +1,7 @@
 <section class="period-details" aria-label="Detalhes do período">
   <header class="period-details__header">
-    <h5 class="period-details__title">Lista de atividades</h5>
+    <h5 class="period-details__title" *ngIf="!isExam">Lista de atividades</h5>
+    <h5 class="period-details__title" *ngIf="isExam">Nota: {{ period?.grade ?? 0 }}</h5>
 
     <div class="period-details__actions" *ngIf="!isExam">
       <app-submit-button
