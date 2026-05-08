@@ -61,8 +61,14 @@
 
 .flashcard-readonly-modal__meta-row {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
   gap: 10px;
+}
+
+.flashcard-readonly-modal__meta-action {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
 }
 
 .flashcard-readonly-modal__meta-item {

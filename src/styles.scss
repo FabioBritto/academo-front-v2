@@ -36,6 +36,10 @@ html {
   max-width: 560px;
 }
 
+.flashcard-upsert-modal-window .modal-dialog {
+  max-width: 850px;
+}
+
 @media (min-width: 992px) {
   [class$='__breadcrumb'] {
     font-size: 18px !important;

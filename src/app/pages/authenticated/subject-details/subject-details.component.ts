@@ -7,11 +7,13 @@ import type { SubjectDTO } from '../../../model/subjects.model';
 import { SubjectsService } from '../../../services/subjects.service';
 import { PeriodsService } from '../../../services/periods.service';
 import { ToastService } from '../../../services/toast.service';
+import { FlashcardsService } from '../../../services/flashcards.service';
 import type { TabOption } from '../../../components/tabs/tabs.component';
 import { SubjectUpsertModalComponent } from '../../../components/subject-upsert-modal/subject-upsert-modal.component';
 import { StudyConfigModalComponent } from '../../../components/study-config-modal/study-config-modal.component';
 import { WeightedAverageConfigModalComponent } from '../../../components/weighted-average-config-modal/weighted-average-config-modal.component';
 import { ActivityUpsertModalComponent } from '../../../components/activity-upsert-modal/activity-upsert-modal.component';
+import { FlashcardUpsertModalComponent } from '../../../components/flashcard-upsert-modal/flashcard-upsert-modal.component';
 import { getHttpErrorMessage } from '../../../utils/http-error.util';
 import type { CardLevel } from '../../../model/flashcards.model';
 import type { PeriodDTO } from '../../../model/periods.model';
@@ -38,6 +40,7 @@ export class SubjectDetailsComponent implements OnInit {
   isCreatingExam = false;
 
   private hasOpenedEditActivityModal = false;
+  private hasOpenedEditFlashcardModal = false;
 
   readonly contentOptions: TabOption[] = [
     { label: 'Flashcards', value: 'flashcards' },
@@ -50,6 +53,7 @@ export class SubjectDetailsComponent implements OnInit {
     private readonly modalService: NgbModal,
     private readonly subjectsService: SubjectsService,
     private readonly periodsService: PeriodsService,
+    private readonly flashcardsService: FlashcardsService,
     private readonly toastService: ToastService
   ) {}
 
@@ -75,6 +79,11 @@ export class SubjectDetailsComponent implements OnInit {
     if (!idParam || Number.isNaN(id)) {
       this.subject = null;
       return;
+    }
+
+    const tab = this.route.snapshot.queryParamMap.get('tab');
+    if (tab === 'flashcards') {
+      this.contentTab = 'flashcards';
     }
 
     this.loadSubject(id);
@@ -130,11 +139,71 @@ export class SubjectDetailsComponent implements OnInit {
         }
 
         this.tryOpenEditActivityModal();
+        this.tryOpenEditFlashcardModal();
       },
       error: () => {
         this.subject = null;
         this.periods = [];
         this.periodOptions = [];
+      }
+    });
+  }
+
+  private tryOpenEditFlashcardModal(): void {
+    if (this.hasOpenedEditFlashcardModal || !this.subject) {
+      return;
+    }
+
+    const editFlashcardIdParam = this.route.snapshot.queryParamMap.get('editFlashcardId');
+    const editFlashcardId = editFlashcardIdParam ? Number(editFlashcardIdParam) : NaN;
+
+    if (!Number.isFinite(editFlashcardId) || editFlashcardId <= 0) {
+      return;
+    }
+
+    this.hasOpenedEditFlashcardModal = true;
+    this.contentTab = 'flashcards';
+
+    this.flashcardsService.getById(editFlashcardId).subscribe({
+      next: (flashcard) => {
+        const modalRef = this.modalService.open(FlashcardUpsertModalComponent, {
+          centered: true,
+          size: 'xl',
+          windowClass: 'flashcard-upsert-modal-window'
+        });
+
+        modalRef.componentInstance.subjectId = flashcard.subjectId;
+        modalRef.componentInstance.flashcard = flashcard;
+
+        const clearParams = () => {
+          this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: {
+              editFlashcardId: null
+            },
+            queryParamsHandling: 'merge',
+            replaceUrl: true
+          });
+        };
+
+        modalRef.closed.subscribe(() => {
+          clearParams();
+          this.onFlashcardsChanged();
+        });
+
+        modalRef.dismissed.subscribe(() => {
+          clearParams();
+        });
+      },
+      error: () => {
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: {
+            editFlashcardId: null
+          },
+          queryParamsHandling: 'merge',
+          replaceUrl: true
+        });
       }
     });
   }

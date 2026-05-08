@@ -37,6 +37,15 @@
           <span class="flashcard-readonly-modal__meta-label">Nível:</span>
           <span class="flashcard-readonly-modal__meta-value">{{ levelLabel(flashcard.level) }}</span>
         </div>
+
+        <div class="flashcard-readonly-modal__meta-action">
+          <app-submit-button
+            label="Acessar Flashcard"
+            icon="bi bi-box-arrow-up-right"
+            type="button"
+            (click)="accessFlashcard()"
+          ></app-submit-button>
+        </div>
       </div>
     </div>
   </div>

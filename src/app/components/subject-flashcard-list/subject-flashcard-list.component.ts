@@ -117,7 +117,8 @@ export class SubjectFlashcardListComponent {
 
     const modalRef = this.modalService.open(FlashcardUpsertModalComponent, {
       centered: true,
-      size: 'xl'
+      size: 'xl',
+      windowClass: 'flashcard-upsert-modal-window'
     });
 
     modalRef.componentInstance.subjectId = subjectId;
@@ -134,7 +135,8 @@ export class SubjectFlashcardListComponent {
   openExpandModal(flashcard: FlashcardDTO): void {
     const modalRef = this.modalService.open(FlashcardUpsertModalComponent, {
       centered: true,
-      size: 'xl'
+      size: 'xl',
+      windowClass: 'flashcard-upsert-modal-window'
     });
 
     modalRef.componentInstance.subjectId = flashcard.subjectId;
