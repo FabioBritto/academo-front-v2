@@ -43,7 +43,7 @@ export class UpcomingActivitiesCardComponent implements OnInit {
     this.isLoading = true;
     this.hasError = false;
 
-    this.activitiesService.listPaged(request).subscribe({
+    this.activitiesService.listPaged(request, true).subscribe({
       next: (page) => {
         console.log('[UpcomingActivitiesCard] /activities response', page);
         this.activities = (page.content ?? []).slice(0, this.pageSize);

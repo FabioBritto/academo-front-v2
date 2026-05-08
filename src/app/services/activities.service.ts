@@ -14,8 +14,13 @@ import { withPageParams } from '../utils/pagination.util';
 export class ActivitiesService {
   constructor(private readonly http: HttpClient) {}
 
-  listPaged(pageRequest?: PageRequest): Observable<Page<ActivityDTO>> {
-    const params = withPageParams(new HttpParams(), pageRequest);
+  listPaged(pageRequest?: PageRequest, onlyFuture = false): Observable<Page<ActivityDTO>> {
+    let params = withPageParams(new HttpParams(), pageRequest);
+
+    if (onlyFuture) {
+      params = params.set('onlyFuture', 'true');
+    }
+
     return this.http.get<Page<ActivityDTO>>(`${API_BASE_URL}/activities`, { params });
   }
 

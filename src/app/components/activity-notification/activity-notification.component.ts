@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
+import { parseIsoDate } from '../../utils/date.util';
+
 export interface ActivityNotificationAccessPayload {
   activityId: number;
   subjectId: number;
@@ -88,7 +90,8 @@ export class ActivityNotificationComponent {
       return null;
     }
 
-    const date = new Date(value);
+    const trimmed = String(value).trim();
+    const date = /^\d{4}-\d{2}-\d{2}$/.test(trimmed) ? parseIsoDate(trimmed) : new Date(trimmed);
     if (Number.isNaN(date.getTime())) {
       return null;
     }
