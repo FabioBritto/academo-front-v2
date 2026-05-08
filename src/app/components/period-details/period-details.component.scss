@@ -92,9 +92,22 @@
 
 .period-details__exam-editor-row {
   display: grid;
-  grid-template-columns: minmax(160px, 1fr) auto;
-  gap: 12px;
+  grid-template-columns: 240px auto;
+  gap: 18px;
   align-items: end;
+}
+
+.period-details__exam-grade {
+  width: 240px;
+}
+
+.period-details__exam-grade ::ng-deep .form-control {
+  border: 1px solid color-mix(in srgb, var(--default-color) 28%, transparent);
+}
+
+.period-details__exam-grade ::ng-deep .form-control:focus {
+  border: 1px solid color-mix(in srgb, var(--default-color) 45%, transparent);
+  box-shadow: none;
 }
 
 .period-details__exam-editor-actions {
