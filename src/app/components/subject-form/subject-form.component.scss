@@ -27,6 +27,13 @@
 
 .subject-form__calculation-type ::ng-deep .calculation-type-dropdown__toggle {
   height: 56px;
+  width: 100%;
+  min-width: 100%;
+}
+
+.subject-form__calculation-type ::ng-deep .calculation-type-dropdown__menu {
+  width: 100%;
+  min-width: 100%;
 }
 
 .form-check-label {
