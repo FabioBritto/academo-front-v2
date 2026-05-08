@@ -41,6 +41,15 @@ export class FlashcardsStudyComponent implements OnInit, OnDestroy {
     private readonly subjectsService: SubjectsService
   ) {}
 
+  private shuffle<T>(items: T[]): T[] {
+    const arr = [...items];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
   ngOnInit(): void {
     this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe((queryParams) => {
       const levelParam = queryParams.get('level');
@@ -203,7 +212,7 @@ export class FlashcardsStudyComponent implements OnInit, OnDestroy {
         )
         .subscribe({
           next: (items) => {
-            this.flashcards = items;
+            this.flashcards = this.shuffle(items);
             this.isLoading = false;
           },
           error: () => {
@@ -241,7 +250,7 @@ export class FlashcardsStudyComponent implements OnInit, OnDestroy {
         )
         .subscribe({
           next: (items) => {
-            this.flashcards = items;
+            this.flashcards = this.shuffle(items);
             this.isLoading = false;
           },
           error: () => {
@@ -282,7 +291,7 @@ export class FlashcardsStudyComponent implements OnInit, OnDestroy {
       )
       .subscribe({
         next: (items) => {
-          this.flashcards = items;
+          this.flashcards = this.shuffle(items);
           this.isLoading = false;
         },
         error: () => {
