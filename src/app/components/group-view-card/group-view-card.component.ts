@@ -87,6 +87,19 @@ export class GroupViewCardComponent {
     this.loadGroups();
   }
 
+  onGroupChanged(groupId: number): void {
+    const id = Number(groupId);
+    if (!Number.isFinite(id) || id <= 0) {
+      return;
+    }
+
+    this.groupsService.getById(id).subscribe({
+      next: (group) => {
+        this.groups = (this.groups ?? []).map((g) => (g.id === id ? group : g));
+      }
+    });
+  }
+
   openNewGroupModal(): void {
     const modalRef = this.modalService.open(GroupUpsertModalComponent, {
       centered: true,

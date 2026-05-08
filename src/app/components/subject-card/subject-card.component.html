@@ -10,5 +10,11 @@
   </div>
 
   <h4 class="subject-card__title" [attr.title]="subject.name">{{ displayName }}</h4>
-  <p class="subject-card__description">{{ subject.description }}</p>
+  <div class="subject-card__grades" aria-label="Notas">
+    <div class="subject-card__grades-label">Nota mínima:</div>
+    <div class="subject-card__grades-value"><strong>{{ subject.passingGrade | number: '1.2-2': 'pt-BR' }}</strong></div>
+
+    <div class="subject-card__grades-label">Média final:</div>
+    <div class="subject-card__grades-value"><strong>{{ subject.finalGrade | number: '1.2-2': 'pt-BR' }}</strong></div>
+  </div>
 </div>

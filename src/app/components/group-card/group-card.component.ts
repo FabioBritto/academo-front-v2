@@ -2,6 +2,7 @@ import { Component, EventEmitter, HostListener, Input, Output } from '@angular/c
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import type { GroupDTO } from '../../model/groups.model';
+import { GroupsService } from '../../services/groups.service';
 import { GroupDetailsModalComponent } from '../group-details-modal/group-details-modal.component';
 
 @Component({
@@ -14,7 +15,26 @@ export class GroupCardComponent {
 
   @Input() iconClass = 'bi bi-people-fill';
 
-  @Output() changed = new EventEmitter<void>();
+  @Output() changed = new EventEmitter<number>();
+
+  private subjectsCountValue: number | null = null;
+
+  get subjectsCount(): number {
+    if (this.subjectsCountValue !== null) {
+      return this.subjectsCountValue;
+    }
+
+    return this.group?.subjects?.length ?? 0;
+  }
+
+  get subjectsCountLabel(): string {
+    const count = this.subjectsCount;
+    if (count === 1) {
+      return '1 matéria';
+    }
+
+    return `${count} matérias`;
+  }
 
   get displayName(): string {
     const name = this.group?.name ?? '';
@@ -31,7 +51,23 @@ export class GroupCardComponent {
     return `${sliced}${ellipsis}`;
   }
 
-  constructor(private readonly modalService: NgbModal) {}
+  constructor(
+    private readonly modalService: NgbModal,
+    private readonly groupsService: GroupsService
+  ) {}
+
+  private refetchSubjectsCount(groupId: number): void {
+    this.groupsService.getById(groupId).subscribe({
+      next: (group) => {
+        this.subjectsCountValue = group?.subjects?.length ?? 0;
+        this.changed.emit(groupId);
+      },
+      error: () => {
+        this.subjectsCountValue = this.group?.subjects?.length ?? 0;
+        this.changed.emit(groupId);
+      }
+    });
+  }
 
   @HostListener('click')
   onHostClick(): void {
@@ -46,9 +82,24 @@ export class GroupCardComponent {
 
     modalRef.componentInstance.groupId = this.group.id;
 
+    modalRef.dismissed.subscribe(() => {
+      const groupId = Number(this.group?.id);
+      if (!Number.isFinite(groupId) || groupId <= 0) {
+        return;
+      }
+
+      this.refetchSubjectsCount(groupId);
+    });
+
     modalRef.closed.subscribe((result) => {
       if (result) {
-        this.changed.emit();
+        const groupId = Number(this.group?.id);
+        if (!Number.isFinite(groupId) || groupId <= 0) {
+          this.changed.emit(this.group.id);
+          return;
+        }
+
+        this.refetchSubjectsCount(groupId);
       }
     });
   }

@@ -35,7 +35,7 @@
   <div class="group-view-card__body">
     <ng-container *ngIf="hasItems; else emptyState">
       <div class="group-view-card__list">
-        <app-group-card *ngFor="let group of groups" [group]="group" (changed)="loadGroups()"></app-group-card>
+        <app-group-card *ngFor="let group of groups" [group]="group" (changed)="onGroupChanged($event)"></app-group-card>
       </div>
 
       <app-pagination-controls
