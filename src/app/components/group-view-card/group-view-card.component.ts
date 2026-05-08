@@ -98,6 +98,9 @@ export class GroupViewCardComponent {
     this.groupsService.getById(id).subscribe({
       next: (group) => {
         this.groups = (this.groups ?? []).map((g) => (g.id === id ? group : g));
+      },
+      error: () => {
+        this.loadGroups();
       }
     });
   }
