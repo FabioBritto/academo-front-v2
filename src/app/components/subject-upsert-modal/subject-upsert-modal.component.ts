@@ -40,6 +40,10 @@ export class SubjectUpsertModalComponent {
   }
 
   onSaveClick(): void {
+    if (this.isSubmitting) {
+      return;
+    }
+
     this.subjectForm?.submit();
   }
 

@@ -4,7 +4,6 @@ import { finalize } from 'rxjs';
 
 import type { CardLevel, CreateFlashcardDTO, FlashcardDTO, UpdateFlashcardDTO } from '../../model/flashcards.model';
 import { FlashcardsService } from '../../services/flashcards.service';
-import { ToastService } from '../../services/toast.service';
 import { getHttpErrorMessage } from '../../utils/http-error.util';
 
 @Component({
@@ -36,8 +35,7 @@ export class FlashcardFormComponent implements OnChanges {
 
   constructor(
     private readonly fb: FormBuilder,
-    private readonly flashcardsService: FlashcardsService,
-    private readonly toastService: ToastService
+    private readonly flashcardsService: FlashcardsService
   ) {
     this.form = this.fb.group({
       frontPart: ['', [Validators.required, Validators.maxLength(this.maxLength)]],
@@ -135,11 +133,6 @@ export class FlashcardFormComponent implements OnChanges {
         .subscribe({
           next: (created) => {
             didSucceed = true;
-            this.toastService.show('Flashcard criado com sucesso.', {
-              classname: 'bg-success text-light',
-              delay: 3500,
-              autohide: true
-            });
             this.saved.emit(created);
           },
           error: (err: unknown) => {
@@ -171,11 +164,6 @@ export class FlashcardFormComponent implements OnChanges {
       .subscribe({
         next: (updated) => {
           didSucceed = true;
-          this.toastService.show('Flashcard atualizado com sucesso.', {
-            classname: 'bg-success text-light',
-            delay: 3500,
-            autohide: true
-          });
           this.saved.emit(updated);
         },
         error: (err: unknown) => {

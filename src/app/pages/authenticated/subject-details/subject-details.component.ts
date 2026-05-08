@@ -424,6 +424,11 @@ export class SubjectDetailsComponent implements OnInit {
 
     modalRef.closed.subscribe((result) => {
       if (result && this.subject) {
+        this.toastService.show('Matéria atualizada com sucesso.', {
+          classname: 'bg-success text-light',
+          delay: 3500,
+          autohide: true
+        });
         this.loadSubject(this.subject.id);
       }
     });
@@ -445,6 +450,11 @@ export class SubjectDetailsComponent implements OnInit {
       this.periodsService.createExam({ subjectId }).subscribe({
         next: () => {
           this.isCreatingExam = false;
+          this.toastService.show('Exame criado com sucesso.', {
+            classname: 'bg-success text-light',
+            delay: 3500,
+            autohide: true
+          });
           this.periodTab = 'exam';
           this.loadSubject(subjectId);
         },

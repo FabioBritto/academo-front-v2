@@ -6,6 +6,7 @@ import type { GroupDTO } from '../../model/groups.model';
 import type { SubjectDTO } from '../../model/subjects.model';
 import { GroupsService } from '../../services/groups.service';
 import { SubjectsService } from '../../services/subjects.service';
+import { ToastService } from '../../services/toast.service';
 import { getHttpErrorMessage } from '../../utils/http-error.util';
 
 @Component({
@@ -30,7 +31,8 @@ export class GroupSubjectsPickerModalComponent implements OnInit {
   constructor(
     public readonly activeModal: NgbActiveModal,
     private readonly subjectsService: SubjectsService,
-    private readonly groupsService: GroupsService
+    private readonly groupsService: GroupsService,
+    private readonly toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -86,6 +88,11 @@ export class GroupSubjectsPickerModalComponent implements OnInit {
     this.groupsService.associateSubjects(groupId, { subjectsIds }).subscribe({
       next: (group: GroupDTO) => {
         this.isLoading = false;
+        this.toastService.show('Matérias associadas ao grupo com sucesso.', {
+          classname: 'bg-success text-light',
+          delay: 3500,
+          autohide: true
+        });
         this.activeModal.close(group);
       },
       error: (err: unknown) => {

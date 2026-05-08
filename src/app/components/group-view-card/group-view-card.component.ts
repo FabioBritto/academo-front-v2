@@ -3,6 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import type { GroupDTO } from '../../model/groups.model';
 import { GroupsService } from '../../services/groups.service';
+import { ToastService } from '../../services/toast.service';
 import { GroupUpsertModalComponent } from '../group-upsert-modal/group-upsert-modal.component';
 import type { SortFilterOption } from '../sort-filters/sort-filters.component';
 
@@ -33,7 +34,8 @@ export class GroupViewCardComponent {
 
   constructor(
     private readonly modalService: NgbModal,
-    private readonly groupsService: GroupsService
+    private readonly groupsService: GroupsService,
+    private readonly toastService: ToastService
   ) {}
 
   get hasItems(): boolean {
@@ -108,6 +110,11 @@ export class GroupViewCardComponent {
 
     modalRef.closed.subscribe((result) => {
       if (result) {
+        this.toastService.show('Grupo criado com sucesso.', {
+          classname: 'bg-success text-light',
+          delay: 3500,
+          autohide: true
+        });
         this.loadGroups();
       }
     });

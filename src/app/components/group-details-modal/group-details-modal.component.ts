@@ -110,6 +110,11 @@ export class GroupDetailsModalComponent implements OnInit {
 
     modalRef.closed.subscribe((result) => {
       if (result) {
+        this.toastService.show('Grupo atualizado com sucesso.', {
+          classname: 'bg-success text-light',
+          delay: 3500,
+          autohide: true
+        });
         this.activeModal.close(result);
       }
     });

@@ -35,6 +35,10 @@ export class FlashcardUpsertModalComponent {
   }
 
   onSaveClick(): void {
+    if (this.isSubmitting) {
+      return;
+    }
+
     this.flashcardForm?.submit();
   }
 

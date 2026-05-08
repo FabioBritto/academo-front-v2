@@ -3,6 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import type { SubjectDTO } from '../../model/subjects.model';
 import { SubjectsService } from '../../services/subjects.service';
+import { ToastService } from '../../services/toast.service';
 import type { SortFilterOption } from '../sort-filters/sort-filters.component';
 import { SubjectUpsertModalComponent } from '../subject-upsert-modal/subject-upsert-modal.component';
 
@@ -33,7 +34,8 @@ export class SubjectViewCardComponent implements OnInit {
 
   constructor(
     private readonly modalService: NgbModal,
-    private readonly subjectsService: SubjectsService
+    private readonly subjectsService: SubjectsService,
+    private readonly toastService: ToastService
   ) {}
 
   get hasItems(): boolean {
@@ -97,6 +99,11 @@ export class SubjectViewCardComponent implements OnInit {
 
     modalRef.closed.subscribe((result) => {
       if (result) {
+        this.toastService.show('Matéria criada com sucesso.', {
+          classname: 'bg-success text-light',
+          delay: 3500,
+          autohide: true
+        });
         this.loadSubjects();
       }
     });

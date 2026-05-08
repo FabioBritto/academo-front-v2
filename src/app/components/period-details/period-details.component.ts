@@ -170,6 +170,12 @@ export class PeriodDetailsComponent {
         this.isSavingExamGrade = false;
         this.isEditingExamGrade = false;
 
+        this.toastService.show('Nota do exame atualizada com sucesso.', {
+          classname: 'bg-success text-light',
+          delay: 3500,
+          autohide: true
+        });
+
         if (updated && this.period) {
           this.period = {
             ...this.period,
