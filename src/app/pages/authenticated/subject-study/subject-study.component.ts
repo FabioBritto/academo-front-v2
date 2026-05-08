@@ -6,6 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import type { CardLevel, FlashcardDTO } from '../../../model/flashcards.model';
 import { FlashcardsService } from '../../../services/flashcards.service';
+import { SubjectsService } from '../../../services/subjects.service';
 
 @Component({
   selector: 'app-subject-study',
@@ -15,6 +16,8 @@ import { FlashcardsService } from '../../../services/flashcards.service';
 export class SubjectStudyComponent implements OnInit, OnDestroy {
   subjectId: number | null = null;
   level: CardLevel | null = null;
+
+  subjectName: string | null = null;
 
   currentFlashcard: FlashcardDTO | null = null;
   pageIndex = 0;
@@ -33,7 +36,8 @@ export class SubjectStudyComponent implements OnInit, OnDestroy {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly flashcardsService: FlashcardsService
+    private readonly flashcardsService: FlashcardsService,
+    private readonly subjectsService: SubjectsService
   ) {}
 
   ngOnInit(): void {
@@ -46,6 +50,8 @@ export class SubjectStudyComponent implements OnInit, OnDestroy {
         const idParam = params.get('id');
         const id = idParam ? Number(idParam) : NaN;
         this.subjectId = Number.isNaN(id) ? null : id;
+
+        this.loadSubjectName();
 
         const levelParam = queryParams.get('level');
         this.level = this.isCardLevel(levelParam) ? levelParam : null;
@@ -83,6 +89,32 @@ export class SubjectStudyComponent implements OnInit, OnDestroy {
       this.selectedNextLevel !== null &&
       this.currentFlashcard !== null
     );
+  }
+
+  get truncatedSubjectName(): string | null {
+    const name = String(this.subjectName ?? '').trim();
+    if (!name) {
+      return null;
+    }
+
+    return name.length > 40 ? `${name.slice(0, 40)}...` : name;
+  }
+
+  private loadSubjectName(): void {
+    const id = Number(this.subjectId);
+    if (!Number.isFinite(id) || id <= 0) {
+      this.subjectName = null;
+      return;
+    }
+
+    this.subjectsService.getById(id).subscribe({
+      next: (subject) => {
+        this.subjectName = String(subject?.subjectDTO?.name ?? '').trim() || null;
+      },
+      error: () => {
+        this.subjectName = null;
+      }
+    });
   }
 
   selectNextLevel(level: CardLevel): void {

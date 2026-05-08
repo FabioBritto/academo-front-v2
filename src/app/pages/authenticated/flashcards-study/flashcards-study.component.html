@@ -1,6 +1,19 @@
 <div class="subject-study">
   <div class="subject-study__breadcrumb">
-    <a class="subject-study__breadcrumb-link" [routerLink]="['/app/flashcards']">Flashcards</a>
+    <a class="subject-study__breadcrumb-link" [routerLink]="['/app/materias']">Matérias</a>
+    <span class="subject-study__breadcrumb-sep">&gt;</span>
+    <a
+      *ngIf="subjectId; else subjectNamePlaceholder"
+      class="subject-study__breadcrumb-link"
+      [routerLink]="['/app/materias', subjectId]"
+    >
+      {{ truncatedSubjectName ?? 'Matéria' }}
+    </a>
+
+    <ng-template #subjectNamePlaceholder>
+      <span>{{ truncatedSubjectName ?? 'Matéria' }}</span>
+    </ng-template>
+
     <span class="subject-study__breadcrumb-sep">&gt;</span>
     <span>Estudo de Flashcards</span>
   </div>

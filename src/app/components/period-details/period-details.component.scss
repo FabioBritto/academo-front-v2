@@ -26,6 +26,34 @@
   color: var(--heading-color);
 }
 
+.period-details__exam-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.period-details__edit {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--default-color) 12%, transparent);
+  background: color-mix(in srgb, var(--default-color) 2%, transparent);
+  color: var(--heading-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.period-details__edit:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.period-details__edit i {
+  font-size: 16px;
+}
+
 .period-details__actions {
   display: flex;
   align-items: center;
@@ -56,6 +84,23 @@
 
 .period-details__summary {
   margin-bottom: 12px;
+}
+
+.period-details__exam {
+  margin-bottom: 12px;
+}
+
+.period-details__exam-editor-row {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) auto;
+  gap: 12px;
+  align-items: end;
+}
+
+.period-details__exam-editor-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .period-details__items {

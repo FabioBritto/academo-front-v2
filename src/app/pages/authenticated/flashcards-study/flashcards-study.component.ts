@@ -19,6 +19,8 @@ export class FlashcardsStudyComponent implements OnInit, OnDestroy {
   subjectId: number | null = null;
   groupId: number | null = null;
 
+  subjectName: string | null = null;
+
   flashcards: FlashcardDTO[] = [];
   currentIndex = 0;
   showAnswer = false;
@@ -53,6 +55,7 @@ export class FlashcardsStudyComponent implements OnInit, OnDestroy {
       const groupIdParam = queryParams.get('groupId');
       this.groupId = groupIdParam ? Number(groupIdParam) : null;
 
+      this.loadSubjectName();
       this.loadFlashcards();
     });
   }
@@ -80,6 +83,32 @@ export class FlashcardsStudyComponent implements OnInit, OnDestroy {
 
   get canGoNext(): boolean {
     return !this.isLoading && !this.isPatching && this.selectedNextLevel !== null && this.flashcards.length > 0;
+  }
+
+  get truncatedSubjectName(): string | null {
+    const name = String(this.subjectName ?? '').trim();
+    if (!name) {
+      return null;
+    }
+
+    return name.length > 40 ? `${name.slice(0, 40)}...` : name;
+  }
+
+  private loadSubjectName(): void {
+    const id = Number(this.subjectId);
+    if (!Number.isFinite(id) || id <= 0) {
+      this.subjectName = null;
+      return;
+    }
+
+    this.subjectsService.getById(id).subscribe({
+      next: (subject) => {
+        this.subjectName = String(subject?.subjectDTO?.name ?? '').trim() || null;
+      },
+      error: () => {
+        this.subjectName = null;
+      }
+    });
   }
 
   selectNextLevel(level: CardLevel): void {
