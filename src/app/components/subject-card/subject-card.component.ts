@@ -28,6 +28,27 @@ export class SubjectCardComponent {
     return `${sliced}${ellipsis}`;
   }
 
+  get isPassingGradeDefined(): boolean {
+    const passing = this.subject?.passingGrade;
+    return typeof passing === 'number' && passing > 0;
+  }
+
+  get isFinalGradeAboveOrEqualPassing(): boolean {
+    if (!this.isPassingGradeDefined) {
+      return false;
+    }
+
+    return Number(this.subject?.finalGrade ?? 0) >= Number(this.subject?.passingGrade ?? 0);
+  }
+
+  get isFinalGradeBelowPassing(): boolean {
+    if (!this.isPassingGradeDefined) {
+      return false;
+    }
+
+    return Number(this.subject?.finalGrade ?? 0) < Number(this.subject?.passingGrade ?? 0);
+  }
+
   constructor(private readonly router: Router) {}
 
   @HostListener('click')
