@@ -83,6 +83,15 @@ export class PaymentHistoryCardComponent implements OnInit, OnDestroy {
     }
   }
 
+  get premiumActivatedHelpEligibleItem(): PaymentHistoryDTO | null {
+    const item = this.items?.[0] ?? null;
+    if (!item) {
+      return null;
+    }
+
+    return this.isEligibleForPremiumActivatedTooltip(item) ? item : null;
+  }
+
   isEligibleForPremiumActivatedTooltip(item: PaymentHistoryDTO): boolean {
     if (!item || item.paymentStatus !== 'PAID') {
       return false;

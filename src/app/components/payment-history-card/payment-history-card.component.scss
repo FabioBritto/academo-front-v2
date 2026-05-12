@@ -20,6 +20,12 @@
   border-bottom: 1px solid color-mix(in srgb, var(--default-color) 10%, transparent);
 }
 
+.payment-history-card__header-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .payment-history-card__header h4 {
   font-size: 24px;
   font-weight: 700;
@@ -130,6 +136,16 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
+}
+
+.payment-history-card__premium-activated-help--header .payment-history-card__premium-activated-help-tooltip {
+  left: 0;
+  transform: translateX(0);
+}
+
+.payment-history-card__premium-activated-help--header .payment-history-card__premium-activated-help-tooltip::before {
+  left: 18px;
+  transform: translateX(0);
 }
 
 .payment-history-card__premium-activated-help-trigger {

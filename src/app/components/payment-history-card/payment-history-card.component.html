@@ -1,6 +1,38 @@
 <section class="payment-history-card" aria-label="Histórico de Pagamentos">
   <header class="payment-history-card__header">
-    <h4>Histórico de Pagamentos</h4>
+    <div class="payment-history-card__header-title">
+      <h4>Histórico de Pagamentos</h4>
+
+      <div
+        class="payment-history-card__premium-activated-help payment-history-card__premium-activated-help--header"
+        *ngIf="premiumActivatedHelpEligibleItem"
+        #premiumActivatedHelpWrapper
+      >
+        <button
+          type="button"
+          class="payment-history-card__premium-activated-help-trigger"
+          aria-label="Ajuda sobre ativação do Premium"
+          (click)="togglePremiumActivatedHelp()"
+        >
+          <i class="bi bi-question-circle-fill" aria-hidden="true"></i>
+        </button>
+
+        <div
+          class="payment-history-card__premium-activated-help-tooltip"
+          *ngIf="isPremiumActivatedHelpOpen"
+          role="dialog"
+          aria-label="Ajuda sobre ativação do Premium"
+        >
+          <div class="payment-history-card__premium-activated-help-tooltip-content">
+            <div class="payment-history-card__premium-activated-help-text">
+              Sua assinatura Premium foi ativada com sucesso!
+              <br />
+              Para liberar e acessar as novas funcionalidades da plataforma, faça login novamente na sua conta.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </header>
 
   <div class="payment-history-card__body">
@@ -35,36 +67,6 @@
             </div>
             <div class="payment-history-card__meta-value">
               {{ item.paymentStatus === 'PAID' ? formatDate(item.planDueDate) : chargeDueDate(item.createdAt) }}
-            </div>
-          </div>
-
-          <div
-            class="payment-history-card__premium-activated-help"
-            *ngIf="isEligibleForPremiumActivatedTooltip(item)"
-            #premiumActivatedHelpWrapper
-          >
-            <button
-              type="button"
-              class="payment-history-card__premium-activated-help-trigger"
-              aria-label="Ajuda sobre ativação do Premium"
-              (click)="togglePremiumActivatedHelp()"
-            >
-              <i class="bi bi-question-circle-fill" aria-hidden="true"></i>
-            </button>
-
-            <div
-              class="payment-history-card__premium-activated-help-tooltip"
-              *ngIf="isPremiumActivatedHelpOpen"
-              role="dialog"
-              aria-label="Ajuda sobre ativação do Premium"
-            >
-              <div class="payment-history-card__premium-activated-help-tooltip-content">
-                <div class="payment-history-card__premium-activated-help-text">
-                  Sua assinatura Premium foi ativada com sucesso!
-                  <br />
-                  Caso tenha realizado o pagamento nesta sessão, será neceessário liberar e fazer login novamente na sua conta para acessar as novas funcionalidades da plataforma.
-                </div>
-              </div>
             </div>
           </div>
 
