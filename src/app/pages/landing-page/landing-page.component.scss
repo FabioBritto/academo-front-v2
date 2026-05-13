@@ -1,3 +1,14 @@
+.landing-font-scale {
+  font-size: 130%;
+}
+
+.landing-font-scale input,
+.landing-font-scale textarea,
+.landing-font-scale select,
+.landing-font-scale button {
+  font-size: inherit;
+}
+
 .landing-section {
   min-height: 50vh;
   scroll-margin-top: 80px;
@@ -28,7 +39,7 @@
 
 .section-title h2 {
   margin: 0 0 10px;
-  font-size: 34px;
+  font-size: 44px;
   font-weight: 800;
   color: var(--heading-color);
   letter-spacing: -0.8px;
@@ -36,7 +47,7 @@
 
 .section-title p {
   margin: 0;
-  font-size: 15px;
+  font-size: 20px;
   line-height: 1.7;
   color: color-mix(in srgb, var(--default-color) 70%, transparent);
 }
@@ -47,7 +58,7 @@
   }
 
   .section-title h2 {
-    font-size: 28px;
+    font-size: 36px;
   }
 }
 
@@ -300,7 +311,7 @@
   gap: 10px;
   padding: 10px 16px;
   border-radius: 50px;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 600;
   color: var(--accent-color);
   background: color-mix(in srgb, var(--accent-color) 12%, transparent);
@@ -308,7 +319,7 @@
 }
 
 #contato .info-panel .panel-header h3 {
-  font-size: 30px;
+  font-size: 39px;
   font-weight: 700;
   color: var(--heading-color);
   margin: 0 0 14px;
@@ -316,7 +327,7 @@
 }
 
 #contato .info-panel .panel-header p {
-  font-size: 15px;
+  font-size: 20px;
   line-height: 1.7;
   color: color-mix(in srgb, var(--default-color) 70%, transparent);
   margin: 0;
@@ -374,7 +385,7 @@
 }
 
 #contato .method-icon i {
-  font-size: 20px;
+  font-size: 26px;
   color: var(--accent-color);
 }
 
@@ -384,7 +395,7 @@
 }
 
 #contato .method-details .method-label {
-  font-size: 13px;
+  font-size: 17px;
   font-weight: 600;
   color: color-mix(in srgb, var(--default-color) 60%, transparent);
 }
@@ -405,7 +416,7 @@
   }
 
   #contato .info-panel .panel-header h3 {
-    font-size: 28px;
+    font-size: 36px;
   }
 }
 
@@ -418,5 +429,59 @@
 @media (max-width: 576px) {
   #contato .info-panel {
     padding: 24px 20px;
+  }
+}
+
+:host ::ng-deep .landing-font-scale app-form-card .form-card .form-card-header .header-icon i {
+  font-size: 36px;
+}
+
+:host ::ng-deep .landing-font-scale app-form-card .form-card .form-card-header .header-text h4 {
+  font-size: 31px;
+}
+
+:host ::ng-deep .landing-font-scale app-form-card .form-card .form-card-header .header-text p {
+  font-size: 20px;
+}
+
+:host ::ng-deep .landing-font-scale app-form-card .secure-note i {
+  font-size: 18px;
+}
+
+:host ::ng-deep .landing-font-scale app-form-card .secure-note span {
+  font-size: 17px;
+}
+
+@media (max-width: 768px) {
+  :host ::ng-deep .landing-font-scale app-form-card .form-card .form-card-header .header-icon i {
+    font-size: 31px;
+  }
+
+  :host ::ng-deep .landing-font-scale app-form-card .form-card .form-card-header .header-text h4 {
+    font-size: 29px;
+  }
+}
+
+:host ::ng-deep .landing-font-scale app-input-group .input-group-custom label {
+  font-size: 18px;
+}
+
+:host ::ng-deep .landing-font-scale app-input-group .input-group-custom .input-wrapper i {
+  font-size: 23px;
+}
+
+:host ::ng-deep .landing-font-scale app-input-group .input-group-custom .input-wrapper input,
+:host ::ng-deep .landing-font-scale app-input-group .input-group-custom .input-wrapper textarea {
+  font-size: 20px;
+}
+
+:host ::ng-deep .landing-font-scale app-input-group .input-group-custom .input-wrapper .password-toggle i {
+  font-size: 23px;
+}
+
+@media (max-width: 576px) {
+  :host ::ng-deep .landing-font-scale app-input-group .input-group-custom .input-wrapper input,
+  :host ::ng-deep .landing-font-scale app-input-group .input-group-custom .input-wrapper textarea {
+    font-size: 21px;
   }
 }
