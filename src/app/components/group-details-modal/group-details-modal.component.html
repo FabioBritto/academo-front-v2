@@ -64,7 +64,18 @@
                   {{ s.name.length > 60 ? ((s.name | slice: 0:57) + '...') : s.name }}
                 </div>
                 <div class="group-details-modal__subjects-item-meta">
-                  {{ s.description.length > 90 ? ((s.description | slice: 0:87) + '...') : s.description }}
+                  <span class="group-details-modal__subjects-item-grade-label">Nota Final:</span>
+                  <strong
+                    class="group-details-modal__subjects-item-grade-value"
+                    [ngClass]="{
+                      'group-details-modal__subjects-item-grade-value--grade-ok':
+                        isPassingGradeDefined(s) && isFinalGradeAboveOrEqualPassing(s),
+                      'group-details-modal__subjects-item-grade-value--grade-bad':
+                        isPassingGradeDefined(s) && isFinalGradeBelowPassing(s)
+                    }"
+                  >
+                    {{ s.finalGrade | number: '1.2-2': 'pt-BR' }}
+                  </strong>
                 </div>
               </div>
 

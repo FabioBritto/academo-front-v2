@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import type { GroupDTO } from '../../model/groups.model';
+import type { SubjectDTO } from '../../model/subjects.model';
 import { GroupsService } from '../../services/groups.service';
 import { ToastService } from '../../services/toast.service';
 import { getHttpErrorMessage } from '../../utils/http-error.util';
@@ -184,5 +185,26 @@ export class GroupDetailsModalComponent implements OnInit {
     }
 
     return this.group.isActive ? 'Ativo' : 'Inativo';
+  }
+
+  isPassingGradeDefined(subject: SubjectDTO): boolean {
+    const passing = subject?.passingGrade;
+    return typeof passing === 'number' && passing > 0;
+  }
+
+  isFinalGradeAboveOrEqualPassing(subject: SubjectDTO): boolean {
+    if (!this.isPassingGradeDefined(subject)) {
+      return false;
+    }
+
+    return Number(subject?.finalGrade ?? 0) >= Number(subject?.passingGrade ?? 0);
+  }
+
+  isFinalGradeBelowPassing(subject: SubjectDTO): boolean {
+    if (!this.isPassingGradeDefined(subject)) {
+      return false;
+    }
+
+    return Number(subject?.finalGrade ?? 0) < Number(subject?.passingGrade ?? 0);
   }
 }

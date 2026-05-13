@@ -50,6 +50,7 @@
               [value]="item.weight"
               [disabled]="isLoading || isSubmitting"
               (change)="onWeightChange(item, ($any($event.target)).value)"
+              (blur)="onWeightBlur($event)"
             />
             <span class="activity-type-weights__suffix">%</span>
           </div>

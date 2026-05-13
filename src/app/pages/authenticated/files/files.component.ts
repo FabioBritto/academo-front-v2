@@ -75,7 +75,7 @@ export class FilesComponent implements OnInit, OnDestroy {
   }
 
   get listTitle(): string {
-    return this.isInSubject ? 'Lista de arquivos' : 'Lista de matérias';
+    return this.isInSubject ? 'Arquivos' : 'Matérias';
   }
 
   get emptyMessage(): string {
