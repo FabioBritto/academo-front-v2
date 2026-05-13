@@ -136,16 +136,20 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  width: 36px;
+  flex: 0 0 auto;
 }
 
 .payment-history-card__premium-activated-help--header .payment-history-card__premium-activated-help-tooltip {
-  left: 0;
-  transform: translateX(0);
+  right: 0;
+  left: auto;
+  transform: none;
 }
 
 .payment-history-card__premium-activated-help--header .payment-history-card__premium-activated-help-tooltip::before {
-  left: 18px;
-  transform: translateX(0);
+  right: 18px;
+  left: auto;
+  transform: translateX(50%);
 }
 
 .payment-history-card__premium-activated-help-trigger {
@@ -168,8 +172,9 @@
 .payment-history-card__premium-activated-help-tooltip {
   position: absolute;
   top: calc(100% + 12px);
-  left: 50%;
-  transform: translateX(-50%);
+  right: 0;
+  left: auto;
+  transform: none;
   width: min(520px, 90vw);
   z-index: 1050;
 }
@@ -178,8 +183,9 @@
   content: '';
   position: absolute;
   top: -10px;
-  left: 50%;
-  transform: translateX(-50%);
+  right: 18px;
+  left: auto;
+  transform: translateX(50%);
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
   border-bottom: 10px solid #ffffff;

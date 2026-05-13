@@ -211,7 +211,7 @@ export class ActivityTypeWeightsModalComponent implements OnInit {
     item.weight = next;
   }
 
-  onWeightBlur(event: FocusEvent): void {
+  public readonly onWeightBlur = (event: FocusEvent): void => {
     const target = event.target as HTMLInputElement | null;
     if (!target) {
       return;
@@ -219,7 +219,7 @@ export class ActivityTypeWeightsModalComponent implements OnInit {
 
     const next = this.sanitizeWeight(target.value);
     target.value = String(next);
-  }
+  };
 
   private sanitizeWeight(rawValue: unknown): number {
     const n = Number(rawValue);
