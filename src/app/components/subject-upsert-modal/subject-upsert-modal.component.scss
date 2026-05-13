@@ -13,6 +13,10 @@
   max-height: min(420px, calc(100vh - 220px));
 }
 
+.entity-upsert-modal__image--edit {
+  max-height: min(520px, calc(100vh - 220px));
+}
+
 .entity-upsert-modal__image img {
   width: 100%;
   height: 100%;

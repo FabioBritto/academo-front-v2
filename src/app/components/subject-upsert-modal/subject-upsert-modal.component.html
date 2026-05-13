@@ -6,7 +6,7 @@
 
 <div class="modal-body">
   <div class="entity-upsert-modal">
-    <div class="entity-upsert-modal__image" aria-hidden="true">
+    <div class="entity-upsert-modal__image" [class.entity-upsert-modal__image--edit]="!!subject" aria-hidden="true">
       <img [src]="imageSrc" [alt]="imageAlt" />
     </div>
 
