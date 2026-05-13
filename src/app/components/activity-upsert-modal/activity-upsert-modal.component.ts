@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { distinctUntilChanged } from 'rxjs';
+import { distinctUntilChanged, finalize } from 'rxjs';
 
 import type { ActivityTypeDTO } from '../../model/activity-types.model';
 import type { ActivityDTO, SaveActivityDTO } from '../../model/activities.model';
@@ -34,6 +34,8 @@ export class ActivityUpsertModalComponent implements OnInit, AfterViewInit {
   isSubmitting = false;
   errorMessage = '';
 
+  readonly maxTextLen = 255;
+
   constructor(
     public readonly activeModal: NgbActiveModal,
     private readonly modalService: NgbModal,
@@ -42,6 +44,20 @@ export class ActivityUpsertModalComponent implements OnInit, AfterViewInit {
     private readonly activityTypesService: ActivityTypesService
   ) {}
 
+  isControlRequired(controlName: string): boolean {
+    const control = this.form.get(controlName);
+    if (!control) {
+      return false;
+    }
+
+    const hasValidator = (control as unknown as { hasValidator?: (v: unknown) => boolean }).hasValidator;
+    if (typeof hasValidator !== 'function') {
+      return false;
+    }
+
+    return control.hasValidator(Validators.required);
+  }
+
   get title(): string {
     return this.activityId ? 'Editar Atividade' : 'Nova Atividade';
   }
@@ -49,8 +65,8 @@ export class ActivityUpsertModalComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.form = this.fb.group({
       activityDate: ['', [Validators.required]],
-      name: ['', [Validators.required, Validators.maxLength(120)]],
-      description: ['', [Validators.maxLength(1000)]],
+      name: ['', [Validators.required, Validators.maxLength(255)]],
+      description: ['', [Validators.maxLength(255)]],
       grade: [0, [Validators.required, Validators.min(0), Validators.max(10)]],
       subjectId: [this.subjectId, [Validators.required]],
       activityTypeId: [null, [Validators.required]]
@@ -67,6 +83,14 @@ export class ActivityUpsertModalComponent implements OnInit, AfterViewInit {
     if (this.activityId) {
       this.loadActivity(this.activityId);
     }
+  }
+
+  get nameLength(): number {
+    return String(this.form.get('name')?.value ?? '').length;
+  }
+
+  get descriptionLength(): number {
+    return String(this.form.get('description')?.value ?? '').length;
   }
 
   ngAfterViewInit(): void {
@@ -406,15 +430,23 @@ export class ActivityUpsertModalComponent implements OnInit, AfterViewInit {
       ? this.activitiesService.update(this.activityId, body)
       : this.activitiesService.create(body);
 
-    request$.subscribe({
-      next: (saved) => {
-        this.isSubmitting = false;
-        this.activeModal.close(saved);
-      },
-      error: (err: unknown) => {
-        this.isSubmitting = false;
-        this.errorMessage = getHttpErrorMessage(err);
-      }
-    });
+    let didSucceed = false;
+    request$
+      .pipe(
+        finalize(() => {
+          if (!didSucceed) {
+            this.isSubmitting = false;
+          }
+        })
+      )
+      .subscribe({
+        next: (saved) => {
+          didSucceed = true;
+          this.activeModal.close(saved);
+        },
+        error: (err: unknown) => {
+          this.errorMessage = getHttpErrorMessage(err);
+        }
+      });
   }
 }

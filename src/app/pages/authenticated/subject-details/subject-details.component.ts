@@ -1,15 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subject, takeUntil } from 'rxjs';
 
 import type { SubjectDTO } from '../../../model/subjects.model';
 import { SubjectsService } from '../../../services/subjects.service';
+import { PeriodsService } from '../../../services/periods.service';
 import { ToastService } from '../../../services/toast.service';
+import { FlashcardsService } from '../../../services/flashcards.service';
+import { SubjectDetailsRefreshService } from '../../../services/subject-details-refresh.service';
 import type { TabOption } from '../../../components/tabs/tabs.component';
 import { SubjectUpsertModalComponent } from '../../../components/subject-upsert-modal/subject-upsert-modal.component';
 import { StudyConfigModalComponent } from '../../../components/study-config-modal/study-config-modal.component';
 import { WeightedAverageConfigModalComponent } from '../../../components/weighted-average-config-modal/weighted-average-config-modal.component';
+import { ActivityUpsertModalComponent } from '../../../components/activity-upsert-modal/activity-upsert-modal.component';
+import { FlashcardUpsertModalComponent } from '../../../components/flashcard-upsert-modal/flashcard-upsert-modal.component';
 import { getHttpErrorMessage } from '../../../utils/http-error.util';
 import type { CardLevel } from '../../../model/flashcards.model';
 import type { PeriodDTO } from '../../../model/periods.model';
@@ -26,10 +32,19 @@ export class SubjectDetailsComponent implements OnInit {
 
   isDeleting = false;
 
+  isDeletingExam = false;
+
   periodTab = 'period1';
   contentTab = 'files';
 
   periodOptions: TabOption[] = [];
+
+  isCreatingExam = false;
+
+  private hasOpenedEditActivityModal = false;
+  private hasOpenedEditFlashcardModal = false;
+
+  private readonly destroy$ = new Subject<void>();
 
   readonly contentOptions: TabOption[] = [
     { label: 'Flashcards', value: 'flashcards' },
@@ -41,8 +56,26 @@ export class SubjectDetailsComponent implements OnInit {
     private readonly router: Router,
     private readonly modalService: NgbModal,
     private readonly subjectsService: SubjectsService,
+    private readonly periodsService: PeriodsService,
+    private readonly flashcardsService: FlashcardsService,
+    private readonly subjectDetailsRefreshService: SubjectDetailsRefreshService,
     private readonly toastService: ToastService
   ) {}
+
+  get displayName(): string {
+    const name = this.subject?.name ?? '';
+    const maxLen = 60;
+
+    if (name.length <= maxLen) {
+      return name;
+    }
+
+    const ellipsis = '...';
+    const sliceLen = Math.max(0, maxLen - ellipsis.length);
+    const sliced = name.slice(0, sliceLen).trimEnd();
+
+    return `${sliced}${ellipsis}`;
+  }
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -53,7 +86,28 @@ export class SubjectDetailsComponent implements OnInit {
       return;
     }
 
+    const tab = this.route.snapshot.queryParamMap.get('tab');
+    if (tab === 'flashcards') {
+      this.contentTab = 'flashcards';
+    }
+
     this.loadSubject(id);
+
+    this.subjectDetailsRefreshService.activitiesChanged$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        const subjectId = this.subject?.id;
+        if (!subjectId) {
+          return;
+        }
+
+        this.loadSubject(subjectId);
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   openWeightedAverageConfigModal(): void {
@@ -104,12 +158,126 @@ export class SubjectDetailsComponent implements OnInit {
             this.periodTab = this.periodOptions[0].value;
           }
         }
+
+        this.tryOpenEditActivityModal();
+        this.tryOpenEditFlashcardModal();
       },
       error: () => {
         this.subject = null;
         this.periods = [];
         this.periodOptions = [];
       }
+    });
+  }
+
+  private tryOpenEditFlashcardModal(): void {
+    if (this.hasOpenedEditFlashcardModal || !this.subject) {
+      return;
+    }
+
+    const editFlashcardIdParam = this.route.snapshot.queryParamMap.get('editFlashcardId');
+    const editFlashcardId = editFlashcardIdParam ? Number(editFlashcardIdParam) : NaN;
+
+    if (!Number.isFinite(editFlashcardId) || editFlashcardId <= 0) {
+      return;
+    }
+
+    this.hasOpenedEditFlashcardModal = true;
+    this.contentTab = 'flashcards';
+
+    this.flashcardsService.getById(editFlashcardId).subscribe({
+      next: (flashcard) => {
+        const modalRef = this.modalService.open(FlashcardUpsertModalComponent, {
+          centered: true,
+          size: 'xl',
+          windowClass: 'flashcard-upsert-modal-window'
+        });
+
+        modalRef.componentInstance.subjectId = flashcard.subjectId;
+        modalRef.componentInstance.flashcard = flashcard;
+
+        const clearParams = () => {
+          this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: {
+              editFlashcardId: null
+            },
+            queryParamsHandling: 'merge',
+            replaceUrl: true
+          });
+        };
+
+        modalRef.closed.subscribe(() => {
+          clearParams();
+          this.onFlashcardsChanged();
+        });
+
+        modalRef.dismissed.subscribe(() => {
+          clearParams();
+        });
+      },
+      error: () => {
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: {
+            editFlashcardId: null
+          },
+          queryParamsHandling: 'merge',
+          replaceUrl: true
+        });
+      }
+    });
+  }
+
+  private tryOpenEditActivityModal(): void {
+    if (this.hasOpenedEditActivityModal || !this.subject) {
+      return;
+    }
+
+    const editActivityIdParam = this.route.snapshot.queryParamMap.get('editActivityId');
+    const periodIdParam = this.route.snapshot.queryParamMap.get('periodId');
+
+    const editActivityId = editActivityIdParam ? Number(editActivityIdParam) : NaN;
+    const periodId = periodIdParam ? Number(periodIdParam) : NaN;
+
+    if (!Number.isFinite(editActivityId) || editActivityId <= 0) {
+      return;
+    }
+
+    if (!Number.isFinite(periodId) || periodId <= 0) {
+      return;
+    }
+
+    this.hasOpenedEditActivityModal = true;
+
+    const modalRef = this.modalService.open(ActivityUpsertModalComponent, {
+      centered: true,
+      size: 'xl'
+    });
+
+    modalRef.componentInstance.subjectId = this.subject.id;
+    modalRef.componentInstance.periodId = periodId;
+    modalRef.componentInstance.activityId = editActivityId;
+
+    const clearParams = () => {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: {
+          editActivityId: null,
+          periodId: null
+        },
+        queryParamsHandling: 'merge',
+        replaceUrl: true
+      });
+    };
+
+    modalRef.closed.subscribe(() => {
+      clearParams();
+      this.onActivitiesChanged();
+    });
+
+    modalRef.dismissed.subscribe(() => {
+      clearParams();
     });
   }
 
@@ -134,7 +302,13 @@ export class SubjectDetailsComponent implements OnInit {
     if (periods.length === 2) {
       return [
         { label: 'Período 1', value: 'period1' },
-        { label: 'Período 2', value: 'period2' }
+        { label: 'Período 2', value: 'period2' },
+        {
+          label: '',
+          value: 'addExam',
+          iconClass: 'bi bi-plus-lg',
+          ariaLabel: 'Adicionar exame'
+        }
       ];
     }
 
@@ -143,6 +317,39 @@ export class SubjectDetailsComponent implements OnInit {
       { label: 'Período 2', value: 'period2' },
       { label: 'Exame', value: 'exam' }
     ];
+  }
+
+  private hasExamPeriod(): boolean {
+    return (this.periods?.length ?? 0) >= 3;
+  }
+
+  onDeleteExam(): void {
+    const subjectId = this.subject?.id;
+    const examPeriodId = this.periods?.[2]?.id;
+    if (!subjectId || !examPeriodId || this.isDeletingExam) {
+      return;
+    }
+
+    this.isDeletingExam = true;
+    this.periodsService.delete(subjectId, examPeriodId).subscribe({
+      next: () => {
+        this.isDeletingExam = false;
+        this.toastService.show('Exame excluído com sucesso.', {
+          classname: 'bg-success text-light',
+          delay: 3500,
+          autohide: true
+        });
+        this.periodTab = 'period1';
+        this.loadSubject(subjectId);
+      },
+      error: (err: unknown) => {
+        this.isDeletingExam = false;
+        this.toastService.show(
+          getHttpErrorMessage(err, { fallback: 'Não foi possível excluir o exame. Tente novamente.' }),
+          { classname: 'bg-danger text-light', delay: 4500, autohide: true }
+        );
+      }
+    });
   }
 
   get selectedPeriod(): PeriodDTO | null {
@@ -238,12 +445,51 @@ export class SubjectDetailsComponent implements OnInit {
 
     modalRef.closed.subscribe((result) => {
       if (result && this.subject) {
+        this.toastService.show('Matéria atualizada com sucesso.', {
+          classname: 'bg-success text-light',
+          delay: 3500,
+          autohide: true
+        });
         this.loadSubject(this.subject.id);
       }
     });
   }
 
   onPeriodTabChange(nextValue: string): void {
+    if (nextValue === 'addExam') {
+      const subjectId = this.subject?.id;
+      if (!subjectId || this.isCreatingExam) {
+        return;
+      }
+
+      if (this.hasExamPeriod()) {
+        this.periodTab = 'exam';
+        return;
+      }
+
+      this.isCreatingExam = true;
+      this.periodsService.createExam({ subjectId }).subscribe({
+        next: () => {
+          this.isCreatingExam = false;
+          this.toastService.show('Exame criado com sucesso.', {
+            classname: 'bg-success text-light',
+            delay: 3500,
+            autohide: true
+          });
+          this.periodTab = 'exam';
+          this.loadSubject(subjectId);
+        },
+        error: (err: unknown) => {
+          this.isCreatingExam = false;
+          this.toastService.show(
+            getHttpErrorMessage(err, { fallback: 'Não foi possível criar o exame. Tente novamente.' }),
+            { classname: 'bg-danger text-light', delay: 4500, autohide: true }
+          );
+        }
+      });
+      return;
+    }
+
     this.periodTab = nextValue;
   }
 
@@ -287,7 +533,7 @@ export class SubjectDetailsComponent implements OnInit {
   }
 
   get breadcrumbLabel(): string {
-    return this.subject?.name ?? 'Carregando...';
+    return this.displayName || 'Carregando...';
   }
 
   get calculationTypeLabel(): string {
@@ -312,6 +558,31 @@ export class SubjectDetailsComponent implements OnInit {
   get passingGradeDisplay(): string {
     const g = this.subject?.passingGrade;
     return g === null || g === undefined ? '-' : String(g);
+  }
+
+  get isPassingGradeDefined(): boolean {
+    const passing = this.subject?.passingGrade;
+    return typeof passing === 'number' && passing > 0;
+  }
+
+  get isFinalGradeAboveOrEqualPassing(): boolean {
+    if (!this.isPassingGradeDefined) {
+      return false;
+    }
+
+    const finalGrade = Number(this.subject?.finalGrade ?? 0);
+    const passing = Number(this.subject?.passingGrade ?? 0);
+    return finalGrade >= passing;
+  }
+
+  get isFinalGradeBelowPassing(): boolean {
+    if (!this.isPassingGradeDefined) {
+      return false;
+    }
+
+    const finalGrade = Number(this.subject?.finalGrade ?? 0);
+    const passing = Number(this.subject?.passingGrade ?? 0);
+    return finalGrade < passing;
   }
 
   get isActiveLabel(): string {

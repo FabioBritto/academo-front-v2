@@ -1,5 +1,8 @@
 <div class="modal-header">
-  <h5 class="modal-title">{{ activity.subjectName }} - {{ activity.name }}</h5>
+  <div class="modal-header__titles">
+    <h5 class="modal-title" [attr.title]="activity.name || null">{{ displayActivityName }}</h5>
+    <div class="modal-subtitle" [attr.title]="activity.subjectName || null">{{ displaySubjectName }}</div>
+  </div>
   <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('close')"></button>
 </div>
 

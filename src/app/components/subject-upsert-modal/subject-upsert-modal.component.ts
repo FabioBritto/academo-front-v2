@@ -14,7 +14,7 @@ export class SubjectUpsertModalComponent {
 
   @ViewChild(SubjectFormComponent) subjectForm?: SubjectFormComponent;
 
-  imageSrc = 'assets/images/study-03.jpeg';
+  imageSrc = 'assets/images/study-01.jpeg';
   imageAlt = 'Ilustração de estudo';
 
   get title(): string {
@@ -40,6 +40,10 @@ export class SubjectUpsertModalComponent {
   }
 
   onSaveClick(): void {
+    if (this.isSubmitting) {
+      return;
+    }
+
     this.subjectForm?.submit();
   }
 

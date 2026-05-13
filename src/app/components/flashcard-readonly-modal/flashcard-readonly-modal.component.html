@@ -5,19 +5,21 @@
 <div class="modal-body">
   <div class="flashcard-readonly-modal">
     <div class="flashcard-readonly-modal__section">
-      <div class="flashcard-readonly-modal__label">Front</div>
+      <div class="flashcard-readonly-modal__label">Frente</div>
       <div class="flashcard-readonly-modal__value">{{ flashcard.frontPart }}</div>
     </div>
 
     <div class="flashcard-readonly-modal__section">
-      <div class="flashcard-readonly-modal__label">Back</div>
+      <div class="flashcard-readonly-modal__label">Verso</div>
       <div class="flashcard-readonly-modal__value">{{ flashcard.backPart }}</div>
     </div>
 
     <div class="flashcard-readonly-modal__meta">
       <div class="flashcard-readonly-modal__meta-item">
         <span class="flashcard-readonly-modal__meta-label">Matéria:</span>
-        <span class="flashcard-readonly-modal__meta-value">{{ subjectName }}</span>
+        <span class="flashcard-readonly-modal__meta-value flashcard-readonly-modal__subject" [attr.title]="subjectName">
+          {{ displaySubjectName }}
+        </span>
       </div>
 
       <div class="flashcard-readonly-modal__meta-row">
@@ -34,6 +36,15 @@
         <div class="flashcard-readonly-modal__meta-item">
           <span class="flashcard-readonly-modal__meta-label">Nível:</span>
           <span class="flashcard-readonly-modal__meta-value">{{ levelLabel(flashcard.level) }}</span>
+        </div>
+
+        <div class="flashcard-readonly-modal__meta-action">
+          <app-submit-button
+            label="Acessar Flashcard"
+            icon="bi bi-box-arrow-up-right"
+            type="button"
+            (click)="accessFlashcard()"
+          ></app-submit-button>
         </div>
       </div>
     </div>

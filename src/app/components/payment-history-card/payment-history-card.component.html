@@ -1,6 +1,38 @@
 <section class="payment-history-card" aria-label="Histórico de Pagamentos">
   <header class="payment-history-card__header">
-    <h4>Histórico de Pagamentos</h4>
+    <div class="payment-history-card__header-title">
+      <h4>Histórico de Pagamentos</h4>
+
+      <div
+        class="payment-history-card__premium-activated-help payment-history-card__premium-activated-help--header"
+        *ngIf="premiumActivatedHelpEligibleItem"
+        #premiumActivatedHelpWrapper
+      >
+        <button
+          type="button"
+          class="payment-history-card__premium-activated-help-trigger"
+          aria-label="Ajuda sobre ativação do Premium"
+          (click)="togglePremiumActivatedHelp()"
+        >
+          <i class="bi bi-question-circle-fill" aria-hidden="true"></i>
+        </button>
+
+        <div
+          class="payment-history-card__premium-activated-help-tooltip"
+          *ngIf="isPremiumActivatedHelpOpen"
+          role="dialog"
+          aria-label="Ajuda sobre ativação do Premium"
+        >
+          <div class="payment-history-card__premium-activated-help-tooltip-content">
+            <div class="payment-history-card__premium-activated-help-text">
+              Sua assinatura Premium foi ativada com sucesso!
+              <br />
+              Para liberar e acessar as novas funcionalidades da plataforma, faça login novamente na sua conta.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </header>
 
   <div class="payment-history-card__body">
@@ -28,21 +60,35 @@
         </div>
 
         <div class="payment-history-card__item-meta">
-          <div class="payment-history-card__meta">
-            <div class="payment-history-card__meta-label">Link gerado em</div>
-            <div class="payment-history-card__meta-value">{{ formatDateTime(item.createdAt) }}</div>
-          </div>
 
           <div class="payment-history-card__meta">
-            <div class="payment-history-card__meta-label">Vencimento</div>
-            <div class="payment-history-card__meta-value">{{ formatDate(item.planDueDate) }}</div>
+            <div class="payment-history-card__meta-label">
+              {{ item.paymentStatus === 'PAID' ? 'Vencimento do Plano' : 'Vencimento da Cobrança' }}
+            </div>
+            <div class="payment-history-card__meta-value">
+              {{ item.paymentStatus === 'PAID' ? formatDate(item.planDueDate) : chargeDueDate(item.createdAt) }}
+            </div>
           </div>
 
           <div class="payment-history-card__meta payment-history-card__meta--action">
+            
+            <app-delete-button
+              *ngIf="item.paymentStatus === 'WAITING_PAYMENT'"
+              label="Cancelar Cobrança"
+              icon=""
+              confirmTitle="Cancelar cobrança"
+              confirmMessage="Tem certeza que deseja cancelar esta cobrança?"
+              confirmLabel="Cancelar cobrança"
+              cancelLabel="Voltar"
+              [disabled]="item.paymentStatus !== 'WAITING_PAYMENT'"
+              [isSubmitting]="cancelingPaymentId === item.paymentId"
+              (confirmed)="cancelPayment(item)"
+            ></app-delete-button>
+
             <app-submit-button
-              *ngIf="item.paymentStatus !== 'PAID' && item.url"
+              *ngIf="item.paymentStatus === 'WAITING_PAYMENT' && item.url"
               type="button"
-              label="Abrir"
+              label="Realizar Pagamento"
               icon=""
               (click)="openUrl(item.url)"
             ></app-submit-button>

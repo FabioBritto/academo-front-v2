@@ -7,6 +7,7 @@ import type { FileDTO } from '../../../model/files.model';
 import type { SubjectDTO } from '../../../model/subjects.model';
 import { FilesService } from '../../../services/files.service';
 import { SubjectsService } from '../../../services/subjects.service';
+import { AuthSessionService } from '../../../services/auth-session.service';
 import { getHttpErrorMessage } from '../../../utils/http-error.util';
 import type { SortFilterOption } from '../../../components/sort-filters/sort-filters.component';
 
@@ -17,6 +18,10 @@ import type { SortFilterOption } from '../../../components/sort-filters/sort-fil
 })
 export class FilesComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
+
+  get isPremium(): boolean {
+    return this.sessionService.isPremium();
+  }
 
   subjects: SubjectDTO[] = [];
   files: FileDTO[] = [];
@@ -61,7 +66,8 @@ export class FilesComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly subjectsService: SubjectsService,
-    private readonly filesService: FilesService
+    private readonly filesService: FilesService,
+    private readonly sessionService: AuthSessionService
   ) {}
 
   get isInSubject(): boolean {
@@ -69,7 +75,7 @@ export class FilesComponent implements OnInit, OnDestroy {
   }
 
   get listTitle(): string {
-    return this.isInSubject ? 'Lista de arquivos' : 'Lista de matérias';
+    return this.isInSubject ? 'Arquivos' : 'Matérias';
   }
 
   get emptyMessage(): string {
@@ -77,6 +83,10 @@ export class FilesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    if (!this.isPremium) {
+      return;
+    }
+
     this.route.queryParams
       .pipe(
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
@@ -203,14 +213,21 @@ export class FilesComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.errorMessage = '';
 
+    const shouldNavigateToFirstPage = this.filesPage !== 0;
+
     this.filesService.deleteFile(file.uuid).subscribe({
       next: () => {
-        this.isLoading = false;
-        this.router.navigate([], {
-          relativeTo: this.route,
-          queryParams: { filesPage: 0 },
-          queryParamsHandling: 'merge'
-        });
+        if (shouldNavigateToFirstPage) {
+          this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: { filesPage: 0 },
+            queryParamsHandling: 'merge'
+          });
+          return;
+        }
+
+        this.filesPage = 0;
+        this.loadFiles();
       },
       error: (err: unknown) => {
         this.isLoading = false;

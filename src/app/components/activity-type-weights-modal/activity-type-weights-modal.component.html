@@ -17,12 +17,26 @@
   <ng-container *ngIf="items.length > 0; else emptyState">
     <div class="activity-type-weights__table">
       <div class="activity-type-weights__table-head">
+        <div class="activity-type-weights__th"></div>
         <div class="activity-type-weights__th">Tipo de atividade</div>
         <div class="activity-type-weights__th activity-type-weights__th--right">Peso (%)</div>
       </div>
 
       <div class="activity-type-weights__table-body">
         <div class="activity-type-weights__tr" *ngFor="let item of items">
+          <div class="activity-type-weights__td activity-type-weights__td--delete">
+            <app-delete-button
+              label=""
+              icon="bi bi-trash-fill"
+              [disabled]="isLoading || isSubmitting || isDeletingId === item.id"
+              [isSubmitting]="isDeletingId === item.id"
+              confirmTitle="Confirmar exclusão"
+              confirmMessage="Ao excluir este tipo, todas as atividades associadas também serão deletadas. Deseja continuar?"
+              confirmLabel="Excluir"
+              (confirmed)="deleteActivityType(item)"
+            ></app-delete-button>
+          </div>
+
           <div class="activity-type-weights__td activity-type-weights__td--name">{{ item.name }}</div>
 
           <div class="activity-type-weights__td activity-type-weights__td--weight">
@@ -36,6 +50,7 @@
               [value]="item.weight"
               [disabled]="isLoading || isSubmitting"
               (change)="onWeightChange(item, ($any($event.target)).value)"
+              (blur)="onWeightBlur($event)"
             />
             <span class="activity-type-weights__suffix">%</span>
           </div>
@@ -75,24 +90,33 @@
   </ng-container>
 
   <ng-template #emptyState>
-    <p class="activity-type-weights__empty">{{ isLoading ? 'Carregando...' : 'Nenhum tipo cadastrado.' }}</p>
+    <p class="activity-type-weights__empty">{{ isLoading ? 'Carregando...' : 'Nenhum tipo de atividade cadastrado.' }}</p>
+
+    <div class="d-flex justify-content-center mt-3" *ngIf="!isLoading && !isSubmitting">
+      <app-submit-button
+        type="button"
+        label="Cadastrar tipo de atividade"
+        icon=""
+        (click)="openCreateActivityTypeModal()"
+      ></app-submit-button>
+    </div>
   </ng-template>
 
-  <div class="activity-type-weights__actions mt-4" appEqualizeModalButtons>
-    <app-submit-button
-      type="button"
-      label="Zerar tudo"
-      icon=""
-      [disabled]="isLoading || isSubmitting"
-      (click)="resetAll()"
-    ></app-submit-button>
-
+  <div class="activity-type-weights__actions mt-4" appEqualizeModalButtons *ngIf="items.length > 0">
     <app-submit-button
       type="button"
       label="Cancelar"
       icon=""
       [disabled]="isLoading || isSubmitting"
       (click)="close()"
+    ></app-submit-button>
+
+    <app-submit-button
+      type="button"
+      label="Zerar tudo"
+      icon=""
+      [disabled]="isLoading || isSubmitting"
+      (click)="resetAll()"
     ></app-submit-button>
 
     <app-submit-button

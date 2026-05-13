@@ -18,7 +18,6 @@ export class AuthInterceptor implements HttpInterceptor {
     '/auth/forgot-password',
     '/auth/reset-password',
     '/payment/receive',
-    '/files/download'
   ];
 
   constructor(private readonly tokenService: AuthTokenService) {}

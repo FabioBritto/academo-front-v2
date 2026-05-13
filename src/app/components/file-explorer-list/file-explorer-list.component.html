@@ -1,4 +1,9 @@
-<section class="file-explorer-list" aria-label="Explorador">
+<section
+  class="file-explorer-list"
+  [class.file-explorer-list--subjects]="mode === 'subjects'"
+  [class.file-explorer-list--files]="mode === 'files'"
+  aria-label="Explorador"
+>
   <header class="file-explorer-list__header">
     <h5 class="file-explorer-list__title">{{ title }}</h5>
 
@@ -25,7 +30,7 @@
 
     <ng-container *ngIf="!isLoading">
       <ng-container *ngIf="hasItems; else emptyState">
-        <div class="file-explorer-list__columns" *ngIf="mode === 'subjects'">
+        <div class="file-explorer-list__columns file-explorer-list__columns--subjects" *ngIf="mode === 'subjects'">
           <div class="file-explorer-list__columns-icon" aria-hidden="true"></div>
           <div class="file-explorer-list__columns-name">Nome</div>
           <div class="file-explorer-list__columns-cols">
@@ -36,7 +41,7 @@
           <div class="file-explorer-list__columns-actions" aria-hidden="true"></div>
         </div>
 
-        <div class="file-explorer-list__columns" *ngIf="mode === 'files'">
+        <div class="file-explorer-list__columns file-explorer-list__columns--files" *ngIf="mode === 'files'">
           <div class="file-explorer-list__columns-icon" aria-hidden="true"></div>
           <div class="file-explorer-list__columns-name">Nome</div>
           <div class="file-explorer-list__columns-cols">
@@ -51,7 +56,7 @@
           <ng-container *ngIf="mode === 'subjects'">
             <article
               *ngFor="let s of subjects"
-              class="file-explorer-list__item file-explorer-list__item--clickable"
+              class="file-explorer-list__item file-explorer-list__item--subject file-explorer-list__item--clickable"
               (click)="selectSubject(s)"
               (keydown.enter)="selectSubject(s)"
               tabindex="0"
@@ -76,7 +81,7 @@
           </ng-container>
 
           <ng-container *ngIf="mode === 'files'">
-            <article class="file-explorer-list__item" *ngFor="let f of files">
+            <article class="file-explorer-list__item file-explorer-list__item--file" *ngFor="let f of files">
               <div class="file-explorer-list__item-icon" aria-hidden="true">
                 <i class="bi bi-file-earmark"></i>
               </div>

@@ -10,6 +10,19 @@
   border-radius: 16px;
   background: color-mix(in srgb, var(--surface-color) 90%, white);
   border: 1px solid color-mix(in srgb, var(--default-color) 10%, transparent);
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 160ms ease;
+  align-items: center;
+}
+
+.activity-notification:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--default-color) 10%, transparent);
+}
+
+.activity-notification:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-color) 18%, transparent);
 }
 
 .activity-notification__date {
@@ -35,6 +48,13 @@
   letter-spacing: 0.6px;
 }
 
+.activity-notification__year {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  margin-top: 2px;
+}
+
 .activity-notification__content {
   min-width: 0;
 }
@@ -44,6 +64,9 @@
   font-size: 18px;
   font-weight: 800;
   color: var(--heading-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .activity-notification__meta {
@@ -55,11 +78,10 @@
   color: color-mix(in srgb, var(--default-color) 75%, transparent);
 }
 
-.activity-notification__description {
-  margin: 10px 0 0;
-  color: color-mix(in srgb, var(--default-color) 85%, transparent);
-  font-size: 14px;
-  line-height: 1.5;
+.activity-notification__meta-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 @media (max-width: 576px) {

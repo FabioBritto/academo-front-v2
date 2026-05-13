@@ -12,7 +12,7 @@ import { GroupDetailsModalComponent } from '../group-details-modal/group-details
 export class ViewGroupCardComponent {
   @Input({ required: true }) group!: GroupDTO;
 
-  @Input() iconClass = 'bi bi-people-fill';
+  @Input() iconClass = 'bi bi-collection-fill';
 
   @Output() changed = new EventEmitter<void>();
 

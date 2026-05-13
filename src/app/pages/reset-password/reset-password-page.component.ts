@@ -109,7 +109,7 @@ export class ResetPasswordPageComponent implements OnInit, OnDestroy {
 
         this.redirectTimeoutId = window.setTimeout(() => {
           void this.router.navigate(['/']);
-        }, 4000);
+        }, 5000);
       },
       error: (err: unknown) => {
         this.isSubmitting = false;

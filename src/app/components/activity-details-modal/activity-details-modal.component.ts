@@ -13,6 +13,28 @@ export class ActivityDetailsModalComponent {
 
   constructor(public readonly activeModal: NgbActiveModal) {}
 
+  get displayActivityName(): string {
+    const name = this.activity?.name ?? '';
+    const maxLen = 60;
+
+    if (name.length <= maxLen) {
+      return name;
+    }
+
+    return `${name.slice(0, maxLen - 3).trimEnd()}...`;
+  }
+
+  get displaySubjectName(): string {
+    const name = this.activity?.subjectName ?? '';
+    const maxLen = 60;
+
+    if (name.length <= maxLen) {
+      return name;
+    }
+
+    return `${name.slice(0, maxLen - 3).trimEnd()}...`;
+  }
+
   get formattedDate(): string {
     const date = new Date(this.activity?.activityDate);
     if (Number.isNaN(date.getTime())) {

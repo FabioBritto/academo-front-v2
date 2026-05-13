@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { finalize } from 'rxjs';
 
 import type { CreateSubjectDTO, SubjectDTO, UpdateSubjectDTO } from '../../model/subjects.model';
 import type { CalculationType } from '../../model/subjects.model';
@@ -42,6 +43,20 @@ export class SubjectFormComponent implements OnChanges {
     });
   }
 
+  isControlRequired(controlName: string): boolean {
+    const control = this.form.get(controlName);
+    if (!control) {
+      return false;
+    }
+
+    const hasValidator = (control as unknown as { hasValidator?: (v: unknown) => boolean }).hasValidator;
+    if (typeof hasValidator !== 'function') {
+      return false;
+    }
+
+    return control.hasValidator(Validators.required);
+  }
+
   onCalculationTypeChange(value: CalculationType): void {
     if (this.isSubmitting) {
       return;
@@ -58,6 +73,21 @@ export class SubjectFormComponent implements OnChanges {
 
   get descriptionLength(): number {
     return String(this.form.get('description')?.value ?? '').length;
+  }
+
+  setActiveStatus(isActive: boolean): void {
+    if (this.isSubmitting) {
+      return;
+    }
+
+    const control = this.form.get('isActive');
+    if (!control) {
+      return;
+    }
+
+    control.setValue(isActive);
+    control.markAsTouched();
+    control.updateValueAndValidity();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -122,16 +152,25 @@ export class SubjectFormComponent implements OnChanges {
         description
       };
 
-      this.subjectsService.create(payload).subscribe({
-        next: (created) => {
-          this.isSubmitting = false;
-          this.saved.emit(created);
-        },
-        error: (err: unknown) => {
-          this.isSubmitting = false;
-          this.handleError(err, 'Não foi possível criar a matéria. Tente novamente.');
-        }
-      });
+      let didSucceed = false;
+      this.subjectsService
+        .create(payload)
+        .pipe(
+          finalize(() => {
+            if (!didSucceed) {
+              this.isSubmitting = false;
+            }
+          })
+        )
+        .subscribe({
+          next: (created) => {
+            didSucceed = true;
+            this.saved.emit(created);
+          },
+          error: (err: unknown) => {
+            this.handleError(err, 'Não foi possível criar a matéria. Tente novamente.');
+          }
+        });
 
       return;
     }
@@ -150,16 +189,25 @@ export class SubjectFormComponent implements OnChanges {
       isActive
     };
 
-    this.subjectsService.update(this.subject.id, updatePayload).subscribe({
-      next: (updated) => {
-        this.isSubmitting = false;
-        this.saved.emit(updated);
-      },
-      error: (err: unknown) => {
-        this.isSubmitting = false;
-        this.handleError(err, 'Não foi possível salvar a matéria. Tente novamente.');
-      }
-    });
+    let didSucceed = false;
+    this.subjectsService
+      .update(this.subject.id, updatePayload)
+      .pipe(
+        finalize(() => {
+          if (!didSucceed) {
+            this.isSubmitting = false;
+          }
+        })
+      )
+      .subscribe({
+        next: (updated) => {
+          didSucceed = true;
+          this.saved.emit(updated);
+        },
+        error: (err: unknown) => {
+          this.handleError(err, 'Não foi possível salvar a matéria. Tente novamente.');
+        }
+      });
   }
 
   private handleError(err: unknown, fallback: string): void {

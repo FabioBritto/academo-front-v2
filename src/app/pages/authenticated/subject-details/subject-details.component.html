@@ -7,7 +7,7 @@
 
   <section class="subject-details__header">
     <div class="subject-details__header-main">
-      <h2 class="subject-details__title">{{ subject?.name }}</h2>
+      <h2 class="subject-details__title" [attr.title]="subject?.name || null">{{ displayName }}</h2>
       <p class="subject-details__description">{{ subject?.description }}</p>
 
       <div class="subject-details__meta">
@@ -26,22 +26,27 @@
           <ng-template #calculationTypeText>
             <span class="subject-details__meta-value">{{ calculationTypeLabel }}</span>
           </ng-template>
-        </div>
 
-        <div class="subject-details__meta-item subject-details__meta-item--right">
+          <div class="subject-details__meta-item subject-details__meta-item--right">
           <span class="subject-details__meta-label">Nota mínima:</span>
           <span class="subject-details__meta-value">{{ passingGradeDisplay }}</span>
         </div>
 
-        <div class="subject-details__meta-item">
-          <span class="subject-details__meta-label">Status:</span>
-          <span class="badge" [ngClass]="isActiveBadgeClass">{{ isActiveLabel }}</span>
+        <div class="subject-details__meta-item subject-details__meta-item--right">
+          <span class="subject-details__meta-label">Nota Final:</span>
+          <span
+            class="subject-details__meta-value"
+            [ngClass]="{
+              'subject-details__meta-value--grade-ok': isPassingGradeDefined && isFinalGradeAboveOrEqualPassing,
+              'subject-details__meta-value--grade-bad': isPassingGradeDefined && isFinalGradeBelowPassing
+            }"
+          >
+            {{ finalGradeDisplay }}
+          </span>
+        </div>
         </div>
 
-        <div class="subject-details__meta-item subject-details__meta-item--right">
-          <span class="subject-details__meta-label">Média Final:</span>
-          <span class="subject-details__meta-value">{{ finalGradeDisplay }}</span>
-        </div>
+        
       </div>
     </div>
 
@@ -77,16 +82,23 @@
         [periodLabel]="periodTab === 'period1' ? '1' : (periodTab === 'period2' ? '2' : 'Exame')"
         [hasItems]="!!selectedPeriod"
         [period]="selectedPeriod"
+        [isExam]="periodTab === 'exam'"
+        [examDeleteDisabled]="isDeletingExam || !selectedPeriod"
+        [examDeleteSubmitting]="isDeletingExam"
         [pageSize]="6"
-        emptyMessage="Nenhuma atividade por enquanto."
+        [emptyMessage]="periodTab === 'exam' ? '' : 'Nenhuma atividade por enquanto.'"
         (changed)="onActivitiesChanged()"
+        (deleteExam)="onDeleteExam()"
       >
         <div class="subject-details__period-summary">
-          <div class="subject-details__period-metric">
+          <div class="subject-details__period-metric" *ngIf="periodTab !== 'exam'">
             <span class="subject-details__period-metric-label">Nota:</span>
             <span class="subject-details__period-metric-value">{{ selectedPeriod?.grade ?? '-' }}</span>
           </div>
-          <div class="subject-details__period-metric" *ngIf="subject?.calculationType !== 'MEDIA_ARITMETICA'">
+          <div
+            class="subject-details__period-metric"
+            *ngIf="periodTab !== 'exam' && subject?.calculationType !== 'MEDIA_ARITMETICA'"
+          >
             <span class="subject-details__period-metric-label">Peso:</span>
             <span class="subject-details__period-metric-value">{{ formatWeightPercent(selectedPeriod?.weight) }}</span>
           </div>
@@ -102,7 +114,7 @@
           *ngIf="contentTab === 'flashcards'"
           class="subject-details__study-button"
           label="Estudar"
-          icon=""
+          icon="bi bi-stack"
           type="button"
           (click)="openStudyConfigModal()"
         ></app-submit-button>

@@ -68,6 +68,20 @@
               formControlName="name"
               [disabled]="isSubmitting"
             ></app-input-group>
+
+            <div class="d-flex justify-content-between align-items-center">
+              <small class="text-danger" *ngIf="form.get('name')?.touched && form.get('name')?.hasError('maxlength')">
+                Máximo de 255 caracteres
+              </small>
+
+              <small
+                class="ms-auto"
+                [class.text-danger]="nameLength > maxTextLen"
+                [class.text-muted]="nameLength <= maxTextLen"
+              >
+                {{ nameLength }}/{{ maxTextLen }}
+              </small>
+            </div>
           </div>
 
           <div class="col-12">
@@ -76,15 +90,35 @@
               id="description"
               [textarea]="true"
               [rows]="4"
-              placeholder="Descreva a atividade"
+              placeholder="Descrição da atividade (opcional)"
               formControlName="description"
               [disabled]="isSubmitting"
             ></app-input-group>
+
+            <div class="d-flex justify-content-between align-items-center">
+              <small
+                class="text-danger"
+                *ngIf="form.get('description')?.touched && form.get('description')?.hasError('maxlength')"
+              >
+                Máximo de 255 caracteres
+              </small>
+
+              <small
+                class="ms-auto"
+                [class.text-danger]="descriptionLength > maxTextLen"
+                [class.text-muted]="descriptionLength <= maxTextLen"
+              >
+                {{ descriptionLength }}/{{ maxTextLen }}
+              </small>
+            </div>
           </div>
 
           <div class="col-12">
             <div class="activity-upsert-modal__activity-type">
-              <div class="activity-upsert-modal__activity-type-label">Tipo de atividade</div>
+              <div class="activity-upsert-modal__activity-type-label">
+                Tipo de atividade
+                <span *ngIf="isControlRequired('activityTypeId')" class="text-danger">*</span>
+              </div>
 
               <div class="activity-upsert-modal__activity-type-row">
                 <app-activity-type-dropdown

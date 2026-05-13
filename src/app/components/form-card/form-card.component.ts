@@ -23,6 +23,8 @@ export class FormCardComponent {
 
   @Input() secureIcon = 'bi bi-lock-fill';
 
+  @Input() submitDisabled = false;
+
   @Output() formSubmit = new EventEmitter<Record<string, unknown>>();
 
   onSubmit(): void {

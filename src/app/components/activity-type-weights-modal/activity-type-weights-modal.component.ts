@@ -1,10 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { finalize } from 'rxjs';
 
 import type { ActivityTypeDTO, UpdateActivityTypeWeightDTO } from '../../model/activity-types.model';
 import type { Page } from '../../model/common.model';
 import { ActivityTypesService } from '../../services/activity-types.service';
+import { SubjectDetailsRefreshService } from '../../services/subject-details-refresh.service';
+import { ToastService } from '../../services/toast.service';
 import { getHttpErrorMessage } from '../../utils/http-error.util';
+import { ActivityTypeCreateModalComponent } from '../activity-type-create-modal/activity-type-create-modal.component';
 
 type ActivityTypeWeightItem = {
   id: number;
@@ -24,13 +28,17 @@ export class ActivityTypeWeightsModalComponent implements OnInit {
 
   isLoading = false;
   isSubmitting = false;
+  isDeletingId: number | null = null;
   errorMessage = '';
 
   items: ActivityTypeWeightItem[] = [];
 
   constructor(
     public readonly activeModal: NgbActiveModal,
-    private readonly activityTypesService: ActivityTypesService
+    private readonly modalService: NgbModal,
+    private readonly activityTypesService: ActivityTypesService,
+    private readonly subjectDetailsRefreshService: SubjectDetailsRefreshService,
+    private readonly toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -69,16 +77,25 @@ export class ActivityTypeWeightsModalComponent implements OnInit {
     this.isSubmitting = true;
     this.errorMessage = '';
 
-    this.activityTypesService.updatePeriodWeights(periodId, body).subscribe({
-      next: () => {
-        this.isSubmitting = false;
-        this.activeModal.close(this.items);
-      },
-      error: (err: unknown) => {
-        this.isSubmitting = false;
-        this.errorMessage = getHttpErrorMessage(err, { fallback: 'Não foi possível salvar os pesos.' });
-      }
-    });
+    let didSucceed = false;
+    this.activityTypesService
+      .updatePeriodWeights(periodId, body)
+      .pipe(
+        finalize(() => {
+          if (!didSucceed) {
+            this.isSubmitting = false;
+          }
+        })
+      )
+      .subscribe({
+        next: () => {
+          didSucceed = true;
+          this.activeModal.close(this.items);
+        },
+        error: (err: unknown) => {
+          this.errorMessage = getHttpErrorMessage(err, { fallback: 'Não foi possível salvar os pesos.' });
+        }
+      });
   }
 
   resetAll(): void {
@@ -87,6 +104,77 @@ export class ActivityTypeWeightsModalComponent implements OnInit {
     }
 
     this.items = (this.items ?? []).map((i) => ({ ...i, weight: 0 }));
+  }
+
+  openCreateActivityTypeModal(): void {
+    if (this.isLoading || this.isSubmitting) {
+      return;
+    }
+
+    const periodId = Number(this.periodId);
+    if (!Number.isFinite(periodId) || periodId <= 0) {
+      return;
+    }
+
+    const modalRef = this.modalService.open(ActivityTypeCreateModalComponent, {
+      centered: true,
+      size: 'lg'
+    });
+
+    modalRef.componentInstance.periodId = periodId;
+
+    modalRef.closed.subscribe((created: unknown) => {
+      const activityType = created as ActivityTypeDTO;
+      if (!activityType?.id) {
+        return;
+      }
+
+      this.loadAll();
+    });
+  }
+
+  deleteActivityType(item: ActivityTypeWeightItem): void {
+    if (this.isLoading || this.isSubmitting) {
+      return;
+    }
+
+    const activityTypeId = Number(item?.id);
+    if (!Number.isFinite(activityTypeId) || activityTypeId <= 0) {
+      return;
+    }
+
+    if (this.isDeletingId) {
+      return;
+    }
+
+    this.isDeletingId = activityTypeId;
+    this.errorMessage = '';
+
+    this.activityTypesService.delete(activityTypeId).subscribe({
+      next: () => {
+        this.isDeletingId = null;
+        this.toastService.show('Tipo de atividade excluído com sucesso.', {
+          classname: 'bg-success text-light',
+          delay: 3500,
+          autohide: true
+        });
+        this.subjectDetailsRefreshService.notifyActivitiesChanged();
+        this.loadAll();
+      },
+      error: (err: unknown) => {
+        this.isDeletingId = null;
+        this.toastService.show(
+          getHttpErrorMessage(err, {
+            fallback: 'Não foi possível excluir o tipo de atividade.'
+          }),
+          {
+            classname: 'bg-danger text-light',
+            delay: 4500,
+            autohide: true
+          }
+        );
+      }
+    });
   }
 
   get total(): number {
@@ -122,6 +210,16 @@ export class ActivityTypeWeightsModalComponent implements OnInit {
     const next = this.sanitizeWeight(rawValue);
     item.weight = next;
   }
+
+  public readonly onWeightBlur = (event: FocusEvent): void => {
+    const target = event.target as HTMLInputElement | null;
+    if (!target) {
+      return;
+    }
+
+    const next = this.sanitizeWeight(target.value);
+    target.value = String(next);
+  };
 
   private sanitizeWeight(rawValue: unknown): number {
     const n = Number(rawValue);

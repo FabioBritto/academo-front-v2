@@ -52,7 +52,6 @@ export class LoginModalComponent {
     this.authService.login(payload).subscribe({
       next: () => {
         this.isSubmitting = false;
-        console.log('Login realizado com sucesso');
         this.activeModal.close('logged');
       },
       error: (err: unknown) => {

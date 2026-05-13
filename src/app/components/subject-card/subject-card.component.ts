@@ -13,6 +13,42 @@ export class SubjectCardComponent {
 
   @Input() iconClass = 'bi bi-book-fill';
 
+  get displayName(): string {
+    const name = this.subject?.name ?? '';
+    const maxLen = 60;
+
+    if (name.length <= maxLen) {
+      return name;
+    }
+
+    const ellipsis = '...';
+    const sliceLen = Math.max(0, maxLen - ellipsis.length);
+    const sliced = name.slice(0, sliceLen).trimEnd();
+
+    return `${sliced}${ellipsis}`;
+  }
+
+  get isPassingGradeDefined(): boolean {
+    const passing = this.subject?.passingGrade;
+    return typeof passing === 'number' && passing > 0;
+  }
+
+  get isFinalGradeAboveOrEqualPassing(): boolean {
+    if (!this.isPassingGradeDefined) {
+      return false;
+    }
+
+    return Number(this.subject?.finalGrade ?? 0) >= Number(this.subject?.passingGrade ?? 0);
+  }
+
+  get isFinalGradeBelowPassing(): boolean {
+    if (!this.isPassingGradeDefined) {
+      return false;
+    }
+
+    return Number(this.subject?.finalGrade ?? 0) < Number(this.subject?.passingGrade ?? 0);
+  }
+
   constructor(private readonly router: Router) {}
 
   @HostListener('click')

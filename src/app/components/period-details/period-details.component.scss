@@ -26,6 +26,110 @@
   color: var(--heading-color);
 }
 
+.period-details__exam-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.period-details__exam-help {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.period-details__exam-help-trigger {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, #0d6efd 28%, transparent);
+  background: color-mix(in srgb, #0d6efd 8%, transparent);
+  color: #0d6efd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.period-details__exam-help-trigger i {
+  font-size: 18px;
+}
+
+.period-details__exam-help-tooltip {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(520px, 90vw);
+  z-index: 1050;
+}
+
+.period-details__exam-help-tooltip::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #ffffff;
+  filter: drop-shadow(0 -2px 2px color-mix(in srgb, #000 15%, transparent));
+}
+
+.period-details__exam-help-tooltip-content {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 18px 18px;
+  box-shadow: 0 18px 40px color-mix(in srgb, #000 18%, transparent);
+  border: 1px solid color-mix(in srgb, #000 8%, transparent);
+}
+
+.period-details__exam-help-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.period-details__exam-help-title {
+  font-weight: 800;
+  font-size: 22px;
+  color: #111827;
+}
+
+.period-details__exam-help-text {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #374151;
+}
+
+.period-details__exam-help-divider {
+  height: 1px;
+  margin: 16px 0;
+  background: color-mix(in srgb, #000 12%, transparent);
+}
+
+.period-details__edit {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--default-color) 12%, transparent);
+  background: color-mix(in srgb, var(--default-color) 2%, transparent);
+  color: var(--heading-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.period-details__edit:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.period-details__edit i {
+  font-size: 16px;
+}
+
 .period-details__actions {
   display: flex;
   align-items: center;
@@ -42,8 +146,46 @@
   border-radius: 12px;
 }
 
+.period-details__header ::ng-deep .btn-delete {
+  width: auto;
+  height: 40px;
+  padding: 0 14px;
+  font-size: 13px;
+  border-radius: 12px;
+}
+
+.period-details__header ::ng-deep .btn-delete i {
+  font-size: 16px;
+}
+
 .period-details__summary {
   margin-bottom: 12px;
+}
+
+.period-details__exam {
+  margin-bottom: 12px;
+}
+
+.period-details__exam-editor-row {
+  display: grid;
+  grid-template-columns: 240px auto;
+  gap: 18px;
+  align-items: end;
+}
+
+.period-details__exam-grade {
+  width: 240px;
+}
+
+.period-details__exam-grade ::ng-deep .input-group-custom .input-wrapper:not(.is-invalid) input,
+.period-details__exam-grade ::ng-deep .input-group-custom .input-wrapper:not(.is-invalid) textarea {
+  border: 2px solid color-mix(in srgb, var(--default-color) 24%, transparent) !important;
+}
+
+.period-details__exam-editor-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .period-details__items {

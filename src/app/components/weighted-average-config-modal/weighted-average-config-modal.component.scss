@@ -8,8 +8,8 @@
 
 .weighted-average-config__row {
   display: grid;
-  grid-template-columns: 1fr minmax(180px, 2fr) 1fr;
-  gap: 18px;
+  grid-template-columns: 1fr minmax(280px, 4fr) 1fr;
+  gap: 12px;
   align-items: center;
 }
 
@@ -37,7 +37,11 @@
 }
 
 .weighted-average-config__slider {
-  padding: 0 4px;
+  padding: 12px 16px;
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--default-color) 12%, transparent);
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--default-color) 10%, transparent);
 }
 
 .modal-actions {

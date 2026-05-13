@@ -9,6 +9,21 @@
     <i [class]="iconClass" aria-hidden="true"></i>
   </div>
 
-  <h4 class="subject-card__title">{{ subject.name }}</h4>
-  <p class="subject-card__description">{{ subject.description }}</p>
+  <h4 class="subject-card__title" [attr.title]="subject.name">{{ displayName }}</h4>
+  <div class="subject-card__grades" aria-label="Notas">
+    <div class="subject-card__grades-label">Nota Mínima:</div>
+    <div class="subject-card__grades-value"><strong>{{ subject.passingGrade | number: '1.2-2': 'pt-BR' }}</strong></div>
+
+    <div class="subject-card__grades-label">Nota Final:</div>
+    <div class="subject-card__grades-value">
+      <strong
+        [ngClass]="{
+          'subject-card__grades-value--grade-ok': isPassingGradeDefined && isFinalGradeAboveOrEqualPassing,
+          'subject-card__grades-value--grade-bad': isPassingGradeDefined && isFinalGradeBelowPassing
+        }"
+      >
+        {{ subject.finalGrade | number: '1.2-2': 'pt-BR' }}
+      </strong>
+    </div>
+  </div>
 </div>

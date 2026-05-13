@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import type { ActivityDTO } from '../../model/activities.model';
 import { ActivitiesService } from '../../services/activities.service';
@@ -14,11 +15,12 @@ export class UpcomingActivitiesCardComponent implements OnInit {
   activities: ActivityDTO[] = [];
   isLoading = false;
   hasError = false;
-  page = 0;
   pageSize = 5;
-  totalPages = 0;
 
-  constructor(private readonly activitiesService: ActivitiesService) {
+  constructor(
+    private readonly activitiesService: ActivitiesService,
+    private readonly router: Router
+  ) {
     this.load();
   }
 
@@ -32,38 +34,40 @@ export class UpcomingActivitiesCardComponent implements OnInit {
 
   load(): void {
     const request = {
-      page: this.page,
+      page: 0,
       size: this.pageSize,
       sort: ['activityDate,asc']
     };
 
-    console.log('[UpcomingActivitiesCard] requesting /activities', request);
     this.isLoading = true;
     this.hasError = false;
 
-    this.activitiesService.listPaged(request).subscribe({
+    this.activitiesService.listPaged(request, true).subscribe({
       next: (page) => {
-        console.log('[UpcomingActivitiesCard] /activities response', page);
-        this.activities = page.content;
-        this.totalPages = page.totalPages;
+        this.activities = (page.content ?? []).slice(0, this.pageSize);
         this.isLoading = false;
       },
       error: (err: unknown) => {
-        console.error('[UpcomingActivitiesCard] /activities error', err);
         this.activities = [];
-        this.totalPages = 0;
         this.isLoading = false;
         this.hasError = true;
       }
     });
   }
 
-  onPageChange(nextPage: number): void {
-    if (nextPage === this.page) {
+  accessActivity(activity: ActivityDTO): void {
+    const activityId = activity?.id;
+    const subjectId = activity?.subjectId;
+    const periodId = activity?.periodId;
+    if (!activityId || !subjectId || !periodId) {
       return;
     }
 
-    this.page = nextPage;
-    this.load();
+    this.router.navigate([`/app/materias/${subjectId}`], {
+      queryParams: {
+        editActivityId: activityId,
+        periodId
+      }
+    });
   }
 }

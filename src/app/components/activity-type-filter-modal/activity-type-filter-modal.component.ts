@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import type { ActivityTypeDTO } from '../../model/activity-types.model';
+import { ActivityTypeCreateModalComponent } from '../activity-type-create-modal/activity-type-create-modal.component';
 import { ActivityTypesService } from '../../services/activity-types.service';
 import type { Page } from '../../model/common.model';
 import { getHttpErrorMessage } from '../../utils/http-error.util';
@@ -28,6 +29,7 @@ export class ActivityTypeFilterModalComponent implements OnInit {
 
   constructor(
     public readonly activeModal: NgbActiveModal,
+    private readonly modalService: NgbModal,
     private readonly activityTypesService: ActivityTypesService
   ) {}
 
@@ -74,6 +76,33 @@ export class ActivityTypeFilterModalComponent implements OnInit {
   clearAndClose(): void {
     this.selected.clear();
     this.activeModal.close(null);
+  }
+
+  openCreateActivityTypeModal(): void {
+    if (this.isLoading) {
+      return;
+    }
+
+    const periodId = Number(this.periodId);
+    if (!Number.isFinite(periodId) || periodId <= 0) {
+      return;
+    }
+
+    const modalRef = this.modalService.open(ActivityTypeCreateModalComponent, {
+      centered: true,
+      size: 'lg'
+    });
+
+    modalRef.componentInstance.periodId = periodId;
+
+    modalRef.closed.subscribe((created: unknown) => {
+      const activityType = created as ActivityTypeDTO;
+      if (!activityType?.id) {
+        return;
+      }
+
+      this.loadPage(0);
+    });
   }
 
   onPageChange(next: number): void {

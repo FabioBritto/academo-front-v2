@@ -15,6 +15,8 @@ export class ConfirmActionModalComponent {
 
   @Input() cancelLabel = 'Cancelar';
 
+  @Input() showCancel = true;
+
   @Input() isSubmitting = false;
 
   constructor(public readonly activeModal: NgbActiveModal) {}

@@ -1,9 +1,12 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { distinctUntilChanged } from 'rxjs';
 
 import type { ActivityDTO } from '../../model/activities.model';
-import type { PeriodDTO } from '../../model/periods.model';
+import type { PeriodDTO, UpdatePeriodDTO } from '../../model/periods.model';
 import { ActivitiesService } from '../../services/activities.service';
+import { PeriodsService } from '../../services/periods.service';
 import { ToastService } from '../../services/toast.service';
 import { getHttpErrorMessage } from '../../utils/http-error.util';
 import { ActivityUpsertModalComponent } from '../activity-upsert-modal/activity-upsert-modal.component';
@@ -24,11 +27,19 @@ export class PeriodDetailsComponent {
 
   @Input() period: PeriodDTO | null = null;
 
+  @Input() isExam = false;
+
+  @Input() examDeleteDisabled = false;
+
+  @Input() examDeleteSubmitting = false;
+
   @Input() pageSize = 6;
 
   @Input() emptyMessage = 'Nenhuma atividade por enquanto.';
 
   @Output() changed = new EventEmitter<void>();
+
+  @Output() deleteExam = new EventEmitter<void>();
 
   page = 0;
 
@@ -38,6 +49,16 @@ export class PeriodDetailsComponent {
 
   errorMessage = '';
 
+  isEditingExamGrade = false;
+  isSavingExamGrade = false;
+  examGradeErrorMessage = '';
+
+  isExamHelpOpen = false;
+
+  @ViewChild('examHelpWrapper', { static: false }) examHelpWrapper?: ElementRef<HTMLElement>;
+
+  examGradeForm: FormGroup;
+
   activities: ActivityDTO[] = [];
 
   activityTypeFilterNames: string[] | null = null;
@@ -45,14 +66,208 @@ export class PeriodDetailsComponent {
   constructor(
     private readonly modalService: NgbModal,
     private readonly activitiesService: ActivitiesService,
-    private readonly toastService: ToastService
-  ) {}
+    private readonly toastService: ToastService,
+    private readonly periodsService: PeriodsService,
+    private readonly fb: FormBuilder
+  ) {
+    this.examGradeForm = this.fb.group({
+      grade: [0, [Validators.required, Validators.min(0), Validators.max(10)]]
+    });
+
+    const gradeControl = this.examGradeForm.get('grade');
+    if (gradeControl) {
+      gradeControl.valueChanges.pipe(distinctUntilChanged()).subscribe((raw) => {
+        const sanitized = this.sanitizeGrade(raw);
+        if (sanitized == null) {
+          return;
+        }
+
+        if (sanitized !== raw) {
+          gradeControl.patchValue(sanitized, { emitEvent: false });
+        }
+      });
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if ('period' in changes) {
+      this.isEditingExamGrade = false;
+      this.isSavingExamGrade = false;
+      this.examGradeErrorMessage = '';
+
+      const currentGrade = Number(this.period?.grade ?? 0);
+      this.examGradeForm.patchValue({ grade: Number.isFinite(currentGrade) ? currentGrade : 0 }, { emitEvent: false });
+
       this.page = 0;
+      if (this.isExam) {
+        this.activities = [];
+        this.totalPages = 0;
+        this.errorMessage = '';
+        this.isLoading = false;
+        return;
+      }
+
       this.loadActivities(0);
     }
+  }
+
+  startEditExamGrade(): void {
+    if (!this.isExam || this.isSavingExamGrade) {
+      return;
+    }
+
+    this.closeExamHelp();
+
+    const currentGrade = Number(this.period?.grade ?? 0);
+    this.examGradeForm.patchValue({ grade: Number.isFinite(currentGrade) ? currentGrade : 0 }, { emitEvent: false });
+    this.examGradeErrorMessage = '';
+    this.isEditingExamGrade = true;
+  }
+
+  toggleExamHelp(): void {
+    if (!this.isExam) {
+      return;
+    }
+
+    this.isExamHelpOpen = !this.isExamHelpOpen;
+  }
+
+  closeExamHelp(): void {
+    this.isExamHelpOpen = false;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (!this.isExamHelpOpen) {
+      return;
+    }
+
+    const wrapperEl = this.examHelpWrapper?.nativeElement;
+    const target = event.target as Node | null;
+    if (!wrapperEl || !target) {
+      return;
+    }
+
+    if (!wrapperEl.contains(target)) {
+      this.closeExamHelp();
+    }
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  onDocumentKeydown(event: KeyboardEvent): void {
+    if (!this.isExamHelpOpen) {
+      return;
+    }
+
+    if (event.key === 'Escape') {
+      this.closeExamHelp();
+    }
+  }
+
+  cancelEditExamGrade(): void {
+    if (this.isSavingExamGrade) {
+      return;
+    }
+
+    const currentGrade = Number(this.period?.grade ?? 0);
+    this.examGradeForm.patchValue({ grade: Number.isFinite(currentGrade) ? currentGrade : 0 }, { emitEvent: false });
+    this.examGradeErrorMessage = '';
+    this.isEditingExamGrade = false;
+  }
+
+  saveExamGrade(): void {
+    if (!this.isExam || this.isSavingExamGrade) {
+      return;
+    }
+
+    if (!this.period?.id) {
+      return;
+    }
+
+    const subjectId = Number(this.subjectId);
+    if (!Number.isFinite(subjectId) || subjectId <= 0) {
+      this.examGradeErrorMessage = 'Matéria inválida.';
+      return;
+    }
+
+    if (this.examGradeForm.invalid) {
+      this.examGradeForm.markAllAsTouched();
+      return;
+    }
+
+    const grade = Number(this.examGradeForm.get('grade')?.value ?? 0);
+    if (!Number.isFinite(grade) || grade < 0 || grade > 10) {
+      this.examGradeErrorMessage = 'Informe uma nota maior ou igual a 0 e menor ou igual a 10';
+      return;
+    }
+
+    const payload: UpdatePeriodDTO = {
+      subjectId,
+      name: this.period.name,
+      grade,
+      weight: 100
+    };
+
+    this.isSavingExamGrade = true;
+    this.examGradeErrorMessage = '';
+
+    this.periodsService.update(this.period.id, payload).subscribe({
+      next: (updated) => {
+        this.isSavingExamGrade = false;
+        this.isEditingExamGrade = false;
+
+        this.toastService.show('Nota do exame atualizada com sucesso.', {
+          classname: 'bg-success text-light',
+          delay: 3500,
+          autohide: true
+        });
+
+        if (updated && this.period) {
+          this.period = {
+            ...this.period,
+            grade: updated.grade,
+            name: updated.name,
+            weight: updated.weight
+          };
+        }
+
+        this.examGradeForm.patchValue({ grade: updated?.grade ?? grade }, { emitEvent: false });
+        this.changed.emit();
+      },
+      error: (err: unknown) => {
+        this.isSavingExamGrade = false;
+        this.examGradeErrorMessage = getHttpErrorMessage(err, {
+          fallback: 'Não foi possível salvar a nota do exame. Tente novamente.'
+        });
+      }
+    });
+  }
+
+  private sanitizeGrade(raw: unknown): number | null {
+    if (raw == null) {
+      return 0;
+    }
+
+    let str = String(raw);
+    str = str.replace(/[^0-9.,]/g, '');
+    str = str.replace(/,/g, '.');
+
+    const dotIndex = str.indexOf('.');
+    if (dotIndex !== -1) {
+      const integerPart = str.slice(0, dotIndex + 1);
+      const fractionalPart = str
+        .slice(dotIndex + 1)
+        .replace(/\./g, '')
+        .slice(0, 1);
+      str = integerPart + fractionalPart;
+    }
+
+    if (str === '' || str === '.') {
+      return 0;
+    }
+
+    const n = Number(str);
+    return Number.isFinite(n) ? n : 0;
   }
 
   private loadActivities(page: number): void {
@@ -107,6 +322,10 @@ export class PeriodDetailsComponent {
   }
 
   openNewActivityModal(): void {
+    if (this.isExam) {
+      return;
+    }
+
     const subjectId = this.subjectId;
     const periodId = this.period?.id;
     if (!subjectId || !periodId) {
@@ -149,6 +368,10 @@ export class PeriodDetailsComponent {
   }
 
   openEditActivityModal(activity: ActivityDTO): void {
+    if (this.isExam) {
+      return;
+    }
+
     const subjectId = this.subjectId;
     const periodId = this.period?.id;
     if (!subjectId || !periodId || !activity?.id) {
@@ -176,6 +399,10 @@ export class PeriodDetailsComponent {
   }
 
   deleteActivity(activity: ActivityDTO): void {
+    if (this.isExam) {
+      return;
+    }
+
     if (this.isLoading) {
       return;
     }
@@ -207,6 +434,10 @@ export class PeriodDetailsComponent {
   }
 
   openFilterByTypeModal(): void {
+    if (this.isExam) {
+      return;
+    }
+
     const periodId = this.period?.id;
     if (!periodId) {
       return;
@@ -231,6 +462,10 @@ export class PeriodDetailsComponent {
   }
 
   openEditActivityTypeWeightsModal(): void {
+    if (this.isExam) {
+      return;
+    }
+
     const periodId = this.period?.id;
     if (!periodId) {
       return;
@@ -251,5 +486,13 @@ export class PeriodDetailsComponent {
       });
       this.changed.emit();
     });
+  }
+
+  onDeleteExam(): void {
+    if (this.examDeleteDisabled || this.examDeleteSubmitting) {
+      return;
+    }
+
+    this.deleteExam.emit();
   }
 }

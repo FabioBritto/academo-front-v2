@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 
 import type { PlanType } from '../../../model/auth.model';
 import type { ProfileDTO } from '../../../model/profile.model';
+import type { PaymentHistoryDTO } from '../../../model/payment.model';
 import { ConfirmActionModalComponent } from '../../../components/confirm-action-modal/confirm-action-modal.component';
 import { ProfileUpsertModalComponent } from '../../../components/profile-upsert-modal/profile-upsert-modal.component';
 import { PaymentService } from '../../../services/payment.service';
 import { ProfileService } from '../../../services/profile.service';
 import { formatLocalDate, formatLocalDateTime, parseIsoDate, parseLocalDateTime } from '../../../utils/date.util';
 import { getHttpErrorMessage } from '../../../utils/http-error.util';
+import { formatBytes } from '../../../utils/storage.util';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -24,8 +26,46 @@ export class ProfileSubscriptionComponent implements OnInit {
   isCreatingPaymentLink = false;
   createPaymentErrorMessage = '';
 
+  hasWaitingPayment = false;
+
+  hasActivePremium = false;
+
   private readonly monthlyPrice = 17.9;
   private readonly yearlyPrice = 149.9;
+
+  get yearlySavingsValue(): number {
+    const savings = this.monthlyPrice * 12 - this.yearlyPrice;
+    return savings > 0 ? savings : 0;
+  }
+
+  get displayFullName(): string {
+    const name = this.profile?.fullName ?? '';
+    const maxLen = 40;
+
+    if (name.length <= maxLen) {
+      return name;
+    }
+
+    return `${name.slice(0, maxLen).trimEnd()}...`;
+  }
+
+  get displayUserUseStorage(): string {
+    return formatBytes(this.profile?.userUseStorage);
+  }
+
+  get displayGenderLabel(): string {
+    const gender = String(this.profile?.gender ?? '').trim();
+
+    if (gender === 'M') {
+      return 'Masculino';
+    }
+
+    if (gender === 'F') {
+      return 'Feminino';
+    }
+
+    return 'Não informado';
+  }
 
   formatBrl(value: number): string {
     return value.toLocaleString('pt-BR', {
@@ -42,6 +82,42 @@ export class ProfileSubscriptionComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadProfile();
+    this.loadWaitingPaymentFlag();
+  }
+
+  private loadWaitingPaymentFlag(): void {
+    this.paymentService.listHistoryPaged({ page: 0, size: 50 }).subscribe({
+      next: (page) => {
+        const items: PaymentHistoryDTO[] = page.content ?? [];
+        this.hasWaitingPayment = items.some((item) => item.paymentStatus === 'WAITING_PAYMENT');
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        this.hasActivePremium = items.some((item) => {
+          if (item.paymentStatus !== 'PAID') {
+            return false;
+          }
+
+          const dueDateRaw = String(item.planDueDate ?? '').trim();
+          if (!dueDateRaw) {
+            return false;
+          }
+
+          try {
+            const dueDate = parseIsoDate(dueDateRaw);
+            dueDate.setHours(0, 0, 0, 0);
+            return dueDate.getTime() >= today.getTime();
+          } catch {
+            return false;
+          }
+        });
+      },
+      error: () => {
+        this.hasWaitingPayment = false;
+        this.hasActivePremium = false;
+      }
+    });
   }
 
   get yearlyDiscountPercent(): number {
@@ -110,7 +186,7 @@ export class ProfileSubscriptionComponent implements OnInit {
       size: 'xl'
     });
 
-    modalRef.componentInstance.profile = this.profile;
+    modalRef.componentInstance.profile = this.profile ? { ...this.profile } : null;
 
     modalRef.closed.subscribe((result) => {
       if (result) {
@@ -150,10 +226,14 @@ export class ProfileSubscriptionComponent implements OnInit {
       .subscribe({
         next: (link) => {
           this.isCreatingPaymentLink = false;
-          // eslint-disable-next-line no-console
-          console.log('Payment link:', link);
-          // eslint-disable-next-line no-console
-          console.log('Payment URL:', link.url);
+
+          if (link?.url) {
+            window.open(link.url, '_blank', 'noopener');
+          }
+
+          this.paymentService.notifyHistoryRefresh();
+          this.loadWaitingPaymentFlag();
+          this.selectedPlan = null;
         },
         error: (err: unknown) => {
           this.isCreatingPaymentLink = false;
@@ -173,7 +253,7 @@ export class ProfileSubscriptionComponent implements OnInit {
   }
 
   private openSubscribeConfirm(plan: PlanType): void {
-    if (this.isCreatingPaymentLink) {
+    if (this.isCreatingPaymentLink || this.hasWaitingPayment || this.hasActivePremium) {
       return;
     }
 

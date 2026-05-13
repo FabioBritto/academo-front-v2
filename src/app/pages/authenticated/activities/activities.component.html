@@ -1,5 +1,5 @@
 
-<div class="activities-page container-fluid">
+<div class="activities-page container-fluid pt-3 pt-md-4">
   
 
   <div class="calendar-nav mb-3" aria-label="Navegação do calendário">
@@ -50,9 +50,43 @@
       [viewDate]="viewDate"
       [events]="events"
       [locale]="'pt'"
+      [cellTemplate]="monthCellTemplate"
       (eventClicked)="openDetails($event.event)"
       (dayClicked)="onDayClicked($event.day.date)"
     ></mwl-calendar-month-view>
+
+    <ng-template #monthCellTemplate let-day="day" let-locale="locale">
+      <div
+        class="aa-month-cell"
+        [class.is-today]="$any(day).isToday"
+        [class.is-selected]="isSelectedDay(day.date)"
+        (click)="onDayClicked(day.date)"
+      >
+        <div class="aa-month-cell__date">
+          {{ day.date | calendarDate: 'monthViewDayNumber': locale }}
+        </div>
+
+        <div class="aa-month-cell__events" *ngIf="$any(day).events?.length">
+          <div
+            class="aa-month-cell__event"
+            *ngFor="let ev of $any(day).events | slice: 0: 3"
+            (click)="$event.stopPropagation(); openDetails($any(ev))"
+            [title]="formatBannerTitle($any(ev))"
+          >
+            {{ formatBannerLabel($any(ev)) }}
+          </div>
+
+          <button
+            type="button"
+            class="aa-month-cell__more"
+            *ngIf="$any(day).events.length > 3"
+            (click)="$event.stopPropagation(); onDayClicked(day.date)"
+          >
+            + {{ $any(day).events.length - 3 }} mais
+          </button>
+        </div>
+      </div>
+    </ng-template>
   </div>
 
   <div class="day-activities" *ngIf="selectedDate">
@@ -68,16 +102,16 @@
       <div class="day-activities__item" *ngFor="let a of selectedActivities">
         <div class="day-activities__main" (click)="openActivityDetails(a)">
           <div class="day-activities__title">{{ a.name }}</div>
-          <div class="day-activities__subtitle">{{ a.subjectName }} • {{ a.activityTypeName }} • Nota: {{ a.grade }}</div>
+          <div class="day-activities__subtitle">{{ a.subjectName }} • {{ a.activityTypeName }} • <strong>Nota: {{ a.grade }}</strong></div>
         </div>
 
         <div class="day-activities__actions">
           <app-submit-button
-            label="Editar"
-            icon="bi bi-pencil-fill"
+            label="Acessar Atividade"
+            icon="bi bi-box-arrow-up-right"
             type="button"
             [disabled]="!a.subjectId || !a.periodId"
-            (click)="editActivity(a)"
+            (click)="accessActivity(a)"
           ></app-submit-button>
 
           <app-delete-button

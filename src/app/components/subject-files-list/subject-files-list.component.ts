@@ -3,6 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import type { FileDTO } from '../../model/files.model';
 import { FilesService } from '../../services/files.service';
+import { ToastService } from '../../services/toast.service';
 import { getHttpErrorMessage } from '../../utils/http-error.util';
 import type { SortFilterOption } from '../sort-filters/sort-filters.component';
 import { SubjectFileUploadModalComponent } from '../subject-file-upload-modal/subject-file-upload-modal.component';
@@ -36,7 +37,8 @@ export class SubjectFilesListComponent implements OnInit, OnChanges {
 
   constructor(
     private readonly modalService: NgbModal,
-    private readonly filesService: FilesService
+    private readonly filesService: FilesService,
+    private readonly toastService: ToastService
   ) {}
 
   get hasItems(): boolean {
@@ -107,6 +109,11 @@ export class SubjectFilesListComponent implements OnInit, OnChanges {
 
     modalRef.closed.subscribe((result) => {
       if (result) {
+        this.toastService.show('Arquivo enviado com sucesso.', {
+          classname: 'bg-success text-light',
+          delay: 3500,
+          autohide: true
+        });
         this.page = 0;
         this.loadFiles();
         this.changed.emit();
@@ -149,6 +156,11 @@ export class SubjectFilesListComponent implements OnInit, OnChanges {
     this.filesService.deleteFile(file.uuid).subscribe({
       next: () => {
         this.isLoading = false;
+        this.toastService.show('Arquivo excluído com sucesso.', {
+          classname: 'bg-success text-light',
+          delay: 3500,
+          autohide: true
+        });
         this.page = 0;
         this.loadFiles();
         this.changed.emit();

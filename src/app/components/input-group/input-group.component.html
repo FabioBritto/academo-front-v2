@@ -1,28 +1,56 @@
 <div class="input-group-custom">
-  <label>{{ label }}</label>
+  <label>
+    {{ label }}
+    <span *ngIf="isRequired" class="text-danger">*</span>
+  </label>
 
   <div class="input-wrapper" [class.textarea-wrapper]="textarea" [class.is-invalid]="invalid">
     <i [class]="icon" aria-hidden="true"></i>
 
     <ng-container *ngIf="!textarea; else textareaTpl">
-      <input
-        [attr.id]="id || null"
-        [attr.type]="resolvedType"
-        [attr.name]="name"
-        [attr.placeholder]="placeholder"
-        [attr.inputmode]="inputMode || null"
-        [attr.pattern]="pattern || null"
-        [mask]="mask || ''"
-        [dropSpecialCharacters]="dropSpecialCharacters"
-        [attr.min]="min ?? null"
-        [attr.max]="max ?? null"
-        [attr.step]="step ?? null"
-        [attr.maxlength]="maxLength ?? null"
-        [disabled]="isDisabled"
-        [value]="value"
-        (input)="handleInput(($any($event.target)).value)"
-        (blur)="handleBlur()"
-      />
+      <ng-container *ngIf="mask; else noMaskInputTpl">
+        <input
+          [attr.id]="id || null"
+          [attr.type]="resolvedType"
+          [attr.name]="name"
+          [attr.placeholder]="placeholder"
+          [attr.inputmode]="inputMode || null"
+          [attr.pattern]="pattern || null"
+          [attr.readonly]="readOnly ? '' : null"
+          [mask]="mask"
+          [dropSpecialCharacters]="dropSpecialCharacters"
+          [attr.min]="min ?? null"
+          [attr.max]="max ?? null"
+          [attr.step]="step ?? null"
+          [attr.maxlength]="maxLength ?? null"
+          [disabled]="isDisabled"
+          [ngModel]="value"
+          [ngModelOptions]="{ standalone: true }"
+          (ngModelChange)="handleInput($event)"
+          (blur)="handleBlur()"
+        />
+      </ng-container>
+
+      <ng-template #noMaskInputTpl>
+        <input
+          [attr.id]="id || null"
+          [attr.type]="resolvedType"
+          [attr.name]="name"
+          [attr.placeholder]="placeholder"
+          [attr.inputmode]="inputMode || null"
+          [attr.pattern]="pattern || null"
+          [attr.readonly]="readOnly ? '' : null"
+          [attr.min]="min ?? null"
+          [attr.max]="max ?? null"
+          [attr.step]="step ?? null"
+          [attr.maxlength]="maxLength ?? null"
+          [disabled]="isDisabled"
+          [ngModel]="value"
+          [ngModelOptions]="{ standalone: true }"
+          (ngModelChange)="handleInput($event)"
+          (blur)="handleBlur()"
+        />
+      </ng-template>
 
       <button
         *ngIf="type === 'password' && showPasswordToggle"
@@ -45,9 +73,11 @@
         [attr.name]="name"
         [attr.rows]="rows"
         [attr.placeholder]="placeholder"
+        [attr.readonly]="readOnly ? '' : null"
         [disabled]="isDisabled"
-        [value]="value"
-        (input)="handleInput(($any($event.target)).value)"
+        [ngModel]="value"
+        [ngModelOptions]="{ standalone: true }"
+        (ngModelChange)="handleInput($event)"
         (blur)="handleBlur()"
       ></textarea>
     </ng-template>

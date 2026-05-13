@@ -65,16 +65,20 @@
     <div class="col-12" *ngIf="subject">
       <div class="row g-3">
         <div class="col-12 col-md-6">
-          <label class="subject-form__label" for="subjectPassingGrade">Nota mínima</label>
-          <input
+          <app-input-group
+            label="Nota mínima"
             id="subjectPassingGrade"
-            class="form-control subject-form__control"
             type="number"
+            inputMode="decimal"
+            pattern="[0-9]*[.,]?[0-9]?"
+            step="0.1"
             min="0.1"
             max="10"
-            step="0.1"
+            placeholder="0"
+            [invalid]="!!(form.get('passingGrade')?.touched && form.get('passingGrade')?.invalid)"
             formControlName="passingGrade"
-          />
+            [disabled]="isSubmitting"
+          ></app-input-group>
 
           <small
             class="text-danger"
@@ -85,8 +89,11 @@
         </div>
 
         <div class="col-12 col-md-6">
-          <div class="subject-form__advanced-field">
-            <label class="subject-form__label" for="subjectCalculationType">Tipo de cálculo</label>
+          <div class="subject-form__advanced-field subject-form__calculation-type">
+            <label class="subject-form__label" for="subjectCalculationType">
+              Tipo de cálculo
+              <span *ngIf="isControlRequired('calculationType')" class="text-danger">*</span>
+            </label>
             <app-calculation-type-dropdown
               [value]="form.get('calculationType')?.value"
               [disabled]="isSubmitting"
@@ -100,9 +107,41 @@
         </div>
 
         <div class="col-12">
-          <div class="form-check form-switch">
-            <input class="form-check-input" type="checkbox" id="subjectIsActive" formControlName="isActive" />
-            <label class="form-check-label" for="subjectIsActive">Ativo</label>
+          <div class="subject-form__status">
+            <input
+              class="subject-form__status-input"
+              type="checkbox"
+              id="subjectIsActive"
+              formControlName="isActive"
+            />
+
+            <div class="subject-form__status-switch" role="group" aria-label="Status da matéria">
+              <button
+                type="button"
+                class="subject-form__status-option"
+                [class.subject-form__status-option--selected]="form.get('isActive')?.value === true"
+                [class.subject-form__status-option--active]="form.get('isActive')?.value === true"
+                (click)="setActiveStatus(true)"
+                (keydown.enter)="$event.preventDefault(); setActiveStatus(true)"
+                (keydown.space)="$event.preventDefault(); setActiveStatus(true)"
+              >
+                <span class="subject-form__status-dot" aria-hidden="true"></span>
+                <span class="subject-form__status-text">ATIVO</span>
+              </button>
+
+              <button
+                type="button"
+                class="subject-form__status-option"
+                [class.subject-form__status-option--selected]="form.get('isActive')?.value === false"
+                [class.subject-form__status-option--inactive]="form.get('isActive')?.value === false"
+                (click)="setActiveStatus(false)"
+                (keydown.enter)="$event.preventDefault(); setActiveStatus(false)"
+                (keydown.space)="$event.preventDefault(); setActiveStatus(false)"
+              >
+                <span class="subject-form__status-dot" aria-hidden="true"></span>
+                <span class="subject-form__status-text">INATIVO</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>

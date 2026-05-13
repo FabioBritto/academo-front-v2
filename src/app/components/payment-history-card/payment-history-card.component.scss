@@ -20,6 +20,12 @@
   border-bottom: 1px solid color-mix(in srgb, var(--default-color) 10%, transparent);
 }
 
+.payment-history-card__header-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .payment-history-card__header h4 {
   font-size: 24px;
   font-weight: 700;
@@ -110,21 +116,105 @@
 }
 
 .payment-history-card__meta-label {
-  font-size: 0.75rem;
+  font-size: 0.95rem;
   color: color-mix(in srgb, var(--default-color) 55%, transparent);
 }
 
 .payment-history-card__meta-value {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--default-color);
 }
 
 .payment-history-card__meta--action {
   display: flex;
   justify-content: flex-end;
+  gap: 10px;
+}
+
+.payment-history-card__premium-activated-help {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 36px;
+  flex: 0 0 auto;
+}
+
+.payment-history-card__premium-activated-help--header .payment-history-card__premium-activated-help-tooltip {
+  right: 0;
+  left: auto;
+  transform: none;
+}
+
+.payment-history-card__premium-activated-help--header .payment-history-card__premium-activated-help-tooltip::before {
+  right: 18px;
+  left: auto;
+  transform: translateX(50%);
+}
+
+.payment-history-card__premium-activated-help-trigger {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, #0d6efd 28%, transparent);
+  background: color-mix(in srgb, #0d6efd 8%, transparent);
+  color: #0d6efd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.payment-history-card__premium-activated-help-trigger i {
+  font-size: 18px;
+}
+
+.payment-history-card__premium-activated-help-tooltip {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  left: auto;
+  transform: none;
+  width: min(520px, 90vw);
+  z-index: 1050;
+}
+
+.payment-history-card__premium-activated-help-tooltip::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  right: 18px;
+  left: auto;
+  transform: translateX(50%);
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #ffffff;
+  filter: drop-shadow(0 -2px 2px color-mix(in srgb, #000 15%, transparent));
+}
+
+.payment-history-card__premium-activated-help-tooltip-content {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 18px 18px;
+  box-shadow: 0 18px 40px color-mix(in srgb, #000 18%, transparent);
+  border: 1px solid color-mix(in srgb, #000 8%, transparent);
+}
+
+.payment-history-card__premium-activated-help-text {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #374151;
 }
 
 .payment-history-card__meta--action ::ng-deep .btn-submit {
+  width: auto;
+  height: 36px;
+  padding: 0 14px;
+  font-size: 13px;
+  border-radius: 12px;
+}
+
+.payment-history-card__meta--action ::ng-deep .btn-delete {
   width: auto;
   height: 36px;
   padding: 0 14px;

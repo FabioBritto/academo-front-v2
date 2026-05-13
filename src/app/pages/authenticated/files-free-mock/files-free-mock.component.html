@@ -1,0 +1,29 @@
+<div class="files-page">
+
+  <div class="free-mock">
+    <div class="free-mock__blur">
+      <div class="free-mock__title">Lista de matérias</div>
+
+      <div class="free-mock__items">
+        <div class="free-mock__item" *ngFor="let s of subjects">
+          <div class="free-mock__item-name">{{ s.name }}</div>
+          <div class="free-mock__item-meta">{{ s.filesCount }} arquivos</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="free-mock__overlay">
+      <div class="free-mock__overlay-card">
+        <div class="free-mock__overlay-title">Recurso PREMIUM</div>
+        <div class="free-mock__overlay-text">Assine o Plano PREMIUM para acessar Arquivos.</div>
+
+        <app-submit-button
+          type="button"
+          label="Ver planos PREMIUM"
+          icon="bi bi-star-fill"
+          (click)="goToPremium()"
+        ></app-submit-button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -43,8 +43,8 @@ export class GroupsService {
     return this.http.post<GroupDTO>(`${API_BASE_URL}/groups/add-subject/${groupId}/${subjectId}`, null);
   }
 
-  deleteSubject(groupId: number, subjectId: number): Observable<GroupDTO> {
-    return this.http.delete<GroupDTO>(`${API_BASE_URL}/groups/delete-subject/${groupId}/${subjectId}`);
+  removeSubject(groupId: number, subjectId: number): Observable<GroupDTO> {
+    return this.http.delete<GroupDTO>(`${API_BASE_URL}/groups/remove-subject/${groupId}/${subjectId}`);
   }
 
   associateSubjects(groupId: number, body: AssociateSubjectsDTO): Observable<GroupDTO> {

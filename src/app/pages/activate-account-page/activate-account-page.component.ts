@@ -41,7 +41,7 @@ export class ActivateAccountPageComponent implements OnInit, OnDestroy {
 
         this.redirectTimeoutId = window.setTimeout(() => {
           void this.router.navigate(['/']);
-        }, 8000);
+        }, 5000);
       },
       error: (err: unknown) => {
         this.status = 'error';

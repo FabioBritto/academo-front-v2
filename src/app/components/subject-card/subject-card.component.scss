@@ -64,6 +64,7 @@
   margin: 0 0 8px;
   font-size: 1.05rem;
   font-weight: 700;
+  overflow-wrap: anywhere;
 }
 
 .subject-card__description {
@@ -72,4 +73,34 @@
   line-height: 1.35;
   white-space: pre-line;
   overflow: hidden;
+}
+
+.subject-card__grades {
+  margin: 0;
+  color: #5b6169;
+  line-height: 1.35;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 8px;
+  row-gap: 2px;
+}
+
+.subject-card__grades-label {
+  white-space: nowrap;
+}
+
+.subject-card__grades-value {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.subject-card__grades-value--grade-ok {
+  color: #198754;
+  font-weight: 700;
+}
+
+.subject-card__grades-value--grade-bad {
+  color: #dc3545;
+  font-weight: 700;
 }

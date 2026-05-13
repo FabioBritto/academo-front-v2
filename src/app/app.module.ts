@@ -12,6 +12,7 @@ import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthInterceptor } from './services/auth.interceptor';
+import { UnauthorizedInterceptor } from './services/unauthorized.interceptor';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
@@ -78,7 +79,10 @@ import { ActivityTypeFilterModalComponent } from './components/activity-type-fil
 import { ActivityTypeWeightsModalComponent } from './components/activity-type-weights-modal/activity-type-weights-modal.component';
 import { ActivityUpsertModalComponent } from './components/activity-upsert-modal/activity-upsert-modal.component';
 import { FileExplorerListComponent } from './components/file-explorer-list/file-explorer-list.component';
+import { GroupSubjectsPickerModalComponent } from './components/group-subjects-picker-modal/group-subjects-picker-modal.component';
 import { ActivityDetailsModalComponent } from './components/activity-details-modal/activity-details-modal.component';
+import { FilesFreeMockComponent } from './pages/authenticated/files-free-mock/files-free-mock.component';
+import { FlashcardsFreeMockComponent } from './pages/authenticated/flashcards-free-mock/flashcards-free-mock.component';
 
 @NgModule({
   declarations: [
@@ -149,7 +153,10 @@ import { ActivityDetailsModalComponent } from './components/activity-details-mod
     ActivityTypeWeightsModalComponent,
     ActivityUpsertModalComponent,
     FileExplorerListComponent,
-    ActivityDetailsModalComponent
+    GroupSubjectsPickerModalComponent,
+    ActivityDetailsModalComponent,
+    FilesFreeMockComponent,
+    FlashcardsFreeMockComponent
   ],
   imports: [
     BrowserModule,
@@ -170,6 +177,11 @@ import { ActivityDetailsModalComponent } from './components/activity-details-mod
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: UnauthorizedInterceptor,
       multi: true
     },
     provideNgxMask()

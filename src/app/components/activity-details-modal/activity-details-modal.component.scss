@@ -3,6 +3,24 @@
   opacity: 0.75;
 }
 
+.modal-header__titles {
+  min-width: 0;
+}
+
+.modal-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.modal-subtitle {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.9rem;
+  opacity: 0.75;
+}
+
 .value {
   font-weight: 500;
 }

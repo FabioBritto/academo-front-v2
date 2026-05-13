@@ -28,6 +28,19 @@
   user-select: none;
 }
 
+.tabs__item--icon {
+  padding: 10px 12px;
+  min-width: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tabs__item--icon i {
+  font-size: 18px;
+  line-height: 1;
+}
+
 .tabs__item:hover {
   color: var(--accent-color);
   background: color-mix(in srgb, var(--accent-color) 10%, transparent);

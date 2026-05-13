@@ -1,0 +1,41 @@
+.activity-type-filter__list {
+  display: grid;
+  gap: 10px;
+}
+
+.activity-type-filter__item {
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--default-color) 10%, transparent);
+  background: var(--surface-color);
+  color: var(--heading-color);
+  cursor: pointer;
+}
+
+.activity-type-filter__item:hover {
+  background: color-mix(in srgb, var(--default-color) 6%, transparent);
+}
+
+.activity-type-filter__item--active {
+  border-color: color-mix(in srgb, var(--accent-color) 35%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-color) 12%, transparent);
+}
+
+.activity-type-filter__item-name {
+  font-size: 14px;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+
+.activity-type-filter__empty {
+  margin: 0;
+  color: color-mix(in srgb, var(--default-color) 60%, transparent);
+}
+
+.activity-type-filter__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}

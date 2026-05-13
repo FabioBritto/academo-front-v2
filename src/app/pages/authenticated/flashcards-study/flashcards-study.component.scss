@@ -40,7 +40,7 @@
   border-radius: 24px;
   background: var(--surface-color);
   box-shadow: 0 20px 60px color-mix(in srgb, var(--default-color) 10%, transparent);
-  margin-top: 250px;
+  margin-top: 120px;
 }
 
 .subject-study__nav {
@@ -158,45 +158,12 @@ button.subject-study__card:disabled {
 
 .subject-study__level-btn {
   height: 46px;
-  border-radius: 14px;
-  border: 2px solid color-mix(in srgb, var(--default-color) 18%, transparent);
-  background: transparent;
-  font-weight: 900;
   letter-spacing: 0.4px;
-  transition: transform 120ms ease, background-color 160ms ease;
-}
-
-.subject-study__level-btn:hover:not(:disabled) {
-  transform: translateY(-1px);
 }
 
 .subject-study__level-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-}
-
-.subject-study__level-btn--active {
-  background: color-mix(in srgb, var(--default-color) 12%, transparent);
-}
-
-.subject-study__level-btn--easy {
-  border-color: color-mix(in srgb, #2ecc71 85%, transparent);
-  color: #2ecc71;
-}
-
-.subject-study__level-btn--medium {
-  border-color: color-mix(in srgb, #1abc9c 85%, transparent);
-  color: #1abc9c;
-}
-
-.subject-study__level-btn--hard {
-  border-color: color-mix(in srgb, #f39c12 90%, transparent);
-  color: #f39c12;
-}
-
-.subject-study__level-btn--very-hard {
-  border-color: color-mix(in srgb, #e74c3c 90%, transparent);
-  color: #e74c3c;
 }
 
 .subject-study__empty {

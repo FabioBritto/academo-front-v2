@@ -12,28 +12,44 @@
       <app-input-group
         label="Nome completo"
         icon="bi bi-person-fill"
-        placeholder="Seu nome"
+        placeholder="Seu nome (opcional)"
         [invalid]="!!(form.get('fullName')?.touched && form.get('fullName')?.invalid)"
         formControlName="fullName"
       ></app-input-group>
 
-      <small class="text-danger" *ngIf="form.get('fullName')?.touched && form.get('fullName')?.hasError('required')">
-        O nome é obrigatório
-      </small>
+      <div class="d-flex justify-content-between align-items-center">
+        <small class="text-danger" *ngIf="form.get('fullName')?.touched && form.get('fullName')?.hasError('maxlength')">
+          Máximo de 255 caracteres
+        </small>
+
+        <small
+          class="ms-auto"
+          [class.text-danger]="fullNameLength > maxTextLen"
+          [class.text-muted]="fullNameLength <= maxTextLen"
+        >
+          {{ fullNameLength }}/{{ maxTextLen }}
+        </small>
+      </div>
     </div>
 
     <div class="col-12">
       <app-input-group
         label="Data de nascimento"
         icon="bi bi-calendar-event"
-        placeholder="dd/mm/aaaa"
+        id="birthDate"
         type="text"
+        inputMode="numeric"
+        placeholder="00/00/0000"
+        mask="00/00/0000"
+        [dropSpecialCharacters]="false"
+        [maxLength]="10"
         [invalid]="!!(form.get('birthDate')?.touched && form.get('birthDate')?.invalid)"
         formControlName="birthDate"
+        (blurred)="onBirthDateBlur()"
       ></app-input-group>
 
-      <small class="text-danger" *ngIf="form.get('birthDate')?.touched && form.get('birthDate')?.hasError('required')">
-        A data de nascimento é obrigatória
+      <small class="text-danger" *ngIf="form.get('birthDate')?.touched && form.get('birthDate')?.hasError('invalidDate')">
+        Data inválida
       </small>
     </div>
 
@@ -51,10 +67,6 @@
           <span class="form-check-label">Feminino</span>
         </label>
       </div>
-
-      <small class="text-danger" *ngIf="form.get('gender')?.touched && form.get('gender')?.hasError('required')">
-        Selecione um gênero
-      </small>
     </div>
   </div>
 </form>

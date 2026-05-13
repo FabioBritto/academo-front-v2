@@ -14,7 +14,7 @@
     <ng-content></ng-content>
 
     <div class="form-actions">
-      <app-submit-button [label]="submitLabel" [icon]="submitIcon"></app-submit-button>
+      <app-submit-button [label]="submitLabel" [icon]="submitIcon" [disabled]="submitDisabled"></app-submit-button>
 
       <div class="secure-note" *ngIf="secureNote">
         <i [class]="secureIcon" aria-hidden="true"></i>

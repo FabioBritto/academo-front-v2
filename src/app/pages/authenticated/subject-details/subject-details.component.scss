@@ -50,6 +50,7 @@
   font-weight: 800;
   color: var(--heading-color);
   letter-spacing: -0.5px;
+  overflow-wrap: anywhere;
 }
 
 .subject-details__description {
@@ -84,6 +85,16 @@
   font-size: inherit;
 }
 
+.subject-details__meta-value--grade-ok {
+  color: #198754;
+  font-weight: 700;
+}
+
+.subject-details__meta-value--grade-bad {
+  color: #dc3545;
+  font-weight: 700;
+}
+
 .subject-details__meta-value--action {
   display: inline-flex;
 }
@@ -100,14 +111,10 @@
   font-size: 14px;
 }
 
-.subject-details__meta .badge {
-  font-weight: 700;
-}
-
 .subject-details__header-actions ::ng-deep .btn-submit {
   width: 200px;
   height: 44px;
-  padding: 0 16px;
+  padding: 0 18px;
   font-size: 14px;
   border-radius: 12px;
 }

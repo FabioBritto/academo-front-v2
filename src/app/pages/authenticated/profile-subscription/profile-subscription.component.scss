@@ -86,21 +86,107 @@
   justify-content: center;
 }
 
-.profile-subscription__subscribe-content {
+.profile-subscription__subscribe {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.profile-subscription__subscribe-header {
   text-align: center;
 }
 
-.profile-subscription__subscribe-prices strong {
+.profile-subscription__subscribe-title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.6px;
   color: var(--heading-color);
-  font-weight: 700;
 }
 
-.profile-subscription__subscribe-actions ::ng-deep .btn-submit {
+.profile-subscription__subscribe-subtitle {
+  margin: 8px 0 0;
+}
+
+.profile-subscription__plans {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  align-items: stretch;
+}
+
+.profile-subscription__plan {
+  background: color-mix(in srgb, var(--surface-color) 92%, transparent);
+  border-radius: 20px;
+  padding: 26px;
+  border: 1px solid color-mix(in srgb, var(--default-color) 10%, transparent);
+  box-shadow: 0 18px 50px color-mix(in srgb, var(--default-color) 8%, transparent);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+}
+
+.profile-subscription__plan-title {
+  font-size: 20px;
+  font-weight: 800;
+  text-align: center;
+  color: var(--heading-color);
+}
+
+.profile-subscription__plan-divider {
+  height: 1px;
+  width: 100%;
+  background: color-mix(in srgb, var(--default-color) 10%, transparent);
+}
+
+.profile-subscription__plan-description {
+  text-align: center;
+  line-height: 1.35;
+}
+
+.profile-subscription__plan-price {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.profile-subscription__plan-price-value {
+  font-size: 44px;
+  font-weight: 900;
+  letter-spacing: -1px;
+  color: var(--accent-color);
+  line-height: 1;
+}
+
+.profile-subscription__plan-price-period {
+  font-size: 14px;
+}
+
+.profile-subscription__plan-badge {
+  align-self: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  background: color-mix(in srgb, var(--accent-color) 12%, transparent);
+  color: var(--accent-color);
+}
+
+.profile-subscription__plan-cta {
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.profile-subscription__plan-cta ::ng-deep .btn-submit {
   width: auto;
-  height: 44px;
+  height: 46px;
   padding: 0 18px;
   font-size: 14px;
-  border-radius: 12px;
+  border-radius: 14px;
 }
 
 .profile-subscription-card__header ::ng-deep .pill-button {
@@ -131,6 +217,14 @@
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
+  }
+
+  .profile-subscription__plans {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-subscription__subscribe-title {
+    font-size: 24px;
   }
 
   .profile-subscription-card {

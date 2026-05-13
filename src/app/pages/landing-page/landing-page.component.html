@@ -1,13 +1,14 @@
-<app-header (registerClick)="openRegisterModal()" (loginClick)="openLoginModal()"></app-header>
+<div class="landing-font-scale">
+  <app-header (registerClick)="openRegisterModal()" (loginClick)="openLoginModal()"></app-header>
 
-<main>
-  <section id="home" class="landing-section">
-    <div class="container">
-      <div class="home-logo">
-        <img src="assets/images/academo/academo-logo.png" alt="Academo" class="img-fluid">
+  <main>
+    <section id="home" class="landing-section">
+      <div class="container">
+        <div class="home-logo">
+          <img src="assets/images/academo/academo-logo.png" alt="Academo" class="img-fluid">
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
   <section id="sobre" class="landing-section">
     <div class="container">
       <div class="section-title">
@@ -104,7 +105,7 @@
           </div>
         </div>
 
-        <div class="col-lg-7">
+        <div class="col-lg-7 contact-form-solid-border">
           <app-form-card
             [formGroup]="contactForm"
             title="Enviar uma mensagem"
@@ -113,6 +114,7 @@
             submitLabel="Enviar mensagem"
             submitIcon="bi bi-arrow-right-circle-fill"
             secureNote="Seus dados são usados apenas para contato"
+            [submitDisabled]="contactForm.invalid"
             (formSubmit)="onContactSubmit($event)"
           >
             <div class="row g-4">
@@ -151,8 +153,26 @@
                   placeholder="Escreva sua mensagem..."
                   [textarea]="true"
                   [rows]="5"
+                  [invalid]="!!(contactForm.get('message')?.touched && contactForm.get('message')?.invalid)"
                   formControlName="message"
                 ></app-input-group>
+
+                <small class="text-danger" *ngIf="contactForm.get('message')?.touched && contactForm.get('message')?.hasError('required')">
+                  A mensagem é obrigatória
+                </small>
+
+                <small class="text-danger" *ngIf="contactForm.get('message')?.touched && contactForm.get('message')?.hasError('maxlength')">
+                  Máximo de {{ maxMessageLength }} caracteres
+                </small>
+
+                <div class="d-flex justify-content-end">
+                  <small
+                    [class.text-danger]="messageLength > maxMessageLength"
+                    [class.text-muted]="messageLength <= maxMessageLength"
+                  >
+                    {{ messageLength }}/{{ maxMessageLength }}
+                  </small>
+                </div>
               </div>
             </div>
           </app-form-card>
@@ -160,4 +180,5 @@
       </div>
     </div>
   </section>
-</main>
+  </main>
+</div>

@@ -1,0 +1,66 @@
+<div class="modal-header">
+  <h5 class="modal-title">Adicionar Matérias</h5>
+
+  <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
+</div>
+
+<div class="modal-body">
+  <div class="alert alert-danger" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <ng-container *ngIf="subjects.length > 0; else emptyState">
+    <div class="activity-type-filter__list">
+      <button
+        *ngFor="let s of subjects"
+        type="button"
+        class="activity-type-filter__item"
+        [class.activity-type-filter__item--active]="isSelected(s.id)"
+        [disabled]="isLoading"
+        (click)="toggle(s)"
+      >
+        <span class="activity-type-filter__item-name" [attr.title]="s.name">
+          {{ s.name.length > 60 ? ((s.name | slice: 0:57) + '...') : s.name }}
+        </span>
+      </button>
+    </div>
+
+    <app-pagination-controls
+      *ngIf="totalPages > 1"
+      [page]="page"
+      [totalPages]="totalPages"
+      [disabled]="isLoading"
+      (pageChange)="onPageChange($event)"
+    ></app-pagination-controls>
+  </ng-container>
+
+  <ng-template #emptyState>
+    <p class="activity-type-filter__empty">{{ isLoading ? 'Carregando...' : 'Nenhuma matéria encontrada.' }}</p>
+  </ng-template>
+
+  <div class="activity-type-filter__actions mt-4" appEqualizeModalButtons>
+    <app-submit-button
+      type="button"
+      label="Cancelar"
+      icon=""
+      [disabled]="isLoading"
+      (click)="close()"
+    ></app-submit-button>
+
+    <app-submit-button
+      type="button"
+      label="Limpar Seleção"
+      icon=""
+      [disabled]="isLoading"
+      (click)="clearAndClose()"
+    ></app-submit-button>
+
+    <app-submit-button
+      type="button"
+      label="Adicionar"
+      icon=""
+      [disabled]="isLoading"
+      (click)="apply()"
+    ></app-submit-button>
+  </div>
+</div>

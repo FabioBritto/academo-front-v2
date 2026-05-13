@@ -16,7 +16,14 @@
       <button
         *ngFor="let option of levelOptions"
         type="button"
-        class="study-config-modal__option"
+        class="study-config-modal__option aa-difficulty-btn"
+        [ngClass]="[
+          option.style === 'easy' ? 'aa-difficulty-btn--easy' : '',
+          option.style === 'medium' ? 'aa-difficulty-btn--medium' : '',
+          option.style === 'hard' ? 'aa-difficulty-btn--hard' : '',
+          option.style === 'very-hard' ? 'aa-difficulty-btn--very-hard' : '',
+          selectedLevel === option.value ? 'aa-difficulty-btn--active' : ''
+        ]"
         [class.study-config-modal__option--active]="selectedLevel === option.value"
         [disabled]="isOptionDisabled(option)"
         [attr.data-style]="option.style"
@@ -32,7 +39,7 @@
       <app-submit-button
         type="button"
         label="Iniciar Estudo"
-        icon=""
+        icon="bi bi-stack"
         [disabled]="isLoading || totalCount === 0"
         (click)="start()"
       ></app-submit-button>

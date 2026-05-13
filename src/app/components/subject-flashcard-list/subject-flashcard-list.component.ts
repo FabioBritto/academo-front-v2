@@ -3,6 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import type { FlashcardDTO } from '../../model/flashcards.model';
 import { FlashcardsService } from '../../services/flashcards.service';
+import { ToastService } from '../../services/toast.service';
 import { getHttpErrorMessage } from '../../utils/http-error.util';
 import type { SortFilterOption } from '../sort-filters/sort-filters.component';
 import { FlashcardUpsertModalComponent } from '../flashcard-upsert-modal/flashcard-upsert-modal.component';
@@ -37,7 +38,8 @@ export class SubjectFlashcardListComponent {
 
   constructor(
     private readonly modalService: NgbModal,
-    private readonly flashcardsService: FlashcardsService
+    private readonly flashcardsService: FlashcardsService,
+    private readonly toastService: ToastService
   ) {}
 
   get hasItems(): boolean {
@@ -117,13 +119,19 @@ export class SubjectFlashcardListComponent {
 
     const modalRef = this.modalService.open(FlashcardUpsertModalComponent, {
       centered: true,
-      size: 'xl'
+      size: 'xl',
+      windowClass: 'flashcard-upsert-modal-window'
     });
 
     modalRef.componentInstance.subjectId = subjectId;
 
     modalRef.closed.subscribe((result) => {
       if (result) {
+        this.toastService.show('Flashcard criado com sucesso.', {
+          classname: 'bg-success text-light',
+          delay: 3500,
+          autohide: true
+        });
         this.page = 0;
         this.loadFlashcards();
         this.changed.emit();
@@ -134,7 +142,8 @@ export class SubjectFlashcardListComponent {
   openExpandModal(flashcard: FlashcardDTO): void {
     const modalRef = this.modalService.open(FlashcardUpsertModalComponent, {
       centered: true,
-      size: 'xl'
+      size: 'xl',
+      windowClass: 'flashcard-upsert-modal-window'
     });
 
     modalRef.componentInstance.subjectId = flashcard.subjectId;
@@ -142,6 +151,11 @@ export class SubjectFlashcardListComponent {
 
     modalRef.closed.subscribe((result) => {
       if (result) {
+        this.toastService.show('Flashcard atualizado com sucesso.', {
+          classname: 'bg-success text-light',
+          delay: 3500,
+          autohide: true
+        });
         this.loadFlashcards();
         this.changed.emit();
       }
@@ -159,6 +173,11 @@ export class SubjectFlashcardListComponent {
     this.flashcardsService.delete(flashcard.id).subscribe({
       next: () => {
         this.isLoading = false;
+        this.toastService.show('Flashcard excluído com sucesso.', {
+          classname: 'bg-success text-light',
+          delay: 3500,
+          autohide: true
+        });
         this.page = 0;
         this.loadFlashcards();
         this.changed.emit();

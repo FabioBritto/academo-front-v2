@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CalendarEvent, CalendarView } from 'angular-calendar';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 
 import type { ActivityDTO } from '../../../model/activities.model';
 import { ActivitiesService } from '../../../services/activities.service';
@@ -16,6 +17,7 @@ import { ConfirmActionModalComponent } from '../../../components/confirm-action-
 export class ActivitiesComponent implements OnInit {
   readonly view = CalendarView.Month;
   readonly CalendarView = CalendarView;
+  readonly maxBannerFieldLength = 20;
 
   viewDate = new Date();
   loading = false;
@@ -31,16 +33,76 @@ export class ActivitiesComponent implements OnInit {
 
   constructor(
     private readonly activitiesService: ActivitiesService,
-    private readonly modalService: NgbModal
+    private readonly modalService: NgbModal,
+    private readonly router: Router
   ) {}
+
+  accessActivity(activity: ActivityDTO): void {
+    const activityId = activity?.id;
+    const subjectId = activity?.subjectId;
+    const periodId = activity?.periodId;
+    if (!activityId || !subjectId || !periodId) {
+      return;
+    }
+
+    this.router.navigate([`/app/materias/${subjectId}`], {
+      queryParams: {
+        editActivityId: activityId,
+        periodId
+      }
+    });
+  }
+
+  formatBannerLabel(event: CalendarEvent | null | undefined): string {
+    if (!event) {
+      return '';
+    }
+
+    const meta = (event as CalendarEvent<any>).meta;
+    const name = this.truncateField(String(meta?.name ?? event.title ?? ''), this.maxBannerFieldLength);
+    const subjectName = this.truncateField(String(meta?.subjectName ?? ''), this.maxBannerFieldLength);
+    return `${name} - ${subjectName}`.trim();
+  }
+
+  formatBannerTitle(event: CalendarEvent | null | undefined): string {
+    if (!event) {
+      return '';
+    }
+
+    const meta = (event as CalendarEvent<any>).meta;
+    const name = String(meta?.name ?? event.title ?? '').trim();
+    const subjectName = String(meta?.subjectName ?? '').trim();
+    if (!subjectName) {
+      return name;
+    }
+
+    return `${name} - ${subjectName}`;
+  }
 
   ngOnInit(): void {
     this.loadActivities();
   }
 
   onDayClicked(date: Date): void {
-    this.selectedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
+    const clicked = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
+
+    const shouldNavigateMonth =
+      clicked.getFullYear() !== this.viewDate.getFullYear() || clicked.getMonth() !== this.viewDate.getMonth();
+    if (shouldNavigateMonth) {
+      this.onViewDateChange(new Date(clicked.getFullYear(), clicked.getMonth(), 1, 0, 0, 0, 0));
+    }
+
+    this.selectedDate = clicked;
     this.refreshSelectedDay();
+  }
+
+  isSelectedDay(date: Date): boolean {
+    const selected = this.selectedDate;
+    if (!selected) {
+      return false;
+    }
+
+    return this.dateKey(selected) === this.dateKey(date);
   }
 
   get prevMonthLabel(): string {
@@ -70,13 +132,12 @@ export class ActivitiesComponent implements OnInit {
   }
 
   openDetails(event: CalendarEvent<{ activity: ActivityDTO; name: string; subjectName: string }>): void {
-    const activity = event.meta?.activity;
-    if (!activity) {
+    const start = event?.start;
+    if (!start) {
       return;
     }
 
-    const ref = this.modalService.open(ActivityDetailsModalComponent, { size: 'lg' });
-    ref.componentInstance.activity = activity;
+    this.onDayClicked(start);
   }
 
   openActivityDetails(activity: ActivityDTO): void {
@@ -201,6 +262,16 @@ export class ActivitiesComponent implements OnInit {
     return /^\d{4}-\d{2}-\d{2}$/.test(iso) ? iso : null;
   }
 
+  private truncateField(value: string, maxLen: number): string {
+    const str = String(value ?? '');
+    if (str.length <= maxLen) {
+      return str;
+    }
+
+    const cut = Math.max(0, maxLen - 1);
+    return `${str.slice(0, cut)}…`;
+  }
+
   private refreshEvents(): void {
     const { start, end } = this.monthRange(this.viewDate);
 
@@ -215,7 +286,7 @@ export class ActivitiesComponent implements OnInit {
         const date = x.date as Date;
 
         return {
-          title: `${activity.name}\n${activity.subjectName}`,
+          title: `${activity.name} - ${activity.subjectName}`,
           start: date,
           allDay: true,
           color: {

@@ -17,20 +17,14 @@
         <app-activity-notification
           *ngFor="let activity of activities"
           [name]="activity.name"
-          [description]="activity.description"
           [subjectName]="activity.subjectName"
           [activityDate]="activity.activityDate"
+          [activityId]="activity.id"
+          [subjectId]="activity.subjectId"
+          [periodId]="activity.periodId"
+          (access)="accessActivity(activity)"
         ></app-activity-notification>
       </div>
-
-      <app-pagination-controls
-        *ngIf="totalPages > 1"
-        class="upcoming-activities-card__pagination"
-        [page]="page"
-        [totalPages]="totalPages"
-        [disabled]="isLoading"
-        (pageChange)="onPageChange($event)"
-      ></app-pagination-controls>
     </ng-container>
 
     <p *ngIf="!hasItems && !isLoading && !hasError" class="upcoming-activities-card__empty">
