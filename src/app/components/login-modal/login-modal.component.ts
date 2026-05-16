@@ -57,6 +57,11 @@ export class LoginModalComponent {
       error: (err: unknown) => {
         this.isSubmitting = false;
 
+        if (err instanceof HttpErrorResponse && err.status === 403) {
+          this.errorMessage = 'Email ou senha inválidos';
+          return;
+        }
+
         this.errorMessage = getHttpErrorMessage(err, {
           fallback: 'Não foi possível fazer login. Verifique seus dados.'
         });

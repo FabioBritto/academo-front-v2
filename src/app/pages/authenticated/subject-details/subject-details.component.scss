@@ -161,6 +161,30 @@
   padding: 0 4px;
 }
 
+.subject-details__activity-weights-warning {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: color-mix(in srgb, #dc3545 8%, #ffffff);
+  border: 1px solid color-mix(in srgb, #dc3545 25%, transparent);
+  color: color-mix(in srgb, #dc3545 85%, #000000);
+  margin: 0 4px 12px;
+}
+
+.subject-details__activity-weights-warning i {
+  font-size: 18px;
+  line-height: 1.1;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.subject-details__activity-weights-warning span {
+  font-size: 13px;
+  line-height: 1.35;
+}
+
 .subject-details__period-metric {
   display: flex;
   gap: 8px;

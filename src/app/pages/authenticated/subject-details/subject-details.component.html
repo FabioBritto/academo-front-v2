@@ -90,6 +90,14 @@
         (changed)="onActivitiesChanged()"
         (deleteExam)="onDeleteExam()"
       >
+        <div class="subject-details__activity-weights-warning" *ngIf="showActivityWeightsWarning">
+          <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
+          <span>
+            <strong>ATENÇÃO!</strong>
+            Os pesos para as atividades deste período ainda não foram definidos
+          </span>
+        </div>
+
         <div class="subject-details__period-summary">
           <div class="subject-details__period-metric" *ngIf="periodTab !== 'exam'">
             <span class="subject-details__period-metric-label">Nota:</span>

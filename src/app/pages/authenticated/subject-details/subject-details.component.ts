@@ -19,6 +19,7 @@ import { FlashcardUpsertModalComponent } from '../../../components/flashcard-ups
 import { getHttpErrorMessage } from '../../../utils/http-error.util';
 import type { CardLevel } from '../../../model/flashcards.model';
 import type { PeriodDTO } from '../../../model/periods.model';
+import { ActivityTypesService } from '../../../services/activity-types.service';
 
 @Component({
   selector: 'app-subject-details',
@@ -29,6 +30,8 @@ export class SubjectDetailsComponent implements OnInit {
   subject: SubjectDTO | null = null;
 
   periods: PeriodDTO[] = [];
+
+  showActivityWeightsWarning = false;
 
   isDeleting = false;
 
@@ -57,6 +60,7 @@ export class SubjectDetailsComponent implements OnInit {
     private readonly modalService: NgbModal,
     private readonly subjectsService: SubjectsService,
     private readonly periodsService: PeriodsService,
+    private readonly activityTypesService: ActivityTypesService,
     private readonly flashcardsService: FlashcardsService,
     private readonly subjectDetailsRefreshService: SubjectDetailsRefreshService,
     private readonly toastService: ToastService
@@ -161,13 +165,47 @@ export class SubjectDetailsComponent implements OnInit {
 
         this.tryOpenEditActivityModal();
         this.tryOpenEditFlashcardModal();
+
+        this.loadActivityWeightsWarning();
       },
       error: () => {
         this.subject = null;
         this.periods = [];
         this.periodOptions = [];
+        this.showActivityWeightsWarning = false;
       }
     });
+  }
+
+  private loadActivityWeightsWarning(): void {
+    const period = this.selectedPeriod;
+    if (!period || this.periodTab === 'exam') {
+      this.showActivityWeightsWarning = false;
+      return;
+    }
+
+    const periodId = Number(period.id);
+    if (!Number.isFinite(periodId) || periodId <= 0) {
+      this.showActivityWeightsWarning = false;
+      return;
+    }
+
+    this.activityTypesService
+      .listAllByPeriodPaged(periodId, { page: 0, size: 250, sort: ['name,asc'] })
+      .subscribe({
+        next: (res) => {
+          const content = res.content ?? [];
+
+          const hasTypes = content.length > 0;
+          const hasActivities = content.some((t) => (t.activities?.length ?? 0) > 0);
+          const totalWeight = content.reduce((sum, t) => sum + Number(t.weight ?? 0), 0);
+
+          this.showActivityWeightsWarning = (hasTypes || hasActivities) && totalWeight === 0;
+        },
+        error: () => {
+          this.showActivityWeightsWarning = false;
+        }
+      });
   }
 
   private tryOpenEditFlashcardModal(): void {
@@ -491,6 +529,7 @@ export class SubjectDetailsComponent implements OnInit {
     }
 
     this.periodTab = nextValue;
+    this.loadActivityWeightsWarning();
   }
 
   onContentTabChange(nextValue: string): void {
