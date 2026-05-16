@@ -114,3 +114,82 @@
   font-size: 13px;
   border-radius: 12px;
 }
+
+.free-mock {
+  position: relative;
+  border-radius: 18px;
+  width: 100%;
+}
+
+.free-mock__blur {
+  filter: blur(3px);
+  pointer-events: none;
+  user-select: none;
+}
+
+.free-mock__title {
+  font-weight: 800;
+  font-size: 16px;
+  margin-bottom: 12px;
+  color: var(--heading-color);
+}
+
+.free-mock__items {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.free-mock__item {
+  border: 1px solid color-mix(in srgb, var(--default-color) 12%, transparent);
+  background: color-mix(in srgb, var(--default-color) 2%, transparent);
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.free-mock__item-name {
+  font-weight: 800;
+  color: var(--heading-color);
+}
+
+.free-mock__item-meta {
+  margin-top: 4px;
+  font-size: 13px;
+  color: color-mix(in srgb, var(--default-color) 75%, transparent);
+}
+
+.free-mock__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.free-mock__overlay-card {
+  width: min(520px, 100%);
+  background: var(--surface-color);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 18px 40px color-mix(in srgb, #000 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--default-color) 14%, transparent);
+  text-align: center;
+}
+
+.free-mock__overlay-title {
+  font-weight: 900;
+  font-size: 20px;
+  color: var(--heading-color);
+}
+
+.free-mock__overlay-text {
+  margin-top: 8px;
+  margin-bottom: 16px;
+  color: color-mix(in srgb, var(--default-color) 85%, transparent);
+}
+
+.free-mock__overlay-card ::ng-deep .btn-submit {
+  width: auto;
+  padding: 0 18px;
+}

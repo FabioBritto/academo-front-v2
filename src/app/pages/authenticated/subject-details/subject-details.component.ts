@@ -20,6 +20,7 @@ import { getHttpErrorMessage } from '../../../utils/http-error.util';
 import type { CardLevel } from '../../../model/flashcards.model';
 import type { PeriodDTO } from '../../../model/periods.model';
 import { ActivityTypesService } from '../../../services/activity-types.service';
+import { AuthSessionService } from '../../../services/auth-session.service';
 
 @Component({
   selector: 'app-subject-details',
@@ -61,10 +62,15 @@ export class SubjectDetailsComponent implements OnInit {
     private readonly subjectsService: SubjectsService,
     private readonly periodsService: PeriodsService,
     private readonly activityTypesService: ActivityTypesService,
+    private readonly sessionService: AuthSessionService,
     private readonly flashcardsService: FlashcardsService,
     private readonly subjectDetailsRefreshService: SubjectDetailsRefreshService,
     private readonly toastService: ToastService
   ) {}
+
+  get isPremium(): boolean {
+    return this.sessionService.isPremium();
+  }
 
   get displayName(): string {
     const name = this.subject?.name ?? '';

@@ -1,8 +1,10 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 
 import type { FileDTO } from '../../model/files.model';
 import { FilesService } from '../../services/files.service';
+import { AuthSessionService } from '../../services/auth-session.service';
 import { ToastService } from '../../services/toast.service';
 import { getHttpErrorMessage } from '../../utils/http-error.util';
 import type { SortFilterOption } from '../sort-filters/sort-filters.component';
@@ -35,11 +37,28 @@ export class SubjectFilesListComponent implements OnInit, OnChanges {
     { label: 'Nome (Z→A)', value: 'fileName,desc' }
   ];
 
+  readonly freeMockItems: Array<{ name: string; meta: string }> = [
+    { name: 'Resumo - Aula 01.pdf', meta: '312 KB • PDF' },
+    { name: 'Lista de exercícios.docx', meta: '148 KB • DOCX' },
+    { name: 'Slides - Capítulo 02.pptx', meta: '2.4 MB • PPTX' },
+    { name: 'Anotações.txt', meta: '4 KB • TXT' }
+  ];
+
   constructor(
     private readonly modalService: NgbModal,
     private readonly filesService: FilesService,
-    private readonly toastService: ToastService
+    private readonly sessionService: AuthSessionService,
+    private readonly toastService: ToastService,
+    private readonly router: Router
   ) {}
+
+  get isPremium(): boolean {
+    return this.sessionService.isPremium();
+  }
+
+  goToPremium(): void {
+    void this.router.navigate(['/app/profile-subscription']);
+  }
 
   get hasItems(): boolean {
     return this.files.length > 0;
@@ -69,6 +88,14 @@ export class SubjectFilesListComponent implements OnInit, OnChanges {
   }
 
   loadFiles(): void {
+    if (!this.isPremium) {
+      this.files = [];
+      this.totalPages = 0;
+      this.isLoading = false;
+      this.errorMessage = '';
+      return;
+    }
+
     if (!this.subjectId) {
       this.files = [];
       this.totalPages = 0;

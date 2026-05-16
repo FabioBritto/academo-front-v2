@@ -1,71 +1,102 @@
 <section class="subject-files-list" aria-label="Arquivos">
-  <header class="subject-files-list__header">
-    <h5 class="subject-files-list__title">Lista de arquivos</h5>
+  <ng-container *ngIf="isPremium; else freeMock">
+    <header class="subject-files-list__header">
+      <h5 class="subject-files-list__title">Lista de arquivos</h5>
 
-    <div class="subject-files-list__sort">
-      <app-sort-filters [value]="sort" [options]="sortOptions" (valueChange)="onSortChange($event)"></app-sort-filters>
-    </div>
+      <div class="subject-files-list__sort">
+        <app-sort-filters [value]="sort" [options]="sortOptions" (valueChange)="onSortChange($event)"></app-sort-filters>
+      </div>
 
-    <app-submit-button
-      label="Fazer Upload"
-      icon="bi bi-upload"
-      type="button"
-      (click)="openUploadModal()"
-    ></app-submit-button>
-  </header>
+      <app-submit-button
+        label="Fazer Upload"
+        icon="bi bi-upload"
+        type="button"
+        (click)="openUploadModal()"
+      ></app-submit-button>
+    </header>
 
-  <div class="subject-files-list__body">
-    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
-      {{ errorMessage }}
-    </div>
+    <div class="subject-files-list__body">
+      <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+        {{ errorMessage }}
+      </div>
 
-    <div *ngIf="isLoading" class="subject-files-list__loading">Carregando...</div>
+      <div *ngIf="isLoading" class="subject-files-list__loading">Carregando...</div>
 
-    <ng-container *ngIf="!isLoading">
-      <ng-container *ngIf="hasItems; else emptyState">
-        <div class="subject-files-list__items">
-          <article class="subject-files-list__item" *ngFor="let f of files">
-            <div class="subject-files-list__item-main">
-              <div class="subject-files-list__item-name">
-                {{ f.fileName.length > 60 ? ((f.fileName | slice: 0:57) + '...') : f.fileName }}
+      <ng-container *ngIf="!isLoading">
+        <ng-container *ngIf="hasItems; else emptyState">
+          <div class="subject-files-list__items">
+            <article class="subject-files-list__item" *ngFor="let f of files">
+              <div class="subject-files-list__item-main">
+                <div class="subject-files-list__item-name">
+                  {{ f.fileName.length > 60 ? ((f.fileName | slice: 0:57) + '...') : f.fileName }}
+                </div>
+                <div class="subject-files-list__item-meta">{{ formatBytes(f.size) }} • {{ f.fileType }}</div>
               </div>
-              <div class="subject-files-list__item-meta">{{ formatBytes(f.size) }} • {{ f.fileType }}</div>
-            </div>
 
-            <div class="subject-files-list__item-actions">
-              <app-submit-button
-                label="Download"
-                icon="bi bi-download"
-                type="button"
-                [disabled]="isLoading"
-                (click)="download(f)"
-              ></app-submit-button>
+              <div class="subject-files-list__item-actions">
+                <app-submit-button
+                  label="Download"
+                  icon="bi bi-download"
+                  type="button"
+                  [disabled]="isLoading"
+                  (click)="download(f)"
+                ></app-submit-button>
 
-              <app-delete-button
-                label="Excluir"
-                icon="bi bi-trash-fill"
-                [disabled]="isLoading"
-                [isSubmitting]="isLoading"
-                confirmTitle="Excluir arquivo"
-                [confirmMessage]="'Tem certeza que deseja excluir o arquivo ' + f.fileName + '?'"
-                (confirmed)="delete(f)"
-              ></app-delete-button>
-            </div>
-          </article>
-        </div>
+                <app-delete-button
+                  label="Excluir"
+                  icon="bi bi-trash-fill"
+                  [disabled]="isLoading"
+                  [isSubmitting]="isLoading"
+                  confirmTitle="Excluir arquivo"
+                  [confirmMessage]="'Tem certeza que deseja excluir o arquivo ' + f.fileName + '?'"
+                  (confirmed)="delete(f)"
+                ></app-delete-button>
+              </div>
+            </article>
+          </div>
 
-        <app-pagination-controls
-          *ngIf="totalPages > 1"
-          [page]="page"
-          [totalPages]="totalPages"
-          [disabled]="isLoading"
-          (pageChange)="onPageChange($event)"
-        ></app-pagination-controls>
+          <app-pagination-controls
+            *ngIf="totalPages > 1"
+            [page]="page"
+            [totalPages]="totalPages"
+            [disabled]="isLoading"
+            (pageChange)="onPageChange($event)"
+          ></app-pagination-controls>
+        </ng-container>
       </ng-container>
-    </ng-container>
 
-    <ng-template #emptyState>
-      <p class="subject-files-list__empty">{{ emptyMessage }}</p>
-    </ng-template>
-  </div>
+      <ng-template #emptyState>
+        <p class="subject-files-list__empty">{{ emptyMessage }}</p>
+      </ng-template>
+    </div>
+  </ng-container>
+
+  <ng-template #freeMock>
+    <div class="free-mock">
+      <div class="free-mock__blur">
+        <div class="free-mock__title">Lista de arquivos</div>
+
+        <div class="free-mock__items">
+          <div class="free-mock__item" *ngFor="let item of freeMockItems">
+            <div class="free-mock__item-name">{{ item.name }}</div>
+            <div class="free-mock__item-meta">{{ item.meta }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="free-mock__overlay">
+        <div class="free-mock__overlay-card">
+          <div class="free-mock__overlay-title">Recurso PREMIUM</div>
+          <div class="free-mock__overlay-text">Assine o Plano PREMIUM para acessar Arquivos.</div>
+
+          <app-submit-button
+            type="button"
+            label="Ver planos PREMIUM"
+            icon="bi bi-star-fill"
+            (click)="goToPremium()"
+          ></app-submit-button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
 </section>

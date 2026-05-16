@@ -1,8 +1,10 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 
 import type { FlashcardDTO } from '../../model/flashcards.model';
 import { FlashcardsService } from '../../services/flashcards.service';
+import { AuthSessionService } from '../../services/auth-session.service';
 import { ToastService } from '../../services/toast.service';
 import { getHttpErrorMessage } from '../../utils/http-error.util';
 import type { SortFilterOption } from '../sort-filters/sort-filters.component';
@@ -36,11 +38,28 @@ export class SubjectFlashcardListComponent {
     { label: 'Não estudado recentemente', value: 'updatedAt,asc' }
   ];
 
+  readonly freeMockItems: Array<{ name: string; meta: string }> = [
+    { name: 'Funções - definição e exemplos', meta: 'FÁCIL • MÉDIO • DIFÍCIL' },
+    { name: 'Limites - propriedades', meta: 'MÉDIO • DIFÍCIL' },
+    { name: 'Derivadas - regras básicas', meta: 'FÁCIL • MÉDIO • DIFÍCIL' },
+    { name: 'Matrizes - operações', meta: 'FÁCIL • MÉDIO' }
+  ];
+
   constructor(
     private readonly modalService: NgbModal,
     private readonly flashcardsService: FlashcardsService,
-    private readonly toastService: ToastService
+    private readonly sessionService: AuthSessionService,
+    private readonly toastService: ToastService,
+    private readonly router: Router
   ) {}
+
+  get isPremium(): boolean {
+    return this.sessionService.isPremium();
+  }
+
+  goToPremium(): void {
+    void this.router.navigate(['/app/profile-subscription']);
+  }
 
   get hasItems(): boolean {
     return this.flashcards.length > 0;
@@ -60,6 +79,14 @@ export class SubjectFlashcardListComponent {
   }
 
   loadFlashcards(): void {
+    if (!this.isPremium) {
+      this.flashcards = [];
+      this.totalPages = 0;
+      this.isLoading = false;
+      this.errorMessage = '';
+      return;
+    }
+
     const subjectId = Number(this.subjectId);
     if (Number.isNaN(subjectId) || subjectId <= 0) {
       this.flashcards = [];

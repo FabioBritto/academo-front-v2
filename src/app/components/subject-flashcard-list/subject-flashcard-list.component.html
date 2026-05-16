@@ -1,71 +1,105 @@
 <section class="subject-flashcard-list" aria-label="Flashcards">
-  <header class="subject-flashcard-list__header">
-    <h5 class="subject-flashcard-list__title">Lista de flashcards</h5>
+  <ng-container *ngIf="isPremium; else freeMock">
+    <header class="subject-flashcard-list__header">
+      <h5 class="subject-flashcard-list__title">Lista de flashcards</h5>
 
-    <div class="subject-flashcard-list__sort">
-      <app-sort-filters [value]="sort" [options]="sortOptions" (valueChange)="onSortChange($event)"></app-sort-filters>
-    </div>
+      <div class="subject-flashcard-list__sort">
+        <app-sort-filters [value]="sort" [options]="sortOptions" (valueChange)="onSortChange($event)"></app-sort-filters>
+      </div>
 
-    <app-submit-button
-      label="Novo Flashcard"
-      icon="bi bi-plus-circle-fill"
-      type="button"
-      (click)="openCreateFlashcardModal()"
-    ></app-submit-button>
-  </header>
+      <app-submit-button
+        label="Novo Flashcard"
+        icon="bi bi-plus-circle-fill"
+        type="button"
+        (click)="openCreateFlashcardModal()"
+      ></app-submit-button>
+    </header>
 
-  <div class="subject-flashcard-list__body">
-    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
-      {{ errorMessage }}
-    </div>
+    <div class="subject-flashcard-list__body">
+      <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+        {{ errorMessage }}
+      </div>
 
-    <div *ngIf="isLoading" class="subject-flashcard-list__loading">Carregando...</div>
+      <div *ngIf="isLoading" class="subject-flashcard-list__loading">Carregando...</div>
 
-    <ng-container *ngIf="!isLoading">
-      <ng-container *ngIf="hasItems; else emptyState">
-        <div class="subject-flashcard-list__items">
-          <article class="subject-flashcard-list__item" *ngFor="let c of flashcards">
-            <div class="subject-flashcard-list__item-main">
-              <div class="subject-flashcard-list__item-name">
-                {{ c.frontPart.length > 60 ? ((c.frontPart | slice: 0:57) + '...') : c.frontPart }}
+      <ng-container *ngIf="!isLoading">
+        <ng-container *ngIf="hasItems; else emptyState">
+          <div class="subject-flashcard-list__items">
+            <article class="subject-flashcard-list__item" *ngFor="let c of flashcards">
+              <div class="subject-flashcard-list__item-main">
+                <div class="subject-flashcard-list__item-name">
+                  {{ c.frontPart.length > 60 ? ((c.frontPart | slice: 0:57) + '...') : c.frontPart }}
+                </div>
+                <div class="subject-flashcard-list__item-meta">{{ c.level }}</div>
               </div>
-              <div class="subject-flashcard-list__item-meta">{{ c.level }}</div>
-            </div>
 
-            <div class="subject-flashcard-list__item-actions">
-              <app-submit-button
-                label="Editar"
-                icon="bi bi-pencil-square"
-                type="button"
-                [disabled]="isLoading"
-                (click)="openExpandModal(c)"
-              ></app-submit-button>
+              <div class="subject-flashcard-list__item-actions">
+                <app-submit-button
+                  label="Editar"
+                  icon="bi bi-pencil-square"
+                  type="button"
+                  [disabled]="isLoading"
+                  (click)="openExpandModal(c)"
+                ></app-submit-button>
 
-              <app-delete-button
-                label="Excluir"
-                icon="bi bi-trash-fill"
-                [disabled]="isLoading"
-                [isSubmitting]="isLoading"
-                confirmTitle="Excluir flashcard"
-                confirmMessage="Tem certeza que deseja excluir este flashcard?"
-                (confirmed)="deleteFlashcard(c)"
-              ></app-delete-button>
-            </div>
-          </article>
+                <app-delete-button
+                  label="Excluir"
+                  icon="bi bi-trash-fill"
+                  [disabled]="isLoading"
+                  [isSubmitting]="isLoading"
+                  confirmTitle="Excluir flashcard"
+                  confirmMessage="Tem certeza que deseja excluir este flashcard?"
+                  (confirmed)="deleteFlashcard(c)"
+                ></app-delete-button>
+              </div>
+            </article>
+          </div>
+
+          <app-pagination-controls
+            *ngIf="totalPages > 1"
+            [page]="page"
+            [totalPages]="totalPages"
+            [disabled]="isLoading"
+            (pageChange)="onPageChange($event)"
+          ></app-pagination-controls>
+        </ng-container>
+      </ng-container>
+
+      <ng-template #emptyState>
+        <p class="subject-flashcard-list__empty">{{ emptyMessage }}</p>
+      </ng-template>
+    </div>
+  </ng-container>
+
+  <ng-template #freeMock>
+    <div class="free-mock">
+      <div class="free-mock__blur">
+        <div class="free-mock__header">
+          <div class="free-mock__title">Flashcards</div>
+          <div class="free-mock__subtitle">Escolha um conjunto para estudar</div>
         </div>
 
-        <app-pagination-controls
-          *ngIf="totalPages > 1"
-          [page]="page"
-          [totalPages]="totalPages"
-          [disabled]="isLoading"
-          (pageChange)="onPageChange($event)"
-        ></app-pagination-controls>
-      </ng-container>
-    </ng-container>
+        <div class="free-mock__items">
+          <div class="free-mock__item" *ngFor="let item of freeMockItems">
+            <div class="free-mock__item-name">{{ item.name }}</div>
+            <div class="free-mock__item-meta">{{ item.meta }}</div>
+          </div>
+        </div>
+      </div>
 
-    <ng-template #emptyState>
-      <p class="subject-flashcard-list__empty">{{ emptyMessage }}</p>
-    </ng-template>
-  </div>
+      <div class="free-mock__overlay">
+        <div class="free-mock__overlay-card">
+          <div class="free-mock__overlay-title">Recurso PREMIUM</div>
+          <div class="free-mock__overlay-text">Assine o Plano PREMIUM para acessar Flashcards.</div>
+
+          <app-submit-button
+            type="button"
+            label="Ver planos PREMIUM"
+            icon="bi bi-star-fill"
+            (click)="goToPremium()"
+          ></app-submit-button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
 </section>

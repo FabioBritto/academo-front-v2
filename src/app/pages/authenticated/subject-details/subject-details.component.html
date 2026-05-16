@@ -119,7 +119,7 @@
         <app-tabs [value]="contentTab" [options]="contentOptions" (valueChange)="onContentTabChange($event)"></app-tabs>
 
         <app-submit-button
-          *ngIf="contentTab === 'flashcards'"
+          *ngIf="contentTab === 'flashcards' && isPremium"
           class="subject-details__study-button"
           label="Estudar"
           icon="bi bi-stack"
